@@ -1,5 +1,5 @@
 package Content.Case;
 
-public class Case {
+public interface Case {
 
 }

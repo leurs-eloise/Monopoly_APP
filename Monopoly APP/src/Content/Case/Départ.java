@@ -1,5 +1,5 @@
 package Content.Case;
 
-public class Départ extends Case {
+public class Départ implements Case {
 
 }

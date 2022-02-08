@@ -1,5 +1,5 @@
 package Content.Case;
 
-public class CaseCarte extends Case {
+public class CaseCarte implements Case {
 
 }

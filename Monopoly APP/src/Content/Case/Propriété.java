@@ -1,5 +1,6 @@
 package Content.Case;
 
-public class Propriété extends Case {
+public class Propriété implements Case {
+
 
 }

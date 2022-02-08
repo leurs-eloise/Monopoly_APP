@@ -1,5 +1,5 @@
 package Content.Case;
 
-public class SansAction extends Case{
+public class SansAction implements Case{
 
 }
