@@ -3,7 +3,10 @@ package Content;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import Content.Case.Gare;
 import Content.Case.Propriete;
+import Content.Case.Service;
+import Content.Case.Terrain;
 
 public class Joueur {
 	private static final AtomicInteger ID_FACTORY = new AtomicInteger();
@@ -12,6 +15,7 @@ public class Joueur {
 	private int argent;
 	private int position;
 	private int tourPrison;
+	private int valDes;
 	private Des des;
 	private ArrayList<Propriete> proprietes;
 	//private ArrayList<CarteAction> cartes;
@@ -37,6 +41,7 @@ public class Joueur {
 	public void lancerDes() {
 		int alea=(int)(Math.random() * 6);
 		des.setValeur(alea);
+		this.valDes = alea;
 	}
 	
 	public void acheter(Propriete prop) {
@@ -46,10 +51,28 @@ public class Joueur {
 		}
 	}
 	
-	public void payer(Propriete prop) {
+	public void payerLoyer(Terrain prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
-			proprietaire.setArgent(proprietaire.getArgent()+prop.getLoyer());
+			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
+			this.setArgent(this.getArgent() - prop.getLoyer());
+		}
+	}
+	
+	public void payerLoyer(Gare prop) {
+		Joueur proprietaire = prop.getJoueur();
+		if((proprietaire != null) && (proprietaire != this)){
+			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
+			this.setArgent(this.getArgent() - prop.getLoyer());
+		}
+	}
+	
+	public void payerService(Service prop) {
+		Joueur proprietaire = prop.getJoueur();
+		if((proprietaire != null) && (proprietaire != this)){
+			this.lancerDes();
+			proprietaire.setArgent(proprietaire.getArgent() + prop.getNiveau()*valDes);
+			this.setArgent(this.getArgent() - prop.getNiveau()*valDes);
 		}
 	}
 	

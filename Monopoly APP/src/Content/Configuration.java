@@ -3,14 +3,15 @@ package Content;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import Content.Case.Case;
+
 public class Configuration {
 	private int nbCase = 20;
 	private int nbJoueur = 2;
 	
-	private ArrayList<String> case1 = new ArrayList<String>(
-			
-			);
-			
+	private ArrayList<Case> listeCase = new ArrayList<Case>();
+
+	
 			
 	private static Configuration configuration;
 	public Configuration() {}
@@ -21,4 +22,5 @@ public class Configuration {
 		}
 		return configuration;
 	}
+	
 }
