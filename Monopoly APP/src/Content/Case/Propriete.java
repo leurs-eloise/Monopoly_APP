@@ -10,10 +10,10 @@ public class Propriete implements Case {
 	private ArrayList<Integer> loyer = new ArrayList<>();
 	
 	// Constructeur
-	public void Propriete(int prix) {
+	public Propriete(int prix) {
 		this.prix = prix;
 	}
-	
+
 	// Getter & Setter
 	public int getPrix() {
 		return prix;
