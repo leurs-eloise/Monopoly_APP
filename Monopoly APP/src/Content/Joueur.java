@@ -56,6 +56,7 @@ public class Joueur {
 		if((proprietaire != null) && (proprietaire != this)){
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
 			this.setArgent(this.getArgent() - prop.getLoyer());
+			prop.setJoueur(this);
 		}
 	}
 	
