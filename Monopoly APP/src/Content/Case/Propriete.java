@@ -1,6 +1,5 @@
 package Content.Case;
 
-<<<<<<< Updated upstream
 import Content.Joueur;
 
 public class Propriete implements Case {
@@ -8,9 +7,8 @@ public class Propriete implements Case {
 	private Joueur joueur;
 	
 	// Constructeur
-	public void Propriete(int prix, Joueur joueur) {
+	public void Propriete(int prix) {
 		this.prix = prix;
-		this.joueur = joueur;
 	}
 	
 	// Getter & Setter
@@ -23,6 +21,9 @@ public class Propriete implements Case {
 	}
 
 	public Joueur getJoueur() {
+		if (this.joueur == null) {
+			return null;
+		}
 		return joueur;
 	}
 
@@ -30,9 +31,7 @@ public class Propriete implements Case {
 		this.joueur = joueur;
 	}
 	
-=======
-public class Propriete implements Case {
->>>>>>> Stashed changes
+
 
 
 }

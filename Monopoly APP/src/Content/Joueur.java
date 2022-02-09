@@ -26,7 +26,7 @@ public class Joueur {
 		this.tourPrison = tourPrison;
 		this.proprietes = proprietes;
 	}
-	//constructeur simplifi� pour la cr�ation d'un joueur
+	//constructeur simplifie pour la creation d'un joueur
 	public Joueur(int id, String pseudo, int argent) {
 		super();
 		this.id = ID_FACTORY.getAndIncrement();
@@ -40,9 +40,17 @@ public class Joueur {
 	}
 	
 	public void acheter(Propriete prop) {
+		if((prop.getJoueur() == null) && (this.argent >= prop.getPrix())){
+			this.argent -= prop.getPrix();
+			prop.setJoueur(this);
+		}
 	}
 	
 	public void payer(Propriete prop) {
+		Joueur proprietaire = prop.getJoueur();
+		if((proprietaire != null) && (proprietaire != this)){
+			proprietaire.setArgent(proprietaire.getArgent()+prop.getLoyer());
+		}
 	}
 	
 	public void echanger(Propriete prop) {
