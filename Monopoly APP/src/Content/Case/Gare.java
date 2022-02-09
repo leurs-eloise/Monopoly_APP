@@ -2,31 +2,47 @@ package Content.Case;
 
 import java.util.ArrayList;
 
+import Content.Configuration;
+import Content.Joueur;
+
 public class Gare extends Propriete{
-	private int prix;
-	private ArrayList<Integer> loyer = new ArrayList<>();
-	
-	public Gare(int prix, ArrayList<Integer> loyer) {
-		super();
-		this.prix = prix;
-		this.loyer = loyer;
+	private int loyer;
+
+	public Gare(int id, int prix, Joueur j) {
+		super(id, prix, j);
 	}
 
 	public int getPrix() {
-		return prix;
+		return this.getPrix();
 	}
 
-	public void setPrix(int prix) {
-		this.prix = prix;
+
+	public int getLoyer() {
+		return this.loyer;
 	}
 
-	public ArrayList<Integer> getLoyer() {
-		return loyer;
+	public void setLoyer() {
+		int nbGare = 0;
+		//id gare 2 7 12 17
+		for(Propriete prop : this.getJoueur().getProprietes()) {
+			if ((prop.getId() == 2) || (prop.getId() == 7) || (prop.getId() == 12) || (prop.getId() == 17)){
+				nbGare += 1;
+			}
+		}
+		if (nbGare == 4){
+			this.loyer = Configuration.getInstance().getLoyer(2)[3];
+		}
+		else if (nbGare == 3){
+			this.loyer = Configuration.getInstance().getLoyer(2)[2];
+		}
+		else if (nbGare == 2){
+			this.loyer = Configuration.getInstance().getLoyer(2)[1];
+		}
+		else if (nbGare == 1){
+			this.loyer = Configuration.getInstance().getLoyer(2)[0];
+		}
 	}
+}
 
-	public void setLoyer(ArrayList<Integer> loyer) {
-		this.loyer = loyer;
-	}
-	
 
 }
