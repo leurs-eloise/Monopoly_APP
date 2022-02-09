@@ -28,6 +28,9 @@ public class Gare extends Propriete{
 		this.loyer = loyer;
 	}
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> master
 
 }
