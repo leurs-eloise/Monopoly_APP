@@ -1,5 +1,6 @@
 package Content.Case;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
 public class Gare extends Propriete{
@@ -30,5 +31,8 @@ public class Gare extends Propriete{
 	}
 	
 	
+=======
+public class Gare extends Propriete{
+>>>>>>> master
 
 }

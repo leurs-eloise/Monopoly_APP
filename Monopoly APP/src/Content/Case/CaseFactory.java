@@ -14,7 +14,7 @@ public class CaseFactory {
 		} else if(caseInfo.get(0).equalsIgnoreCase("depart")) {
 			return new Départ();
 		} else if(caseInfo.get(0).equalsIgnoreCase("propriete")) {
-			return new Propriété();
+			return new Propriete();
 		} else if(caseInfo.get(0).equalsIgnoreCase("sansAction")) {
 			return new SansAction();
 		}
