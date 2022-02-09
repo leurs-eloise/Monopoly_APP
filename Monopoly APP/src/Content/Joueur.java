@@ -82,6 +82,16 @@ public class Joueur {
 		}	
 	}
 	
+	public void acheterBuilding(int nombre, Terrain ter) {
+		if (ter.getJoueur() == this) {
+			if (ter.getBuilding()<4) {
+			
+			}
+		}
+		
+		
+	}
+	
 	
 	//Getter and setter 
 	public int getId() {
