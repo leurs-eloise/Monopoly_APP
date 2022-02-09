@@ -1,0 +1,219 @@
+{
+	"Départ":{
+		"type": "depart",
+		"gain": 200
+	},
+	"Clermont-Ferrand":{
+		"type": "propriete",
+		"groupe": 0,
+		"prix": 20,
+		"prixContruction": {
+			"maison": 30,
+			"hotel": 50
+		},
+		"loyer" : {
+			"level0": 10,
+			"level1": 20,
+			"level2": 30,
+			"level3": 40,
+			"level4": 50 
+		},
+		"hypoteque": 10
+	},
+	"BDE":{
+		"type": "propriete",
+		"prix": 30,
+		"multiplicateur":{
+			"level1": 2,
+			"level2": 4
+		},
+		"hypoteque": 10
+	},
+	"Pink":{
+		"type": "propriete",
+		"prix": 20,
+		"loyer" : {
+			"level1": 50,
+			"level2": 100,
+			"level3": 150,
+			"level4": 200 
+		},
+		"hypoteque": 10
+	},
+	"Marseille":{
+		"type": "propriete",
+		"groupe": 1,
+		"prix": 20,
+		"prixContruction": {
+			"maison": 30,
+			"hotel": 50
+		},
+		"loyer" : {
+			"level0": 10,
+			"level1": 20,
+			"level2": 30,
+			"level3": 40,
+			"level4": 50 
+		},
+		"hypoteque": 10
+	},
+	"Rattrapage":{
+		"type": "prison",
+	},
+	"Tours":{
+		"type": "propriete",
+		"groupe": 2,
+		"prix": 20,
+		"prixContruction": {
+			"maison": 30,
+			"hotel": 50
+		},
+		"loyer" : {
+			"level0": 10,
+			"level1": 20,
+			"level2": 30,
+			"level3": 40,
+			"level4": 50 
+		},
+		"hypoteque": 10
+	},
+	"Choam":{
+		"type": "propriete",
+		"prix": 20,
+		"loyer" : {
+			"level1": 50,
+			"level2": 100,
+			"level3": 150,
+			"level4": 200 
+		},
+		"hypoteque": 10
+	},
+	"Carte distanciel":{
+		"type": "caseCarte",
+	},
+	"Montpellier":{
+		"type": "propriete",
+		"groupe": 3,
+		"prix": 20,
+		"prixContruction": {
+			"maison": 30,
+			"hotel": 50
+		},
+		"loyer" : {
+			"level0": 10,
+			"level1": 20,
+			"level2": 30,
+			"level3": 40,
+			"level4": 50 
+		},
+		"hypoteque": 10
+	},
+	"OPEN BAR":{
+		"type": "sansAction",
+	},
+	"Annecy":{
+		"type": "propriete",
+		"groupe": 4,
+		"prix": 20,
+		"prixContruction": {
+			"maison": 30,
+			"hotel": 50
+		},
+		"loyer" : {
+			"level0": 10,
+			"level1": 20,
+			"level2": 30,
+			"level3": 40,
+			"level4": 50 
+		},
+		"hypoteque": 10
+	},
+	"Sibra":{
+		"type": "propriete",
+		"prix": 30,
+		"multiplicateur":{
+			"level1": 2,
+			"level2": 4
+		},
+		"hypoteque": 10
+	},
+	"WEC":{
+		"type": "propriete",
+		"prix": 20,
+		"loyer" : {
+			"level1": 50,
+			"level2": 100,
+			"level3": 150,
+			"level4": 200 
+		},
+		"hypoteque": 10
+	},
+	"Orléan":{
+		"type": "propriete",
+		"groupe": 5,
+		"prix": 20,
+		"prixContruction": {
+			"maison": 30,
+			"hotel": 50
+		},
+		"loyer" : {
+			"level0": 10,
+			"level1": 20,
+			"level2": 30,
+			"level3": 40,
+			"level4": 50 
+		},
+		"hypoteque": 10
+	},
+	"En rattrapage":{
+		"type": "enPrison",
+	},
+	"CROUS":{
+		"type": "caseCarte",
+	},
+	"Lille":{
+		"type": "propriete",
+		"groupe": 6,
+		"prix": 20,
+		"prixContruction": {
+			"maison": 30,
+			"hotel": 50
+		},
+		"loyer" : {
+			"level0": 10,
+			"level1": 20,
+			"level2": 30,
+			"level3": 40,
+			"level4": 50 
+		},
+		"hypoteque": 10
+	},
+	"WEC":{
+		"type": "propriete",
+		"prix": 20,
+		"loyer" : {
+			"level1": 50,
+			"level2": 100,
+			"level3": 150,
+			"level4": 200 
+		},
+		"hypoteque": 10
+	},
+	"Nantes":{
+		"type": "propriete",
+		"groupe": 7,
+		"prix": 20,
+		"prixContruction": {
+			"maison": 30,
+			"hotel": 50
+		},
+		"loyer" : {
+			"level0": 10,
+			"level1": 20,
+			"level2": 30,
+			"level3": 40,
+			"level4": 50 
+		},
+		"hypoteque": 10
+	},
+}
