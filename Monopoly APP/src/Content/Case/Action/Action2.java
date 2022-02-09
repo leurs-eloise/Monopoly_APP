@@ -1,9 +1,9 @@
 package Content.Case.Action;
 
-public class Action2 implements carteAction{
+public class Action2 implements CarteAction{
 
 	@Override
-	public carteAction doAction() {
+	public CarteAction doAction() {
 		// TODO Auto-generated method stub
 		return null;
 	}
