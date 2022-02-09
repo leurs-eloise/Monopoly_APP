@@ -1,5 +1,5 @@
 package Content.Case;
 
-public class Gare extends Propriété{
+public class Gare extends Propriete{
 
 }

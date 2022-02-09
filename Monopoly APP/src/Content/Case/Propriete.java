@@ -1,5 +1,6 @@
 package Content.Case;
 
+<<<<<<< Updated upstream
 import Content.Joueur;
 
 public class Propriété implements Case {
@@ -27,6 +28,9 @@ public class Propriété implements Case {
 		this.joueur = joueur;
 	}
 	
+=======
+public class Propriete implements Case {
+>>>>>>> Stashed changes
 
 
 }
