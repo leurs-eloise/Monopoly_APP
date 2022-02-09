@@ -1,19 +1,29 @@
 package Content.Case;
 
+import Content.Configuration;
 import Content.Joueur;
 
 public class Service extends Propriete {
-	private int niveau;
-	private Joueur joueur;
-
-	public int getNiveau() {
-		return niveau;
+	private int multiplicateur;
+	
+	public Service(int id, int prix, Joueur j, int multiplicateur) {
+		super(id, prix, j);
+		this.multiplicateur = multiplicateur;
 	}
 
-	public void setNiveau() {
+	public int getNiveau() {
+		return this.multiplicateur;
+	}
+
+	public void setMultiplicateur() {
 		//service id1 = 3 et 13
-		for(prop in joueur.getProprietes()) {
-			if ((prop.getId() == 3)
+		for(Propriete prop : this.getJoueur().getProprietes()) {
+			if ((prop.getId() == 3) && (prop.getId() == 13)){
+				this.multiplicateur = Configuration.getInstance().getMultiplicateur(3)[1];
+			}
+			else if ((prop.getId() == 3) || (prop.getId() == 13)) {
+				this.multiplicateur = Configuration.getInstance().getMultiplicateur(3)[0];
+			}
 		}
 	}
 	
