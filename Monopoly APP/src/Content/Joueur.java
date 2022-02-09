@@ -19,7 +19,7 @@ public class Joueur {
 	private Des des;
 	private ArrayList<Propriete> proprietes;
 	//private ArrayList<CarteAction> cartes;
-	
+
 	//constructeur pour la config
 	public Joueur(int id, String pseudo, int argent, int position, int tourPrison, ArrayList<Propriete> proprietes) {
 		super();
@@ -37,20 +37,20 @@ public class Joueur {
 		this.pseudo = pseudo;
 		this.argent = argent;
 	}
-	
+
 	public void lancerDes() {
 		int alea=(int)(Math.random() * 6);
 		des.setValeur(alea);
 		this.valDes = alea;
 	}
-	
+
 	public void acheter(Propriete prop) {
 		if((prop.getJoueur() == null) && (this.argent >= prop.getPrix())){
 			this.argent -= prop.getPrix();
 			prop.setJoueur(this);
 		}
 	}
-	
+
 	public void payerLoyer(Terrain prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
@@ -59,7 +59,7 @@ public class Joueur {
 			prop.setJoueur(this);
 		}
 	}
-	
+
 	public void payerLoyer(Gare prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
@@ -67,7 +67,7 @@ public class Joueur {
 			this.setArgent(this.getArgent() - prop.getLoyer());
 		}
 	}
-	
+
 	public void payerService(Service prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
@@ -76,24 +76,24 @@ public class Joueur {
 			this.setArgent(this.getArgent() - prop.getNiveau()*valDes);
 		}
 	}
-	
+
 	public void echanger(Propriete prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
 		}	
 	}
-	
-	public void acheterBuilding(int nombre, Terrain ter) {
+
+	public void acheterBuilding(int nb, Terrain ter) {
 		if (ter.getJoueur() == this) {
-			if (ter.getBuilding()<4) {
-			
+			int coutAchat = Configuration.getInstance().getPrixMaison(ter.getId())*nb; 
+
+			if ((ter.getNbBuilding() + nb < 5) && (this.argent >= coutAchat)) {
+				ter.setNbBuilding(ter.getNbBuilding() + nb);
 			}
 		}
-		
-		
 	}
-	
-	
+
+
 	//Getter and setter 
 	public int getId() {
 		return id;
@@ -137,8 +137,8 @@ public class Joueur {
 	public void setProprietes(ArrayList<Propriete> proprietes) {
 		this.proprietes = proprietes;
 	}
-	
-	
-	
-	
+
+
+
+
 }

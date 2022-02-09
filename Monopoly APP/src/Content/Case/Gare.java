@@ -23,7 +23,6 @@ public class Gare extends Propriete{
 
 	public void setLoyer() {
 		int nbGare = 0;
-		//id gare 2 7 12 17
 		for(Propriete prop : this.getJoueur().getProprietes()) {
 			if ((prop.getId() == 2) || (prop.getId() == 7) || (prop.getId() == 12) || (prop.getId() == 17)){
 				nbGare += 1;
