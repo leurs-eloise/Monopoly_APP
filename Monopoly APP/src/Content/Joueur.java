@@ -17,7 +17,7 @@ public class Joueur {
 	//private ArrayList<CarteAction> cartes;
 	
 	//constructeur pour la config
-	public Joueur(int id, String pseudo, int argent, int position, int tourPrison, ArrayList<Propriété> proprietes) {
+	public Joueur(int id, String pseudo, int argent, int position, int tourPrison, ArrayList<Propriete> proprietes) {
 		super();
 		this.id = ID_FACTORY.getAndIncrement();
 		this.pseudo = pseudo;
@@ -26,7 +26,7 @@ public class Joueur {
 		this.tourPrison = tourPrison;
 		this.proprietes = proprietes;
 	}
-	//constructeur simplifié pour la création d'un joueur
+	//constructeur simplifiï¿½ pour la crï¿½ation d'un joueur
 	public Joueur(int id, String pseudo, int argent) {
 		super();
 		this.id = ID_FACTORY.getAndIncrement();
@@ -47,6 +47,51 @@ public class Joueur {
 	
 	public void echanger(Propriete prop) {
 		
+	}
+	
+	
+	//Getter and setter 
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getPseudo() {
+		return pseudo;
+	}
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+	public int getArgent() {
+		return argent;
+	}
+	public void setArgent(int argent) {
+		this.argent = argent;
+	}
+	public int getPosition() {
+		return position;
+	}
+	public void setPosition(int position) {
+		this.position = position;
+	}
+	public int getTourPrison() {
+		return tourPrison;
+	}
+	public void setTourPrison(int tourPrison) {
+		this.tourPrison = tourPrison;
+	}
+	public Des getDes() {
+		return des;
+	}
+	public void setDes(Des des) {
+		this.des = des;
+	}
+	public ArrayList<Propriete> getProprietes() {
+		return proprietes;
+	}
+	public void setProprietes(ArrayList<Propriete> proprietes) {
+		this.proprietes = proprietes;
 	}
 	
 	
