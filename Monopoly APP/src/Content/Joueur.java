@@ -77,7 +77,9 @@ public class Joueur {
 	}
 	
 	public void echanger(Propriete prop) {
-		
+		Joueur proprietaire = prop.getJoueur();
+		if((proprietaire != null) && (proprietaire != this)){
+		}	
 	}
 	
 	

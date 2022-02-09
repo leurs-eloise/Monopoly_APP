@@ -5,16 +5,28 @@ import java.util.ArrayList;
 import Content.Joueur;
 
 public class Propriete implements Case {
+	private int id;
 	private int prix;
 	private Joueur joueur;
 	private ArrayList<Integer> loyer = new ArrayList<>();
 	
 	// Constructeur
-	public Propriete(int prix) {
+	public Propriete(int id, int prix, Joueur j) {
+		this.id = id;
 		this.prix = prix;
+		this.joueur = null;
+	}
+	
+	
+	// Getter & Setter
+	public int getId() {
+		return id;
 	}
 
-	// Getter & Setter
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public int getPrix() {
 		return prix;
 	}
