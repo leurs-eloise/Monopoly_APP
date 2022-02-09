@@ -12,7 +12,7 @@ public class CaseFactory {
 		} else if(caseInfo.get(0).equalsIgnoreCase("carte")) {
 			return new CaseCarte();
 		} else if(caseInfo.get(0).equalsIgnoreCase("depart")) {
-			return new Départ();
+			return new Depart();
 		} else if(caseInfo.get(0).equalsIgnoreCase("propriete")) {
 			return new Propriete();
 		} else if(caseInfo.get(0).equalsIgnoreCase("sansAction")) {
