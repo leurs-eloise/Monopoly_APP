@@ -22,5 +22,8 @@ public class Configuration {
 		}
 		return configuration;
 	}
+	public ArrayList<Case> getListeCase(){
+		return listeCase;
+	}
 	
 }

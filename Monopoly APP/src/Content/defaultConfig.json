@@ -3,7 +3,7 @@
 		"type": "depart",
 		"gain": 200
 	},
-	"Clermont-Ferrand":{
+	"Nantes":{
 		"type": "propriete",
 		"groupe": 0,
 		"prix": 20,
@@ -20,15 +20,6 @@
 		},
 		"hypoteque": 10
 	},
-	"BDE":{
-		"type": "propriete",
-		"prix": 30,
-		"multiplicateur":{
-			"level1": 2,
-			"level2": 4
-		},
-		"hypoteque": 10
-	},
 	"Pink":{
 		"type": "propriete",
 		"prix": 20,
@@ -40,7 +31,16 @@
 		},
 		"hypoteque": 10
 	},
-	"Marseille":{
+	"BDE":{
+		"type": "propriete",
+		"prix": 30,
+		"multiplicateur":{
+			"level1": 2,
+			"level2": 4
+		},
+		"hypoteque": 10
+	},
+	"Tours":{
 		"type": "propriete",
 		"groupe": 1,
 		"prix": 20,
@@ -60,7 +60,7 @@
 	"Rattrapage":{
 		"type": "prison",
 	},
-	"Tours":{
+	"Montpellier":{
 		"type": "propriete",
 		"groupe": 2,
 		"prix": 20,
@@ -77,7 +77,7 @@
 		},
 		"hypoteque": 10
 	},
-	"Choam":{
+	"Chaam":{
 		"type": "propriete",
 		"prix": 20,
 		"loyer" : {
@@ -88,10 +88,10 @@
 		},
 		"hypoteque": 10
 	},
-	"Carte distanciel":{
+	"Carte CROUS":{
 		"type": "caseCarte",
 	},
-	"Montpellier":{
+	"Nancy":{
 		"type": "propriete",
 		"groupe": 3,
 		"prix": 20,
@@ -111,7 +111,7 @@
 	"OPEN BAR":{
 		"type": "sansAction",
 	},
-	"Annecy":{
+	"Marseille":{
 		"type": "propriete",
 		"groupe": 4,
 		"prix": 20,
@@ -128,15 +128,6 @@
 		},
 		"hypoteque": 10
 	},
-	"Sibra":{
-		"type": "propriete",
-		"prix": 30,
-		"multiplicateur":{
-			"level1": 2,
-			"level2": 4
-		},
-		"hypoteque": 10
-	},
 	"WEC":{
 		"type": "propriete",
 		"prix": 20,
@@ -145,6 +136,15 @@
 			"level2": 100,
 			"level3": 150,
 			"level4": 200 
+		},
+		"hypoteque": 10
+	},
+	"Sibra":{
+		"type": "propriete",
+		"prix": 30,
+		"multiplicateur":{
+			"level1": 2,
+			"level2": 4
 		},
 		"hypoteque": 10
 	},
@@ -165,13 +165,10 @@
 		},
 		"hypoteque": 10
 	},
-	"En rattrapage":{
+	"Go rattrapage":{
 		"type": "enPrison",
 	},
-	"CROUS":{
-		"type": "caseCarte",
-	},
-	"Lille":{
+	"Clermont-Ferrand":{
 		"type": "propriete",
 		"groupe": 6,
 		"prix": 20,
@@ -188,7 +185,7 @@
 		},
 		"hypoteque": 10
 	},
-	"WEC":{
+	"TPN":{
 		"type": "propriete",
 		"prix": 20,
 		"loyer" : {
@@ -199,7 +196,10 @@
 		},
 		"hypoteque": 10
 	},
-	"Nantes":{
+	"Carte CROUS":{
+		"type": "caseCarte",
+	},
+	"Annecy":{
 		"type": "propriete",
 		"groupe": 7,
 		"prix": 20,
@@ -216,4 +216,5 @@
 		},
 		"hypoteque": 10
 	},
+
 }
