@@ -1,29 +1,51 @@
 package Content;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import Content.Case.Case;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Configuration {
 	private int nbCase = 20;
 	private int nbJoueur = 2;
 	
-	private ArrayList<Case> listeCase = new ArrayList<Case>();
+	private ArrayList<ArrayList<Objects>> listeCase = new ArrayList<ArrayList<Objects>>();
 
 	
 			
 	private static Configuration configuration;
 	public Configuration() {}
 	
-	public Configuration getInstance() {
+	public static Configuration getInstance() {
 		if(Objects.isNull(configuration)) {
 			configuration = new Configuration();
 		}
 		return configuration;
 	}
-	public ArrayList<Case> getListeCase(){
+	public ArrayList<ArrayList<Objects>> getListeCase(){
 		return listeCase;
+	}
+	public void loadDefaultConfig() throws IOException, JSONException {
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("defaultConfig.json")));
+		String inputLine;
+		String response = "";
+
+		while ((inputLine = in.readLine()) != null) {
+			response += inputLine;
+		}
+		in.close();
+		JSONObject test = new JSONObject(response);
+		System.out.println(test);
+		
+	}
+	public String getName(int id) {
+		return listeCase.get(id).get(0).toString();
 	}
 	
 }
