@@ -5,9 +5,10 @@ import Content.Joueur;
 
 public class Service extends Propriete {
 	private int multiplicateur;
+	private String nom;
 	
-	public Service(int id, int prix, Joueur j, int multiplicateur) {
-		super(id, prix, j);
+	public Service(String nom, int id, int prix, Joueur j, int multiplicateur) {
+		super(nom, id, prix, j);
 		this.multiplicateur = multiplicateur;
 	}
 

@@ -8,9 +8,11 @@ public class Propriete implements Case {
 	private int id;
 	private int prix;
 	private Joueur joueur;
+	private String nom;
 	
 	// Constructeur
-	public Propriete(int id, int prix, Joueur j) {
+	public Propriete(String nom, int id, int prix, Joueur j) {
+		this.nom = nom;
 		this.id = id;
 		this.prix = prix;
 		this.joueur = null;

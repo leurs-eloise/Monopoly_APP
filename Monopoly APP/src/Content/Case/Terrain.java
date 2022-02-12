@@ -10,8 +10,8 @@ public class Terrain extends Propriete {
 	private int loyer;
 
 	// Constructeur
-	public Terrain(int id, int prix, Joueur j, int building, int loyer) {
-		super(id, prix, j);
+	public Terrain(String nom,int id, int prix, Joueur j, int building, int loyer) {
+		super(nom, id, prix, j);
 		this.nbBuildings = building;
 		this.loyer = loyer;
 	}

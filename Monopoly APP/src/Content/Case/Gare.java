@@ -8,8 +8,8 @@ import Content.Joueur;
 public class Gare extends Propriete {
 	private int loyer;
 
-	public Gare(int id, int prix, Joueur j) {
-		super(id, prix, j);
+	public Gare(String nom,int id, int prix, Joueur j) {
+		super(nom, id, prix, j);
 	}
 
 	public int getPrix() {

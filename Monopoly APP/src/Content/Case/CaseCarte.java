@@ -2,7 +2,12 @@ package Content.Case;
 
 public class CaseCarte implements Case {
   
-    public String nom;
-    public int id;
-    public String action;
+    private String nom;
+    private String action;
+    private int id;
+    public CaseCarte(String nom, int id) {
+    	this.nom = nom;
+    	this.id = id;
+    }
+    
 }
