@@ -92,9 +92,9 @@ public class Joueur {
 	
 	public void acheterBuilding(int nombre, Terrain ter) {
 		if (ter.getJoueur() == this) {
-			if (ter.getBuilding()<4) {
+			//if (ter.getBuilding()<4) {
 			
-			}
+			//}
 		}
 		
 		

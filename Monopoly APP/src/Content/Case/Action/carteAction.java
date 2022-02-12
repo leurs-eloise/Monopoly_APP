@@ -1,5 +1,5 @@
 package Content.Case.Action;
 
-public interface carteAction extends CaseCarte {
+public interface carteAction {
 	carteAction doAction();
 }

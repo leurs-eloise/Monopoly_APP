@@ -41,11 +41,22 @@ public class Configuration {
 		}
 		in.close();
 		JSONObject test = new JSONObject(response);
+		test.get("Data");
 		System.out.println(test);
 		
 	}
 	public String getName(int id) {
 		return listeCase.get(id).get(0).toString();
+	}
+
+	public int[] getLoyer(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int[] getMultiplicateur(int i) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
