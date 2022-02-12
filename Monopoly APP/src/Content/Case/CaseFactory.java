@@ -38,6 +38,8 @@ public class CaseFactory {
 			return new Service(nom, id, 0, null, 0);
 		} else if(type.equalsIgnoreCase("gare")) {
 			return new Gare(nom, id, 0, null);
+		}else if(type.equalsIgnoreCase("enPrison")) {
+			return new EnPrison(nom, id);
 		}
 		return null;
 	}

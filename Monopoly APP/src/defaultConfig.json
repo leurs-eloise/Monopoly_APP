@@ -1,7 +1,8 @@
 {
 	"GameSetting": {
 		"case": 20,
-		"player": 2
+		"player": 2,
+		"niveauTerrain": 6
 	},
 	"Case": {
 		"0": {
@@ -13,59 +14,55 @@
 			"nom": "Nantes",
 			"type": "terrain",
 			"groupe": 0,
-			"prix": 20,
-			"prixContruction": [
-				30,
-				50
-			],
+			"prix": 60,
+			"prixConstruction": 50,
 			"loyer": [
+				2,
 				10,
-				20,
 				30,
-				40,
-				50
+				90,
+				160,
+				250
 			],
-			"hypoteque": 10
+			"hypoteque": 30
 		},
 		"2": {
 			"nom": "Pink",
 			"type": "gare",
-			"prix": 20,
+			"prix": 200,
 			"loyer": [
+				25,
 				50,
 				100,
-				150,
 				200
 			],
-			"hypoteque": 10
+			"hypoteque": 100
 		},
 		"3": {
 			"nom": "BDE",
 			"type": "service",
-			"prix": 30,
-			"multiplicateur": {
-				"level1": 2,
-				"level2": 4
-			},
-			"hypoteque": 10
+			"prix": 150,
+			"multiplicateur": [
+				4,
+				10
+			],
+			"hypoteque": 75
 		},
 		"4": {
 			"nom": "Tours",
 			"type": "terrain",
 			"groupe": 1,
-			"prix": 20,
-			"prixContruction": [
-				30,
-				50
-			],
+			"prix": 100,
+			"prixConstruction": 50,
 			"loyer": [
-				10,
-				20,
+				6,
 				30,
-				40,
-				50
+				90,
+				270,
+				400,
+				550
 			],
-			"hypoteque": 10
+			"hypoteque": 50
 		},
 		"5": {
 			"nom": "Rattrapage",
@@ -75,53 +72,49 @@
 			"nom": "Montpellier",
 			"type": "terrain",
 			"groupe": 2,
-			"prix": 20,
-			"prixContruction": [
-				30,
-				50
-			],
+			"prix": 140,
+			"prixConstruction": 100,
 			"loyer": [
 				10,
-				20,
-				30,
-				40,
-				50
+				50,
+				150,
+				450,
+				625,
+				750
 			],
-			"hypoteque": 10
+			"hypoteque": 70
 		},
 		"7": {
 			"nom": "Chaam",
 			"type": "gare",
-			"prix": 20,
+			"prix": 200,
 			"loyer": [
+				25,
 				50,
 				100,
-				150,
 				200
 			],
-			"hypoteque": 10
+			"hypoteque": 100
 		},
 		"8": {
-			"nom": "Carte CROUS",
+			"nom": "Cartes CROUS",
 			"type": "caseCarte"
 		},
 		"9": {
 			"nom": "Nancy",
 			"type": "terrain",
 			"groupe": 3,
-			"prix": 20,
-			"prixContruction": [
-				30,
-				50
-			],
+			"prix": 180,
+			"prixConstruction": 100,
 			"loyer": [
-				10,
-				20,
-				30,
-				40,
-				50
+				14,
+				70,
+				200,
+				550,
+				700,
+				950
 			],
-			"hypoteque": 10
+			"hypoteque": 90
 		},
 		"10": {
 			"nom": "OPEN BAR",
@@ -131,59 +124,55 @@
 			"nom": "Marseille",
 			"type": "terrain",
 			"groupe": 4,
-			"prix": 20,
-			"prixContruction": [
-				30,
-				50
-			],
+			"prix": 220,
+			"prixConstruction": 150,
 			"loyer": [
-				10,
-				20,
-				30,
-				40,
-				50
+				18,
+				90,
+				250,
+				700,
+				875,
+				1050
 			],
-			"hypoteque": 10
+			"hypoteque": 110
 		},
 		"12": {
 			"nom": "WEC",
 			"type": "gare",
-			"prix": 20,
+			"prix": 200,
 			"loyer": [
+				25,
 				50,
 				100,
-				150,
 				200
 			],
-			"hypoteque": 10
+			"hypoteque": 100
 		},
 		"13": {
 			"nom": "Sibra",
 			"type": "service",
-			"prix": 30,
-			"multiplicateur": {
-				"level1": 2,
-				"level2": 4
-			},
+			"prix": 150,
+			"multiplicateur": [
+				4,
+				10
+			],
 			"hypoteque": 10
 		},
 		"14": {
-			"nom": "Orléan",
+			"nom": "Orléans",
 			"type": "terrain",
 			"groupe": 5,
-			"prix": 20,
-			"prixContruction": [
-				30,
-				50
-			],
+			"prix": 260,
+			"prixConstruction": 150,
 			"loyer": [
-				10,
-				20,
-				30,
-				40,
-				50
+				22,
+				120,
+				330,
+				800,
+				975,
+				1150
 			],
-			"hypoteque": 10
+			"hypoteque": 130
 		},
 		"15": {
 			"nom": "Go rattrapage",
@@ -193,53 +182,49 @@
 			"nom": "Clermont-Ferrand",
 			"type": "terrain",
 			"groupe": 6,
-			"prix": 20,
-			"prixContruction": [
-				30,
-				50
-			],
+			"prix": 300,
+			"prixConstruction": 200,
 			"loyer": [
-				10,
-				20,
-				30,
-				40,
-				50
+				26,
+				130,
+				390,
+				900,
+				1100,
+				1275
 			],
-			"hypoteque": 10
+			"hypoteque": 150
 		},
 		"17": {
 			"nom": "TPN",
 			"type": "gare",
-			"prix": 20,
+			"prix": 200,
 			"loyer": [
+				25,
 				50,
 				100,
-				150,
 				200
 			],
-			"hypoteque": 10
+			"hypoteque": 100
 		},
 		"18": {
-			"nom": "Carte  CROUS",
+			"nom": "Cartes CROUS",
 			"type": "caseCarte"
 		},
 		"19": {
 			"nom": "Annecy",
 			"type": "terrain",
 			"groupe": 7,
-			"prix": 20,
-			"prixContruction": [
-				30,
-				50
-			],
+			"prix": 400,
+			"prixConstruction": 200,
 			"loyer": [
-				10,
-				20,
-				30,
-				40,
-				50
+				50,
+				200,
+				600,
+				1400,
+				1700,
+				2000
 			],
-			"hypoteque": 10
+			"hypoteque": 175
 		}
 	}
 }
