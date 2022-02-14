@@ -2,10 +2,8 @@ package Content;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Objects;
 
 import org.json.JSONException;
@@ -13,6 +11,7 @@ import org.json.JSONObject;
 
 import Content.Case.Case;
 import Content.Case.CaseFactory;
+import Server.SendString;
 
 public class Configuration {
 	private int nbCase = 20;
@@ -21,7 +20,7 @@ public class Configuration {
 	
 	private ArrayList<JSONObject> listeCaseJSON = new ArrayList<JSONObject>();
 	private ArrayList<Case> listeCase = new ArrayList<Case>();
-
+	private SendString stringToSend = SendString.getInstance();
 	
 			
 	private static Configuration configuration;
@@ -33,11 +32,39 @@ public class Configuration {
 		}
 		return configuration;
 	}
-	
-	
-	public String loadDefaultConfig() throws IOException, JSONException {
-		System.out.println("[Info] Lecture configuration ...");
+	/*
+	public boolean loadConfig(String path)  {
+        try
+        {
+            File file = new File(path);
+            if(!Desktop.isDesktopSupported())
+            {
+                System.out.println("not supported");
+                return false;
+            }
+            Desktop desktop = Desktop.getDesktop();
+            if(file.exists()) {
+                desktop.open(file);
+		        System.out.println(file);
+		        return true;
+            }
+
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+
+    
+		
+	}
+	*/
+	public boolean loadDefaultConfig() throws IOException, JSONException {
+		stringToSend.receiveMsg("[Info] Lecture configuration ...");
 		listeCaseJSON.clear();
+		listeCase.clear();
 		// CONVERTION DU FICHIER DE CONFIG EN JSON
 		BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("defaultConfig.json")));
 		String inputLine;
@@ -49,8 +76,8 @@ public class Configuration {
 		in.close();
 		JSONObject configJSON = new JSONObject(response);
 		if(Objects.isNull(configJSON)) {
-			System.out.println("[Info] Erreur lors du chargement de la configuration");
-			return null;
+			stringToSend.receiveMsg("[Info] Erreur lors du chargement de la configuration");
+			return false;
 		}
 		
 		// LECTURE ET TRAITEMENT DU FICHIER
@@ -61,13 +88,13 @@ public class Configuration {
 			nbJoueur = gameSetting.getInt("player");
 			lvlMaxProp = gameSetting.getInt("niveauTerrain");
 		}catch (Exception e) {
-			System.out.println("[Erreur] Paramètre case/joueur/level mal renseigné. Tentative prise de valeur par défaut (20 cases et 2 joueurs)");
+			stringToSend.receiveMsg("[Erreur] Paramètre case/joueur/level mal renseigné. Tentative prise de valeur par défaut (20 cases et 2 joueurs)");
 		}
 		try{
 			caseListInformation.get(Integer.toString(nbCase-1));
 		}catch (Exception e) {
-			System.out.println("[Erreur] Nombre de cases insuffisant.");
-			return null;
+			stringToSend.receiveMsg("[Erreur] Nombre de cases insuffisant.");
+			return false;
 		}
 		ArrayList<JSONObject> listeGare = new ArrayList<JSONObject>();
 		ArrayList<JSONObject> listeService = new ArrayList<JSONObject>();
@@ -77,7 +104,7 @@ public class Configuration {
 		boolean depart = false;
 		boolean prison = false;
 		boolean enPrison = false;
-		System.out.println("[Info] Vérification des cases ...");
+		stringToSend.receiveMsg("[Info] Vérification des cases ...");
 		for(int i=0; i<nbCase; i++) {
 
 
@@ -85,8 +112,8 @@ public class Configuration {
 			try {
 				caseInfo= caseListInformation.getJSONObject(Integer.toString(i));
 			}catch (Exception e) {
-				System.out.println("[Erreur] Case " + i + " introuvable.");
-				return null;
+				stringToSend.receiveMsg("[Erreur] Case " + i + " introuvable.");
+				return false;
 			}
 			try {
 				String type = caseInfo.getString("type");
@@ -207,52 +234,52 @@ public class Configuration {
 				}
 
 			}catch (Exception e) {
-				System.out.println("[Erreur] Case " + i + ": type non renseigné.");
-				return null;
+				stringToSend.receiveMsg("[Erreur] Case " + i + ": type non renseigné.");
+				return false;
 			}
 
 			
 		}
 		if(!erreur.equals("")) {
-			System.out.println(erreur);
-			return null;
+			stringToSend.receiveMsg(erreur);
+			return false;
 		}
 		
 		// DERNIERE VERIF
-		System.out.println("[Info] Vérification propriétés ...");
+		stringToSend.receiveMsg("[Info] Vérification propriétés ...");
 
 		
 		boolean erreurBoolean = false;
 		if(!depart) {
-			System.out.println("[Erreur] Le plateau doit comporter une case départ");
+			stringToSend.receiveMsg("[Erreur] Le plateau doit comporter une case départ");
 			erreurBoolean = true;
 		}
 		if(prison && !enPrison) {
-			System.out.println("[Erreur] Une prison doit avoir au moins 1 case 'aller en prison'");
+			stringToSend.receiveMsg("[Erreur] Une prison doit avoir au moins 1 case 'aller en prison'");
 			erreurBoolean = true;
 		}
 		if(!prison && enPrison) {
-			System.out.println("[Erreur] Une case aller en prison doit avoir une prison");
+			stringToSend.receiveMsg("[Erreur] Une case 'aller en prison' doit avoir une prison");
 			erreurBoolean = true;
 		}
 		int nbGare = listeGare.size();
 		for(JSONObject caseInfo : listeGare) { //verif loyer gare
 			if(caseInfo.getJSONArray("loyer").length() < nbGare) {
-				System.out.println("[Erreur] Gare " + caseInfo.getString("nom") + " doit avoir au moins " + nbGare + " loyer.");
+				stringToSend.receiveMsg("[Erreur] Gare " + caseInfo.getString("nom") + " doit avoir au moins " + nbGare + " loyer.");
 				erreurBoolean = true;
 			}
 		}
 		int nbService = listeService.size();
 		for(JSONObject caseInfo : listeService) { //verif loyer gare
 			if(caseInfo.getJSONArray("multiplicateur").length() < nbService) {
-				System.out.println("[Erreur] Service " + caseInfo.getString("nom") + " doit avoir au moins " + nbService + " multiplicateur.");
+				stringToSend.receiveMsg("[Erreur] Service " + caseInfo.getString("nom") + " doit avoir au moins " + nbService + " multiplicateur.");
 				erreurBoolean = true;
 			}
 		}
 		int groupe = -1;
 		for(JSONObject caseInfo : listeTerrain) {
 			if(caseInfo.getInt("groupe") > groupe +1) {
-				System.out.println("[Erreur] Le groupe de "+ caseInfo.getString("nom") + " est invalide. (" + (groupe+1) + " au max est attendu)");
+				stringToSend.receiveMsg("[Erreur] Le groupe de "+ caseInfo.getString("nom") + " est invalide. (" + (groupe+1) + " au max est attendu)");
 				erreurBoolean = true;
 			} else {
 				if(caseInfo.getInt("groupe")>= groupe) {
@@ -263,13 +290,13 @@ public class Configuration {
 		
 		
 		if(!erreurBoolean) {
-			System.out.println("[Info] Configuration par défaut chargé avec succès !");
-			System.out.println("[Info] Plateau de " + listeCase.size() + " case(s) créé avec succès !");
+			stringToSend.receiveMsg("[Info] Configuration par défaut chargé avec succès !");
+			stringToSend.receiveMsg("[Info] Plateau de " + listeCase.size() + " case(s) créé avec succès !");
 		} else {
-			return null;
+			return false;
 		}
 		
-		return "OK";
+		return true;
 
 	}
 
