@@ -76,6 +76,7 @@ public class Configuration {
 		String erreur = "";
 		boolean depart = false;
 		boolean prison = false;
+		boolean enPrison = false;
 		System.out.println("[Info] Vérification des cases ...");
 		for(int i=0; i<nbCase; i++) {
 
@@ -196,6 +197,7 @@ public class Configuration {
 						listeCaseJSON.add(caseInfo);
 						caseInfo.remove("type");
 						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i));
+						enPrison = true;
 					}catch (Exception e) {
 						erreur+="\n[Erreur] Propriété case n°"+ i +" de type "+ type + " non défini (nom)";
 					}
@@ -218,7 +220,21 @@ public class Configuration {
 		
 		// DERNIERE VERIF
 		System.out.println("[Info] Vérification propriétés ...");
+
+		
 		boolean erreurBoolean = false;
+		if(!depart) {
+			System.out.println("[Erreur] Le plateau doit comporter une case départ");
+			erreurBoolean = true;
+		}
+		if(prison && !enPrison) {
+			System.out.println("[Erreur] Une prison doit avoir au moins 1 case 'aller en prison'");
+			erreurBoolean = true;
+		}
+		if(!prison && enPrison) {
+			System.out.println("[Erreur] Une case aller en prison doit avoir une prison");
+			erreurBoolean = true;
+		}
 		int nbGare = listeGare.size();
 		for(JSONObject caseInfo : listeGare) { //verif loyer gare
 			if(caseInfo.getJSONArray("loyer").length() < nbGare) {
