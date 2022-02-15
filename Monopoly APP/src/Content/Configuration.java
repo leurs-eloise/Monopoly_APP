@@ -32,6 +32,7 @@ public class Configuration {
 		}
 		return configuration;
 	}
+<<<<<<< HEAD
 	/*
 	public boolean loadConfig(String path)  {
         try
@@ -62,6 +63,11 @@ public class Configuration {
 	}
 	*/
 	public boolean loadDefaultConfig() throws IOException, JSONException {
+=======
+	
+	
+	public String loadDefaultConfig() throws IOException, JSONException {
+>>>>>>> master
 		stringToSend.receiveMsg("[Info] Lecture configuration ...");
 		listeCaseJSON.clear();
 		listeCase.clear();
@@ -77,7 +83,11 @@ public class Configuration {
 		JSONObject configJSON = new JSONObject(response);
 		if(Objects.isNull(configJSON)) {
 			stringToSend.receiveMsg("[Info] Erreur lors du chargement de la configuration");
+<<<<<<< HEAD
 			return false;
+=======
+			return null;
+>>>>>>> master
 		}
 		
 		// LECTURE ET TRAITEMENT DU FICHIER
@@ -94,7 +104,11 @@ public class Configuration {
 			caseListInformation.get(Integer.toString(nbCase-1));
 		}catch (Exception e) {
 			stringToSend.receiveMsg("[Erreur] Nombre de cases insuffisant.");
+<<<<<<< HEAD
 			return false;
+=======
+			return null;
+>>>>>>> master
 		}
 		ArrayList<JSONObject> listeGare = new ArrayList<JSONObject>();
 		ArrayList<JSONObject> listeService = new ArrayList<JSONObject>();
@@ -113,7 +127,11 @@ public class Configuration {
 				caseInfo= caseListInformation.getJSONObject(Integer.toString(i));
 			}catch (Exception e) {
 				stringToSend.receiveMsg("[Erreur] Case " + i + " introuvable.");
+<<<<<<< HEAD
 				return false;
+=======
+				return null;
+>>>>>>> master
 			}
 			try {
 				String type = caseInfo.getString("type");
@@ -235,14 +253,22 @@ public class Configuration {
 
 			}catch (Exception e) {
 				stringToSend.receiveMsg("[Erreur] Case " + i + ": type non renseigné.");
+<<<<<<< HEAD
 				return false;
+=======
+				return null;
+>>>>>>> master
 			}
 
 			
 		}
 		if(!erreur.equals("")) {
 			stringToSend.receiveMsg(erreur);
+<<<<<<< HEAD
 			return false;
+=======
+			return null;
+>>>>>>> master
 		}
 		
 		// DERNIERE VERIF
@@ -259,7 +285,11 @@ public class Configuration {
 			erreurBoolean = true;
 		}
 		if(!prison && enPrison) {
+<<<<<<< HEAD
 			stringToSend.receiveMsg("[Erreur] Une case 'aller en prison' doit avoir une prison");
+=======
+			stringToSend.receiveMsg("[Erreur] Une case aller en prison doit avoir une prison");
+>>>>>>> master
 			erreurBoolean = true;
 		}
 		int nbGare = listeGare.size();
