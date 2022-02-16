@@ -14,11 +14,9 @@ public class Propriete implements Case {
 		this.nom = nom;
 		this.id = id;
 		this.prix = prix;
-		this.joueur = null;
-		
+		this.joueur = null;	
 	}
-	
-	
+		
 	// Getter & Setter
 	public int getId() {
 		return id;

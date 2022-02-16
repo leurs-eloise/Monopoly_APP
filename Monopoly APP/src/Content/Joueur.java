@@ -33,7 +33,7 @@ public class Joueur {
 		this.position = position;
 		this.tourPrison = tourPrison;
 		this.proprietes = proprietes;
-		this.score = this.setScore();
+		this.setScore();
 	}
 	//constructeur simplifie pour la creation d'un joueur
 	public Joueur(int id, String pseudo, int argent) {
@@ -122,8 +122,8 @@ public class Joueur {
 		this.score = this.argent;
 		for (Propriete prop : this.getProprietes()) {
 			this.score += prop.getPrix();
-			if (prop.getClass().getSimpleName() == "Terrain") {
-				this.score += prop.getNbBuilding() * Configuration.getInstance().getPrixConstruction(prop.getId());
+			if (prop instanceof Terrain) {
+				this.score += ((Terrain)prop).getNbBuilding() * Configuration.getInstance().getPrixConstruction(prop.getId());
 			}
 		}
 	}
