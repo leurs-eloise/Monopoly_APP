@@ -30,28 +30,4 @@ public class Terrain extends Propriete {
 		return listeLoyer;
 	}
 
-	public void setLoyer() {
-		for (Propriete prop : this.getJoueur().getProprietes()) {
-			if (nbBuildings == 0) {
-				this.loyer = Configuration.getInstance().getLoyer(prop.getId())[0];
-			}
-			if (nbBuildings == 1) {
-				this.loyer = Configuration.getInstance().getLoyer(prop.getId())[1];
-			}
-			if (nbBuildings == 2) {
-				this.loyer = Configuration.getInstance().getLoyer(prop.getId())[2];
-			}
-			if (nbBuildings == 3) {
-				this.loyer = Configuration.getInstance().getLoyer(prop.getId())[3];
-			}
-			if (nbBuildings == 4) {
-				this.loyer = Configuration.getInstance().getLoyer(prop.getId())[4];
-			}
-			if (nbBuildings == 5) {
-				this.loyer = Configuration.getInstance().getLoyer(prop.getId())[5];
-			}
-
-		}
-
-	}
 }

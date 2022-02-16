@@ -54,8 +54,9 @@ public class Joueur {
 	public void payerLoyer(Terrain prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
-			proprietaire.setArgent(proprietaire.getArgent() + prop.getListeLoyer()[prop.getNbBuilding()]);
-			this.setArgent(this.getArgent() - prop.getLoyer());
+			int loyer = prop.getListeLoyer().get(prop.getNbBuilding());
+			proprietaire.setArgent(proprietaire.getArgent() + loyer);
+			this.setArgent(this.getArgent() - loyer);
 			prop.setJoueur(this);
 		}
 	}
