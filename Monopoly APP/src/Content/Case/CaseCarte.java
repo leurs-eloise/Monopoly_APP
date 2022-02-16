@@ -19,10 +19,6 @@ public class CaseCarte implements Case {
     public int getId() {
 		return id;
 	}
-    
-    public String getAction() {
-		return action;
-	}
 
     
 }

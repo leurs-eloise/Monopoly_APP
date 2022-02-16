@@ -1,6 +1,7 @@
 package Content.Case.Action;
 
 import Content.Joueur;
+import Content.Partie;
 
 public class Action1 implements carteAction{
 
