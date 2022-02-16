@@ -26,7 +26,7 @@ public class Action1 implements carteAction{
 
 	@Override
 	public void doAction() {
-		joueur.setPosition(6); //Aller en prison
+		joueur.setArgent(joueur.getArgent()+50); //La banque vous verse 50$
 		
 	}
     
