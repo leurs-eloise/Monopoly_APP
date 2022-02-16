@@ -25,7 +25,8 @@ public class Action1 implements carteAction{
 	}
     
     public void Actions(Joueur joueur){
-		cartes=new String[7];
+    	/*
+		String[] cartes=new String[7];
 		cartes[0]= joueur.setPosition(joueur.getPosition()-3); //Reculer de 3 cases 
 		cartes[1]= joueur.setPosition(0); //Avancer case départ
 		cartes[2]= joueur.setPosition(6); //Aller en prison
@@ -33,9 +34,9 @@ public class Action1 implements carteAction{
 		cartes[4]= joueur.setArgent(joueur.getArgent()-15); // Amende pour excès de vitesse : payez 15$
 		cartes[5]= joueur.setArgent(joueur.getArgent()+50); //La banque vous verse 50$
 		cartes[6]= joueur.setArgent(joueur.getArgent()-50); // Frais, payez 50$ 
+		*/
 	}
     
-    
+  
 }
-joueur.setPosition(joueur.getPosition()-3);
 	

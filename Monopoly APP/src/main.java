@@ -1,7 +1,22 @@
+import java.io.IOException;
 
-public class main {
-	public static void main(String args[]) {
-		System.out.println("sqdlkjs");
+import org.json.JSONException;
+
+import Content.Configuration;
+import Server.Server;
+
+public class main extends Thread  {
+	/*
+	public void run()
+	{
+			new Server();
 	}
-
+	*/
+	public static void main(String args[]) {
+		/*
+		main test = new main();
+		test.start();
+		*/
+		new Server();
+	}
 }
