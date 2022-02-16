@@ -188,7 +188,43 @@ public void run(){
         	}
         } else if(clientMessageSplit[0].equals("loadconfig")) {
         	Configuration.getInstance().loadDefaultConfig();
-        } 
+        }
+	  else if(clientMessageSplit[0].equals("rolldice")){
+		Joueur.lancerDes(); 
+	}
+
+	else if(clientMessageSplit[0].equals("hypotheque")){
+		Propriete.hypotheque().getPropriete();
+	}
+	
+	else if(clientMessageSplit[0].equals("buy")){
+		Joueur.acheter().getPropriete(); 
+	}
+
+	else if(clientMessageSplit[0].equals("exchange")){
+		Joueur.echanger(); //mettre la fonction qui fait l'echange
+	}
+
+	else if(clientMessageSplit[0].equals("home1")){
+		Joueur.acheterBuilding(1).getId(); 
+	}
+	else if(clientMessageSplit[0].equals("home2")){
+		Joueur.acheterBuilding(2.getId(); 
+	}
+	else if(clientMessageSplit[0].equals("home3")){
+		Joueur.acheterBuilding(3).getId(); 
+	}
+	else if(clientMessageSplit[0].equals("home4")){
+		Joueur.acheterBuilding(4).getId(); 
+	}
+	else if(clientMessageSplit[0].equals("home5")){
+		Joueur.acheterBuilding(5).getId(); 
+	}
+
+	else if(clientMessageSplit[0].equals("skip")){
+		Partie.passer();
+	}
+	 
         
         
         
