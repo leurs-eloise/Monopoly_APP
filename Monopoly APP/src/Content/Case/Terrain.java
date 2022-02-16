@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import Content.Configuration;
 import Content.Joueur;
-import ePapotage.PapotageEvent;
 
 public class Terrain extends Propriete {
 	private int nbBuildings;

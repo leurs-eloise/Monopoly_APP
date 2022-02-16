@@ -6,8 +6,8 @@ import Content.Configuration;
 import Content.Joueur;
 
 public class Gare extends Propriete {
-	private int loyer;
-
+	private int id;
+	
 	public Gare(String nom,int id, int prix, Joueur j, int hypotheque) {
 		super(nom, id, prix, j, hypotheque);
 	}
@@ -19,21 +19,14 @@ public class Gare extends Propriete {
 	public int getLoyer() {
 		int nbGare = 0;
 		for (Propriete prop : this.getJoueur().getProprietes()) {
-			if ((prop.getId() == 2) || (prop.getId() == 7) || (prop.getId() == 12) || (prop.getId() == 17)) {
+			if (prop.getClass().getSimpleName() == "Gare") {
 				nbGare += 1;
 			}
 		}
-		if (nbGare == 4) {
-			this.loyer = Configuration.getInstance().getLoyer(2)[3];
-		} else if (nbGare == 3) {
-			this.loyer = Configuration.getInstance().getLoyer(2)[2];
-		} else if (nbGare == 2) {
-			this.loyer = Configuration.getInstance().getLoyer(2)[1];
-		} else if (nbGare == 1) {
-			this.loyer = Configuration.getInstance().getLoyer(2)[0];
-		}	
-
-		return this.loyer;
+		if (nbGare > 0) {
+			return Configuration.getInstance().getLoyer(this.id)[nbGare-1];
+		}
+		return 0;
 	}
 
 }
