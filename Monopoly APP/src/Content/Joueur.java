@@ -21,6 +21,7 @@ public class Joueur {
 	private int valDes;
 	private Des des;
 	private ArrayList<Propriete> proprietes;
+	private int score;
 	//private ArrayList<CarteAction> cartes;
 	
 	//constructeur pour la config
@@ -32,6 +33,7 @@ public class Joueur {
 		this.position = position;
 		this.tourPrison = tourPrison;
 		this.proprietes = proprietes;
+		this.score = this.setScore();
 	}
 	//constructeur simplifie pour la creation d'un joueur
 	public Joueur(int id, String pseudo, int argent) {
@@ -83,7 +85,7 @@ public class Joueur {
 	
 	public void onEventCreated(DemandeEchangeEvent ev) {
 		boolean choix = false;
-		System.out.println("Acceptez-vous cette l'échange ?");
+		System.out.println("Acceptez-vous cette l'echange ?");
 		String reponse = this.scan.nextLine();
 		if (reponse.equals("oui")) {
 			choix = true;
@@ -102,24 +104,32 @@ public class Joueur {
 		if((proprietaire != null) && (proprietaire != this)){
 			prop1.setJoueur(destinataire);
 			prop2.setJoueur(proprietaire);
-			}
-
-		
+			}		
 	}
 	
 	public void acheterBuilding(int nombre, Terrain ter) {
 		if (ter.getJoueur() == this) {
-			if ((ter.getNbBuilding() + nombre)<5) && (this.argent >= Configuration.getInstance().getPrixConstruction() {
-					this.argent -= prop.Configuration.getInstance().getPrixConstruction();
+			if (((ter.getNbBuilding() + nombre)<5) && (this.argent >= Configuration.getInstance().getPrixConstruction(ter.getId()))) {
+					this.argent -= Configuration.getInstance().getPrixConstruction(ter.getId());
 					ter.setNbBuilding(nombre);
 				}			
-			}
-		
-		
+			}		
 	}
 	
 	
 	//Getter and setter 
+	public void setScore() {
+		this.score = this.argent;
+		for (Propriete prop : this.getProprietes()) {
+			this.score += prop.getPrix();
+			if (prop.getClass().getSimpleName() == "Terrain") {
+				this.score += prop.getNbBuilding() * Configuration.getInstance().getPrixConstruction(prop.getId());
+			}
+		}
+	}
+	public int getScore() {
+		return this.score;
+	}
 	public int getId() {
 		return id;
 	}
