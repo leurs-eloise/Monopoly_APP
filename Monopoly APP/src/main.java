@@ -1,4 +1,5 @@
 import Content.Case.Gare;
+import Server.Server;
 
 public class main extends Thread  {
 	/*
@@ -12,6 +13,6 @@ public class main extends Thread  {
 		main test = new main();
 		test.start();
 		*/
-		//new Server();
+		new Server();
 	}
 }

@@ -33,7 +33,7 @@ public class CaseFactory {
 		} else if(type.equalsIgnoreCase("depart")) { //FAIT
 			return new Depart(nom, id, caseInfo.getInt("gain"));
 		} else if(type.equalsIgnoreCase("terrain")) {
-			return new Terrain(nom, id, caseInfo.getInt("prix"),null, 0, caseInfo.getInt("hypoteque"), caseInfo.getInt("groupe"));
+			return new Terrain(nom, id, caseInfo.getInt("prix"),null, 0, JSONArrayToIntArrayList(caseInfo.getJSONArray("loyer")), caseInfo.getInt("hypoteque"), caseInfo.getInt("groupe"));
 		} else if(type.equalsIgnoreCase("sansAction")) {
 			return new SansAction(nom, id);
 		} else if(type.equalsIgnoreCase("service")) {

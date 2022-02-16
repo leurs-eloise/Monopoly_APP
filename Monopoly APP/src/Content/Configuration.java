@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -320,23 +321,29 @@ public class Configuration {
 
 	}
 
-	public String getName(int id) {
-		return null;
-	}
+
 
 	public int[] getLoyer(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		JSONArray listeLoyerJSON = listeCaseJSON.get(i).getJSONArray("loyer");
+		int[] loyer = new int[listeLoyerJSON.length()];
+		for(int j = 0; j< listeLoyerJSON.length(); j++) {
+			loyer[j] = listeLoyerJSON.optInt(i);
+		}
+		return loyer;
 	}
 
 	public int[] getMultiplicateur(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		JSONArray listeMultiplicateurJSON = listeCaseJSON.get(i).getJSONArray("multiplicateur");
+		int[] multiplicateur = new int[listeMultiplicateurJSON.length()];
+		for(int j = 0; j< listeMultiplicateurJSON.length(); j++) {
+			multiplicateur[j] = listeMultiplicateurJSON.optInt(i);
+		}
+		return multiplicateur;
 	}
 
-	public int getPactole() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getPrixConstruction(int i) {
+		int prix = listeCaseJSON.get(i).getInt("prixConstruction");
+		return prix;
 	}
 	
 }

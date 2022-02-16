@@ -15,7 +15,7 @@ public class Depart implements Case {
 	}
 	
 	public void pactole(Joueur joueur) {
-		joueur.setArgent(joueur.getArgent()+Configuration.getInstance().getPactole());
+		joueur.setArgent(joueur.getArgent()+pactole);
 	}
 	
 	
