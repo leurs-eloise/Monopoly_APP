@@ -1,8 +1,10 @@
 package Content;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
-
+import Content.DemandeEchangeEvent;
+import Content.EchangeEvent;
 import Content.Case.Gare;
 import Content.Case.Propriete;
 import Content.Case.Service;
@@ -10,6 +12,7 @@ import Content.Case.Terrain;
 
 public class Joueur {
 	private static final AtomicInteger ID_FACTORY = new AtomicInteger();
+	private Scanner scan = new Scanner(System.in);
 	private int id;
 	private String pseudo;
 	private int argent;
@@ -78,16 +81,27 @@ public class Joueur {
 		}
 	}
 	
-	public void echanger(Propriete prop, boolean accept) {
+	public void onEventCreated(DemandeEchangeEvent ev) {
+		boolean choix = false;
+		System.out.println("Acceptez-vous cette l'échange ?");
+		String reponse = this.scan.nextLine();
+		if (reponse.equals("oui")) {
+			choix = true;
+		}
+	}
+	
+	public void onEventCreated(EchangeEvent ev) {
+		if(ev.isChoix()) {
+			this.echanger(ev.getProp());
+		}
+	}
+	
+	public void echanger(Propriete prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
-			if(accept) {
 			prop.setJoueur(proprietaire);
 			}
-			
-		}	
-		
-		// Il faut demander si l'échange est ok 
+
 		
 	}
 	

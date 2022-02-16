@@ -17,6 +17,8 @@ public class Propriete implements Case {
 		this.joueur = null;
 	}
 	
+
+	
 	
 	// Getter & Setter
 	public int getId() {
