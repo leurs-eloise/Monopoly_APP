@@ -1,9 +1,4 @@
-import java.io.IOException;
-
-import org.json.JSONException;
-
-import Content.Configuration;
-import Server.Server;
+import Content.Case.Gare;
 
 public class main extends Thread  {
 	/*
@@ -17,6 +12,6 @@ public class main extends Thread  {
 		main test = new main();
 		test.start();
 		*/
-		new Server();
+		//new Server();
 	}
 }

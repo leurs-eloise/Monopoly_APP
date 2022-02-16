@@ -3,12 +3,14 @@ package Content.Case;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Content.Configuration;
 
 public class CaseFactory {
 	private static CaseFactory caseFactory;
+	
 	
 	public CaseFactory() {}
 	
@@ -31,16 +33,26 @@ public class CaseFactory {
 		} else if(type.equalsIgnoreCase("depart")) { //FAIT
 			return new Depart(nom, id, caseInfo.getInt("gain"));
 		} else if(type.equalsIgnoreCase("terrain")) {
-			return new Terrain(nom, id, 0,null, 0, 0);
+			return new Terrain(nom, id, caseInfo.getInt("prix"),null, 0, caseInfo.getInt("hypoteque"), caseInfo.getInt("groupe"));
 		} else if(type.equalsIgnoreCase("sansAction")) {
 			return new SansAction(nom, id);
 		} else if(type.equalsIgnoreCase("service")) {
-			return new Service(nom, id, 0, null, 0);
+			return new Service(nom, id, caseInfo.getInt("prix"), null, caseInfo.getInt("hypoteque"));
 		} else if(type.equalsIgnoreCase("gare")) {
-			return new Gare(nom, id, 0, null);
+			return new Gare(nom, id, caseInfo.getInt("prix"), null, caseInfo.getInt("hypoteque"));
 		}else if(type.equalsIgnoreCase("enPrison")) {
 			return new EnPrison(nom, id);
 		}
 		return null;
+	}
+	public ArrayList<Integer> JSONArrayToIntArrayList(JSONArray array){
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		String JSONString = array.toString();
+		JSONString =  (String) JSONString.subSequence(1, JSONString.length()-1);
+		String[] StringSplit = JSONString.split(",");
+		for(String str : StringSplit) {
+			list.add(Integer.parseInt(str));
+		}
+		return list;
 	}
 }

@@ -4,30 +4,25 @@ import Content.Configuration;
 import Content.Joueur;
 
 public class Service extends Propriete {
-	private int multiplicateur;
 	private String nom;
+	private int id;
 	
-	public Service(String nom, int id, int prix, Joueur j, int multiplicateur) {
-		super(nom, id, prix, j);
-		this.multiplicateur = multiplicateur;
+	public Service(String nom, int id, int prix, Joueur j, int hypotheque) {
+		super(nom, id, prix, j, hypotheque);
 	}
 
 	public int getNiveau() {
-		return this.multiplicateur;
-	}
-
-	public void setMultiplicateur() {
-		//service id1 = 3 et 13
-		for(Propriete prop : this.getJoueur().getProprietes()) {
-			if ((prop.getId() == 3) && (prop.getId() == 13)){
-				this.multiplicateur = Configuration.getInstance().getMultiplicateur(3)[1];
-			}
-			else if ((prop.getId() == 3) || (prop.getId() == 13)) {
-				this.multiplicateur = Configuration.getInstance().getMultiplicateur(3)[0];
+		int nbService = 0;
+		for (Propriete prop : this.getJoueur().getProprietes()) {
+			if (prop.getClass().getSimpleName() == "Service") {
+				nbService += 1;
 			}
 		}
+		if (nbService > 0) {
+			return Configuration.getInstance().getMultiplicateur(this.id)[nbService-1];
+		}
+		return 0;
 	}
-	
 	
 	
 

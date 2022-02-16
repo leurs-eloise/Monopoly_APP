@@ -1,6 +1,5 @@
 package Content.Case;
 
-import java.util.ArrayList;
 
 import Content.Joueur;
 
@@ -11,7 +10,7 @@ public class Propriete implements Case {
 	private String nom;
 	
 	// Constructeur
-	public Propriete(String nom, int id, int prix, Joueur j) {
+	public Propriete(String nom, int id, int prix, Joueur j, int hypotheque) {
 		this.nom = nom;
 		this.id = id;
 		this.prix = prix;

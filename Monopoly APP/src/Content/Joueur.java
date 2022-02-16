@@ -51,16 +51,17 @@ public class Joueur {
 		}
 	}
 	
-	public void payerLoyer(Terrain prop) {
+	public void payer(Terrain prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
-			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
-			this.setArgent(this.getArgent() - prop.getLoyer());
+			int loyer = prop.getListeLoyer().get(prop.getNbBuilding());
+			proprietaire.setArgent(proprietaire.getArgent() + loyer);
+			this.setArgent(this.getArgent() - loyer);
 			prop.setJoueur(this);
 		}
 	}
 	
-	public void payerLoyer(Gare prop) {
+	public void payer(Gare prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
@@ -68,7 +69,7 @@ public class Joueur {
 		}
 	}
 	
-	public void payerService(Service prop) {
+	public void payer(Service prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
 			this.lancerDes();
