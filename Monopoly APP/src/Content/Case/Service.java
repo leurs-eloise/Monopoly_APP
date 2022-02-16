@@ -7,17 +7,13 @@ public class Service extends Propriete {
 	private int multiplicateur;
 	private String nom;
 	
-	public Service(String nom, int id, int prix, Joueur j, int multiplicateur) {
-		super(nom, id, prix, j);
+	public Service(String nom, int id, int prix, Joueur j, int hypotheque, int multiplicateur) {
+		super(nom, id, prix, j, hypotheque);
 		this.multiplicateur = multiplicateur;
 	}
 
 	public int getNiveau() {
-		return this.multiplicateur;
-	}
-
-	public void setMultiplicateur() {
-		//service id1 = 3 et 13
+		
 		for(Propriete prop : this.getJoueur().getProprietes()) {
 			if ((prop.getId() == 3) && (prop.getId() == 13)){
 				this.multiplicateur = Configuration.getInstance().getMultiplicateur(3)[1];
@@ -26,9 +22,8 @@ public class Service extends Propriete {
 				this.multiplicateur = Configuration.getInstance().getMultiplicateur(3)[0];
 			}
 		}
+		return this.multiplicateur;
 	}
-	
-	
 	
 
 }

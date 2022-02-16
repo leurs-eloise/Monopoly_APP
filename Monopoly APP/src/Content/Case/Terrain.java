@@ -4,16 +4,17 @@ import java.util.ArrayList;
 
 import Content.Configuration;
 import Content.Joueur;
+import ePapotage.PapotageEvent;
 
 public class Terrain extends Propriete {
 	private int nbBuildings;
-	private int loyer;
+	private ArrayList<Integer> listeLoyer;
 
 	// Constructeur
-	public Terrain(String nom,int id, int prix, Joueur j, int building, int loyer) {
-		super(nom, id, prix, j);
+	public Terrain(String nom,int id, int prix, Joueur j, int building, ArrayList<Integer> listeLoyer, int hypotheque, int groupe) {
+		super(nom, id, prix, j, hypotheque);
 		this.nbBuildings = building;
-		this.loyer = loyer;
+		this.listeLoyer = new ArrayList<Integer>();
 	}
 
 	// Getter & Setter
@@ -25,8 +26,8 @@ public class Terrain extends Propriete {
 		this.nbBuildings = building;
 	}
 
-	public int getLoyer() {
-		return loyer;
+	public ArrayList<Integer> getListeLoyer() {
+		return listeLoyer;
 	}
 
 	public void setLoyer() {
