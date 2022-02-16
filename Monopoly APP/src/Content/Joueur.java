@@ -1,8 +1,10 @@
 package Content;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
-
+import Content.DemandeEchangeEvent;
+import Content.EchangeEvent;
 import Content.Case.Gare;
 import Content.Case.Propriete;
 import Content.Case.Service;
@@ -10,6 +12,7 @@ import Content.Case.Terrain;
 
 public class Joueur {
 	private static final AtomicInteger ID_FACTORY = new AtomicInteger();
+	private Scanner scan = new Scanner(System.in);
 	private int id;
 	private String pseudo;
 	private int argent;
@@ -51,7 +54,7 @@ public class Joueur {
 		}
 	}
 	
-	public void payerLoyer(Terrain prop) {
+	public void payer(Terrain prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
 			int loyer = prop.getListeLoyer().get(prop.getNbBuilding());
@@ -61,7 +64,7 @@ public class Joueur {
 		}
 	}
 	
-	public void payerLoyer(Gare prop) {
+	public void payer(Gare prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
@@ -69,7 +72,7 @@ public class Joueur {
 		}
 	}
 	
-	public void payerService(Service prop) {
+	public void payer(Service prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
 			this.lancerDes();
@@ -78,25 +81,39 @@ public class Joueur {
 		}
 	}
 	
-	public void echanger(Propriete prop, boolean accept) {
-		Joueur proprietaire = prop.getJoueur();
+	public void onEventCreated(DemandeEchangeEvent ev) {
+		boolean choix = false;
+		System.out.println("Acceptez-vous cette l'échange ?");
+		String reponse = this.scan.nextLine();
+		if (reponse.equals("oui")) {
+			choix = true;
+		}
+	}
+	
+	public void onEventCreated(EchangeEvent ev) {
+		if(ev.isChoix()) {
+			this.echanger(ev.getProp1(), ev.getProp2());
+		}
+	}
+	
+	public void echanger(Propriete prop1, Propriete prop2) {
+		Joueur proprietaire = prop1.getJoueur();
+		Joueur destinataire = prop2.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
-			if(accept) {
-			prop.setJoueur(proprietaire);
+			prop1.setJoueur(destinataire);
+			prop2.setJoueur(proprietaire);
 			}
-			
-		}	
-		
-		// Il faut demander si l'échange est ok 
+
 		
 	}
 	
 	public void acheterBuilding(int nombre, Terrain ter) {
 		if (ter.getJoueur() == this) {
-			//if (ter.getBuilding()<4) {
-			
-			//}
-		}
+			if ((ter.getNbBuilding() + nombre)<5) && (this.argent >= Configuration.getInstance().getPrixConstruction() {
+					this.argent -= prop.Configuration.getInstance().getPrixConstruction();
+					ter.setNbBuilding(nombre);
+				}			
+			}
 		
 		
 	}

@@ -15,7 +15,10 @@ public class Propriete implements Case {
 		this.id = id;
 		this.prix = prix;
 		this.joueur = null;
+		
 	}
+	
+
 	
 	
 	// Getter & Setter
@@ -45,5 +48,6 @@ public class Propriete implements Case {
 	public void setJoueur(Joueur joueur) {
 		this.joueur = joueur;
 	}
+
 
 }
