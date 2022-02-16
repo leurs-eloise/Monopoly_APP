@@ -4,13 +4,11 @@ public class CaseCarte implements Case {
 	
 	public String nom;
     public int id;
-    public String action;
-    
+
     // Constructeur
-    public CaseCarte(String nom, int id, String action) {
+    public CaseCarte(String nom, int id) {
         this.nom = nom;
         this.id = id;
-        this.action = action;
     }
     
     // Getter & Setter
