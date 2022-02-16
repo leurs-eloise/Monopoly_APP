@@ -1,9 +1,7 @@
 package Content.Case;
 
-import java.util.ArrayList;
 
 import Content.Joueur;
-import ePapotage.PapotageEvent;
 
 public class Propriete implements Case {
 	private int id;
