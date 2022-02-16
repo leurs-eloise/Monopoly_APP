@@ -1,7 +1,6 @@
 package Content.Case;
 // Enlever id, nom et action
 public class CaseCarte implements Case {
-<<<<<<< HEAD
 	
 	public String nom;
     public int id;
@@ -28,15 +27,4 @@ public class CaseCarte implements Case {
 	}
 
     
-=======
-  
-    private String nom;
-    private String action;
-    private int id;
-    public CaseCarte(String nom, int id) {
-    	this.nom = nom;
-    	this.id = id;
-    }
-    
->>>>>>> master
 }

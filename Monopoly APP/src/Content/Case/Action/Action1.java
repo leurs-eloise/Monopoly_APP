@@ -7,12 +7,11 @@ public class Action1 implements carteAction{
 	public String nom;
 	private String action;
     public int id;
-    private Joueur joueur; 
+    private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
     
     // Constructeur
-	public Action1(String nom, String action, int id, Joueur joueur) {
-		super(nom, action, id, joueur);
+	public Action1(String nom, String description) {
 	}
 
 	
@@ -36,6 +35,14 @@ public class Action1 implements carteAction{
 		cartes[4]= joueur.setArgent(joueur.getArgent()-15); // Amende pour exces de vitesse : payez 15$
 		cartes[5]= joueur.setArgent(joueur.getArgent()+50); //La banque vous verse 50$
 		cartes[6]= joueur.setArgent(joueur.getArgent()-50); // Frais, payez 50$ 
+		
+	}
+
+
+
+	@Override
+	public void doAction() {
+		// TODO Auto-generated method stub
 		
 	}
     

@@ -4,12 +4,7 @@ public class Action2 implements carteAction{
 
 	public String nom;
     public int id;
-    
-	@Override
-	public carteAction doAction() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	  // Getter & Setter
     public void setNom (String nom){
@@ -18,6 +13,12 @@ public class Action2 implements carteAction{
     
     public int getId() {
 		return id;
+	}
+
+	@Override
+	public void doAction() {
+		
+		
 	}
     
     // voir Action1
