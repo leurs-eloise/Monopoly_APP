@@ -92,14 +92,16 @@ public class Joueur {
 	
 	public void onEventCreated(EchangeEvent ev) {
 		if(ev.isChoix()) {
-			this.echanger(ev.getProp());
+			this.echanger(ev.getProp1(), ev.getProp2());
 		}
 	}
 	
-	public void echanger(Propriete prop) {
-		Joueur proprietaire = prop.getJoueur();
+	public void echanger(Propriete prop1, Propriete prop2) {
+		Joueur proprietaire = prop1.getJoueur();
+		Joueur destinataire = prop2.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
-			prop.setJoueur(proprietaire);
+			prop1.setJoueur(destinataire);
+			prop2.setJoueur(proprietaire);
 			}
 
 		
@@ -107,10 +109,11 @@ public class Joueur {
 	
 	public void acheterBuilding(int nombre, Terrain ter) {
 		if (ter.getJoueur() == this) {
-			//if (ter.getBuilding()<4) {
-			
-			//}
-		}
+			if ((ter.getNbBuilding() + nombre)<5) && (this.argent >= Configuration.getInstance().getPrixConstruction() {
+					this.argent -= prop.Configuration.getInstance().getPrixConstruction();
+					ter.setNbBuilding(nombre);
+				}			
+			}
 		
 		
 	}

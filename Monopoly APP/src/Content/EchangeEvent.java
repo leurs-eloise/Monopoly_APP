@@ -7,7 +7,8 @@ import Content.Case.Propriete;
 public class EchangeEvent extends EventObject {
 	private Joueur joueur;
 	private boolean choix;
-	private Propriete prop;
+	private Propriete prop1;
+	private Propriete prop2;
 	
 	public EchangeEvent(Object source, Joueur joueur, boolean choix ) {
 		super(source);
@@ -15,19 +16,22 @@ public class EchangeEvent extends EventObject {
 		this.choix = choix;
 	
 	}
-	
-	
-	
-	public Propriete getProp() {
-		return prop;
+
+	public Propriete getProp1() {
+		return prop1;
 	}
 
-
-	public void setProp(Propriete prop) {
-		this.prop = prop;
+	public void setProp1(Propriete prop1) {
+		this.prop1 = prop1;
 	}
 
+	public Propriete getProp2() {
+		return prop2;
+	}
 
+	public void setProp2(Propriete prop2) {
+		this.prop2 = prop2;
+	}
 
 	public boolean isChoix() {
 		return choix;

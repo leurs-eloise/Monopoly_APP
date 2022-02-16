@@ -22,7 +22,7 @@ public class Terrain extends Propriete {
 	}
 
 	public void setNbBuilding(int building) {
-		this.nbBuildings = building;
+		this.nbBuildings += building;
 	}
 
 	public ArrayList<Integer> getListeLoyer() {
