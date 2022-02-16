@@ -19,7 +19,7 @@ public class Service extends Propriete {
 			}
 		}
 		if (nbService > 0) {
-			return Configuration.getInstance().getLoyer(this.id)[nbService-1];
+			return Configuration.getInstance().getMultiplicateur(this.id)[nbService-1];
 		}
 		return 0;
 	}
