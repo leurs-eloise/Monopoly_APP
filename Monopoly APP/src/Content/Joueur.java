@@ -1,10 +1,10 @@
 package Content;
 
+import java.io.ObjectInputFilter.Config;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
-import Content.DemandeEchangeEvent;
-import Content.EchangeEvent;
 import Content.Case.Gare;
 import Content.Case.Propriete;
 import Content.Case.Service;
@@ -16,8 +16,8 @@ public class Joueur {
 	private int id;
 	private String pseudo;
 	private int argent;
-	private int position;
-	private int tourPrison;
+	private int position = 0;
+	private int tourPrison = 0;
 	private int valDes;
 	private Des des;
 	private ArrayList<Propriete> proprietes;
@@ -44,8 +44,9 @@ public class Joueur {
 	}
 	
 	public void lancerDes() {
-		int alea=(int)(Math.random() * 6);
-		des.setValeur(alea);
+		Random rand = new Random();
+		int alea = rand.nextInt(6)+1;
+		//des.setValeur(alea);
 		this.valDes = alea;
 	}
 	
@@ -56,6 +57,10 @@ public class Joueur {
 		}
 	}
 	
+	public int getValDes() {
+		return valDes;
+	}
+
 	public void payer(Terrain prop) {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){

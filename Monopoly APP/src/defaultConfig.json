@@ -2,7 +2,8 @@
 	"GameSetting": {
 		"case": 20,
 		"player": 2,
-		"niveauTerrain": 6
+		"niveauTerrain": 6,
+		"defaultMoney": 1500
 	},
 	"Case": {
 		"0": {

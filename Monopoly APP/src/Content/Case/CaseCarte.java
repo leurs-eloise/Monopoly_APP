@@ -19,6 +19,10 @@ public class CaseCarte implements Case {
     public int getId() {
 		return id;
 	}
+    @Override
+    public String getNom() {
+    	return nom;
+    }
 
     
 }

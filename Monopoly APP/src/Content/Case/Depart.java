@@ -18,6 +18,9 @@ public class Depart implements Case {
 		joueur.setArgent(joueur.getArgent()+pactole);
 	}
 	
-	
+
+	public String getNom() {
+		return nom;
+	}
 
 }

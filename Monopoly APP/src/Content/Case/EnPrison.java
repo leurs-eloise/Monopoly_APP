@@ -7,4 +7,7 @@ public class EnPrison implements Case {
 		this.nom = nom;
 		this.id = id;
 	}
+	public String getNom() {
+		return nom;
+	}
 }

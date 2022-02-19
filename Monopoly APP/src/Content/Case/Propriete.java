@@ -16,7 +16,9 @@ public class Propriete implements Case {
 		this.prix = prix;
 		this.joueur = null;	
 	}
-		
+	public String getNom() {
+		return nom;
+	}
 	// Getter & Setter
 	public int getId() {
 		return id;

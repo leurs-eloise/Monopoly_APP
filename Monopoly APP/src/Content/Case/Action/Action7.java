@@ -1,8 +1,9 @@
 package Content.Case.Action;
 
 import Content.Joueur;
+import Content.Partie;
 
-public class Action1 implements carteAction{
+public class Action7 implements carteAction{
 
 	public String nom;
 	private String action;
@@ -11,7 +12,7 @@ public class Action1 implements carteAction{
     
     
     // Constructeur
-	public Action1(String nom, String description) {
+	public Action7(String nom, String description) {
 	}
 	
 	// Getter & Setter

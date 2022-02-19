@@ -182,10 +182,22 @@ class ServerClientThread extends Thread {
 							outStreamClient.writeUTF(message);
 						}
 					}
+					
+					
+					
+					
+					
+					
 				} else if (clientMessageSplit[0].equals("loadconfig")) {
 					Configuration.getInstance().loadDefaultConfig();
-				} else if (clientMessageSplit[0].equals("rolldice")) {
-					Partie.getInstance().getCurrentPlayer().lancerDes();
+				} 
+				
+				else if (clientMessageSplit[0].equals("rolldice")) {
+					if(Partie.getInstance().lancerDes()) {
+						serverMessage = "[Info] Dés lancé";
+					} else {
+						serverMessage = "[Erreur] Erreur lors du lancement des dés";
+					}
 				}
 
 				else if (clientMessageSplit[0].equals("hypotheque")) {
@@ -202,18 +214,33 @@ class ServerClientThread extends Thread {
 
 				else if (clientMessageSplit[0].equals("home1")) {
 					Partie.getInstance().acheterBuilding(1);
-				} else if (clientMessageSplit[0].equals("home2")) {
+				} 
+				
+				else if (clientMessageSplit[0].equals("home2")) {
 					Partie.getInstance().acheterBuilding(2);
-				} else if (clientMessageSplit[0].equals("home3")) {
+				} 
+				
+				else if (clientMessageSplit[0].equals("home3")) {
 					Partie.getInstance().acheterBuilding(3);
-				} else if (clientMessageSplit[0].equals("home4")) {
+				} 
+				
+				else if (clientMessageSplit[0].equals("home4")) {
 					Partie.getInstance().acheterBuilding(4);
-				} else if (clientMessageSplit[0].equals("home5")) {
+				} 
+				
+				else if (clientMessageSplit[0].equals("home5")) {
 					Partie.getInstance().acheterBuilding(5);
 				}
 
 				else if (clientMessageSplit[0].equals("skip")) {
 					Partie.getInstance().skip();
+				} else if (clientMessageSplit[0].equals("start")) {
+					if(Partie.getInstance().init()) {
+						serverMessage = "[Info] Partie démarée"
+								+ "\nA " + Partie.getInstance().getCurrentPlayer().getPseudo() + " de jouer !";
+					} else {
+						serverMessage = "[Erreur] Erreur lors du lancement de la partie";
+					}
 				}
 
 				else {
