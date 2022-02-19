@@ -22,5 +22,8 @@ public class Depart implements Case {
 	public String getNom() {
 		return nom;
 	}
+	public int getPactole() {
+		return pactole;
+	}
 
 }
