@@ -1,19 +1,15 @@
 package Content;
 
-public class Des {
-	private int valeur;
+import java.util.Random;
 
-	public Des(int valeur) {
-		super();
-		this.valeur = valeur;
-	}
+public class Des {
+
+	public Des() {}
 
 	public int getValeur() {
-		return valeur;
-	}
-
-	public void setValeur(int valeur) {
-		this.valeur = valeur;
+		Random rand = new Random();
+		int alea = rand.nextInt(6)+1;
+		return alea;
 	}
 	
 }

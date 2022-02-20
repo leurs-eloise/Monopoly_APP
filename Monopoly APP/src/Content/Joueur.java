@@ -9,6 +9,7 @@ import Content.Case.Gare;
 import Content.Case.Propriete;
 import Content.Case.Service;
 import Content.Case.Terrain;
+import Server.SendString;
 
 public class Joueur {
 	private static final AtomicInteger ID_FACTORY = new AtomicInteger();
@@ -19,9 +20,10 @@ public class Joueur {
 	private int position = 0;
 	private int tourPrison = 0;
 	private int valDes;
-	private Des des;
+	private Des des = new Des();
 	private ArrayList<Propriete> proprietes;
 	private int score;
+	private SendString stringToSend = SendString.getInstance();
 	//private ArrayList<CarteAction> cartes;
 	
 	//constructeur pour la config
@@ -44,16 +46,15 @@ public class Joueur {
 	}
 	
 	public void lancerDes() {
-		Random rand = new Random();
-		int alea = rand.nextInt(6)+1;
-		//des.setValeur(alea);
-		this.valDes = alea;
+		this.valDes = des.getValeur();
+		stringToSend.receiveMsg("[Info] " + pseudo + " à fait un " + valDes);
 	}
 	
 	public void acheter(Propriete prop) {
 		if((prop.getJoueur() == null) && (this.argent >= prop.getPrix())){
 			this.argent -= prop.getPrix();
 			prop.setJoueur(this);
+			stringToSend.receiveMsg("[Info] " + pseudo + " a acheté " + prop.getNom() + " pour " + prop.getPrix() + "$");
 		}
 	}
 	
@@ -67,7 +68,7 @@ public class Joueur {
 			int loyer = prop.getListeLoyer().get(prop.getNbBuilding());
 			proprietaire.setArgent(proprietaire.getArgent() + loyer);
 			this.setArgent(this.getArgent() - loyer);
-			prop.setJoueur(this);
+			stringToSend.receiveMsg("[Info] " + pseudo + " a payé " + loyer + "$ à " + proprietaire.getPseudo());
 		}
 	}
 	
@@ -76,6 +77,7 @@ public class Joueur {
 		if((proprietaire != null) && (proprietaire != this)){
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
 			this.setArgent(this.getArgent() - prop.getLoyer());
+			stringToSend.receiveMsg("[Info] " + pseudo + " a payé " + prop.getLoyer() + "$ à " + proprietaire.getPseudo());
 		}
 	}
 	
@@ -85,6 +87,7 @@ public class Joueur {
 			this.lancerDes();
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getNiveau()*valDes);
 			this.setArgent(this.getArgent() - prop.getNiveau()*valDes);
+			stringToSend.receiveMsg("[Info] " + pseudo + " a payé " + prop.getNiveau()*valDes + "$ à " + proprietaire.getPseudo());
 		}
 	}
 	

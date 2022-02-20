@@ -241,6 +241,8 @@ class ServerClientThread extends Thread {
 					} else {
 						serverMessage = "[Erreur] Erreur lors du lancement de la partie";
 					}
+				} else if (clientMessageSplit[0].equals("fintour")) {
+					Partie.getInstance().finTour();
 				}
 
 				else {

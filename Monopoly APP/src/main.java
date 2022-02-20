@@ -17,8 +17,10 @@ public class main extends Thread  {
 	public static void main(String args[]) throws JSONException, IOException {
 		main test = new main();
 		test.start();
+		/*
 		Configuration.getInstance().loadDefaultConfig();
 		Partie.getInstance().init();
+		
 		//new Server();
 		/*
 		main test = new main();

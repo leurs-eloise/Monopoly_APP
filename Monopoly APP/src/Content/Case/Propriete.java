@@ -37,9 +37,6 @@ public class Propriete implements Case {
 	}
 
 	public Joueur getJoueur() {
-		if (this.joueur == null) {
-			return null;
-		}
 		return joueur;
 	}
 
