@@ -85,19 +85,31 @@ public class Partie {
 				if (currentCase instanceof Prison) {
 					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est en visite simple sur la prison");
 					etat = 3;
+					return true;
 				} else if (currentCase instanceof CaseCarte) {
 					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur CaseCarte");
+					etat = 3;
+					return true;
 				} else if (currentCase instanceof Depart) {
 					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " perçoit un salaire de " + ((Depart)Configuration.getInstance().getListeCase().get(0)).getPactole() + "$");
 					((Depart) currentCase).pactole(joueurActuel);
-				} else if (currentCase instanceof Terrain) {
-					Joueur owner = ((Terrain)currentCase).getJoueur();
-					if(owner == null) { //A check pk ca planter
+					etat = 3;
+					return true;
+				} else if (currentCase instanceof Propriete) {
+					Joueur owner = ((Propriete)currentCase).getJoueur();
+					if(owner == null || owner == joueurActuel) {
 						stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur " + currentCase.getNom());
 						etat = 2;
+						return true;
 					} else {
-						stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur " + currentCase.getNom() + " qui est possédé par " + owner);
-						joueurActuel.payer(((Terrain)currentCase));
+						stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur " + currentCase.getNom() + " qui est possédé par " + owner.getPseudo());
+						if (currentCase instanceof Service) {
+							joueurActuel.payer(((Service)currentCase));
+						} else if (currentCase instanceof Gare) {
+							joueurActuel.payer(((Gare)currentCase));
+						}else if (currentCase instanceof Terrain) {
+							joueurActuel.payer(((Terrain)currentCase));
+						}
 						etat = 3;
 						return true;
 					}
@@ -105,13 +117,8 @@ public class Partie {
 				} else if (currentCase instanceof SansAction) {
 					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur SansAction");
 					etat = 3;
-				} else if (currentCase instanceof Service) {
-					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur Service");
-					etat = 3;
-				} else if (currentCase instanceof Gare) {
-					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur Gare");
-					etat = 3;
-				} else if (currentCase instanceof EnPrison) {
+					return true;
+				}  else if (currentCase instanceof EnPrison) {
 					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur EnPrison");
 					etat = 3;
 				} else {

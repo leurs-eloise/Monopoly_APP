@@ -29,6 +29,10 @@ public class Fenetre extends JFrame implements ActionListener, ReceiveEvent {
 	private JPanel buttonBlock = new JPanel();
 	private JButton stopButton = new JButton("Stop");
 	
+	private JButton rolldice = new JButton("Roll");
+	private JButton buy = new JButton("Buy");
+	private JButton fintour = new JButton("Fin");
+	
 	
 	private JPanel container = new JPanel();
 	
@@ -56,11 +60,21 @@ public class Fenetre extends JFrame implements ActionListener, ReceiveEvent {
 	    sendBlock.add(sendButton);
 	    
 	    buttonBlock.add(stopButton);
+	    buttonBlock.add(rolldice);
+	    buttonBlock.add(buy);
+	    buttonBlock.add(fintour);
+	    
 	    
 	    stopButton.addActionListener(this);
 	    stopButton.setActionCommand("stop");
 	    sendButton.addActionListener(this);
 	    sendButton.setActionCommand("send");
+	    rolldice.addActionListener(this);
+	    rolldice.setActionCommand("roll");
+	    buy.addActionListener(this);
+	    buy.setActionCommand("buy");
+	    fintour.addActionListener(this);
+	    fintour.setActionCommand("fin");
 	   
 	    this.getRootPane().setDefaultButton(sendButton);
 	    log.append("Log du serveur:\n");
@@ -94,6 +108,24 @@ public class Fenetre extends JFrame implements ActionListener, ReceiveEvent {
 				e1.printStackTrace();
 			}
 			this.dispose();
+		}
+		
+		
+		if(e.getActionCommand().equals("fin")) {
+				@SuppressWarnings("unused")
+				ClientServer client = new ClientServer("fintour", stringToSend);
+	
+			
+		}
+		if(e.getActionCommand().equals("roll")) {
+				@SuppressWarnings("unused")
+				ClientServer client = new ClientServer("rolldice", stringToSend);
+
+			 
+		}
+		if(e.getActionCommand().equals("buy")) {
+				@SuppressWarnings("unused")
+				ClientServer client = new ClientServer("buy", stringToSend);
 		}
 		
 	}

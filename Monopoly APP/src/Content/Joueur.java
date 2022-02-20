@@ -21,7 +21,7 @@ public class Joueur {
 	private int tourPrison = 0;
 	private int valDes;
 	private Des des = new Des();
-	private ArrayList<Propriete> proprietes;
+	private ArrayList<Propriete> proprietes = new ArrayList<Propriete>();
 	private int score;
 	private SendString stringToSend = SendString.getInstance();
 	//private ArrayList<CarteAction> cartes;
@@ -54,6 +54,7 @@ public class Joueur {
 		if((prop.getJoueur() == null) && (this.argent >= prop.getPrix())){
 			this.argent -= prop.getPrix();
 			prop.setJoueur(this);
+			proprietes.add(prop);
 			stringToSend.receiveMsg("[Info] " + pseudo + " a acheté " + prop.getNom() + " pour " + prop.getPrix() + "$");
 		}
 	}

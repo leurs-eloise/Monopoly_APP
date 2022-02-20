@@ -21,7 +21,7 @@ public class Configuration {
 	public boolean configLoad = false;
 	private int defaultMoney = 1500;
 
-	private ArrayList<JSONObject> listeCaseJSON = new ArrayList<JSONObject>();
+	public ArrayList<JSONObject> listeCaseJSON = new ArrayList<JSONObject>();
 	private ArrayList<Case> listeCase = new ArrayList<Case>();
 	private SendString stringToSend = SendString.getInstance();
 
@@ -344,13 +344,16 @@ public class Configuration {
 		return configLoad;
 	}
 
-	public int[] getLoyer(int i) {
+	public ArrayList<Integer> getLoyer(int i) {
+		
+		ArrayList<Integer> listeLoyer = CaseFactory.getInstance().JSONArrayToIntArrayList(listeCaseJSON.get(i).getJSONArray("loyer"));
 		JSONArray listeLoyerJSON = listeCaseJSON.get(i).getJSONArray("loyer");
 		int[] loyer = new int[listeLoyerJSON.length()];
 		for (int j = 0; j < listeLoyerJSON.length(); j++) {
 			loyer[j] = listeLoyerJSON.optInt(i);
 		}
-		return loyer;
+
+		return listeLoyer;
 	}
 
 	public int[] getMultiplicateur(int i) {

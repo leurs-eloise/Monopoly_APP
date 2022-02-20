@@ -7,13 +7,13 @@ import Content.Joueur;
 
 public class Terrain extends Propriete {
 	private int nbBuildings;
-	private ArrayList<Integer> listeLoyer;
+	private ArrayList<Integer> listeLoyer = new ArrayList<Integer>();
 
 	// Constructeur
 	public Terrain(String nom,int id, int prix, Joueur j, int building, ArrayList<Integer> listeLoyer, int hypotheque, int groupe) {
 		super(nom, id, prix, j, hypotheque);
 		this.nbBuildings = building;
-		this.listeLoyer = new ArrayList<Integer>();
+		this.listeLoyer = listeLoyer;
 	}
 
 	// Getter & Setter
