@@ -14,15 +14,18 @@ import Content.Case.Propriete;
 import Content.Case.SansAction;
 import Content.Case.Service;
 import Content.Case.Terrain;
+import Content.Case.Action.carteAction;
 import Server.SendString;
 
 public class Partie {
 	private ArrayList<Joueur> listeJoueur = new ArrayList<Joueur>();
 	private Joueur joueurActuel;
 	private static Partie partie;
-	private int etat = 0; // 0 partie non lancer - 1 début tour - 2-3 achat/ventre/echange du joueur - 3 fin de tour
+	private int etat = 0; // 0 partie non lancer - 1 début tour - 2-3 achat/ventre/echange du joueur - 3
+							// fin de tour
 	private SendString stringToSend = SendString.getInstance();
 	private int joueurPosInt = 0;
+	private ArrayList<carteAction> listeCarteAction = new ArrayList<carteAction>();
 
 	public Partie() {
 	}
@@ -32,6 +35,10 @@ public class Partie {
 			partie = new Partie();
 		}
 		return partie;
+	}
+
+	public void addAction(carteAction action) {
+		listeCarteAction.add(action);
 	}
 
 	public Joueur getCurrentPlayer() {
@@ -69,88 +76,96 @@ public class Partie {
 				stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 				return false;
 			}
-			if (joueurActuel.getTourPrison() != 0) { // Lancer de dés si joueur en prison  A FAIRE
+			if (joueurActuel.getTourPrison() != 0) { // Lancer de dés si joueur en prison A FAIRE
 				return false;
 			} else { // Lancer de dés classique
 				joueurActuel.lancerDes();
-				
-				if(((joueurActuel.getPosition() + joueurActuel.getValDes())> Configuration.getInstance().getNbCase()) && ((joueurActuel.getPosition() + joueurActuel.getValDes()) % Configuration.getInstance().getNbCase()) != 0 ) {
-					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est passé par la case départ et a reçu " + ((Depart)Configuration.getInstance().getListeCase().get(0)).getPactole() + "$");
-					((Depart)Configuration.getInstance().getListeCase().get(0)).pactole(joueurActuel);
+				if (((joueurActuel.getPosition() + joueurActuel.getValDes()) > Configuration.getInstance().getNbCase()) && ((joueurActuel.getPosition() + joueurActuel.getValDes())% Configuration.getInstance().getNbCase()) != 0) {
+					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est passé par la case départ et a reçu " + ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "$");
+					((Depart) Configuration.getInstance().getListeCase().get(0)).pactole(joueurActuel);
 				}
 				joueurActuel.setPosition((joueurActuel.getPosition() + joueurActuel.getValDes()) % Configuration.getInstance().getNbCase());
-				Case currentCase = Configuration.getInstance().getListeCase().get(joueurActuel.getPosition());
-				stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " ce retrouve sur la case " + currentCase.getNom());
-
-				if (currentCase instanceof Prison) {
-					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est en visite simple sur la prison");
-					etat = 3;
-					return true;
-				} else if (currentCase instanceof CaseCarte) {
-					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur CaseCarte");
-					etat = 3;
-					return true;
-				} else if (currentCase instanceof Depart) {
-					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " perçoit un salaire de " + ((Depart)Configuration.getInstance().getListeCase().get(0)).getPactole() + "$");
-					((Depart) currentCase).pactole(joueurActuel);
-					etat = 3;
-					return true;
-				} else if (currentCase instanceof Propriete) {
-					Joueur owner = ((Propriete)currentCase).getJoueur();
-					if(owner == null || owner == joueurActuel) {
-						stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur " + currentCase.getNom());
-						etat = 2;
-						return true;
-					} else {
-						stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur " + currentCase.getNom() + " qui est possédé par " + owner.getPseudo());
-						if (currentCase instanceof Service) {
-							joueurActuel.payer(((Service)currentCase));
-						} else if (currentCase instanceof Gare) {
-							joueurActuel.payer(((Gare)currentCase));
-						}else if (currentCase instanceof Terrain) {
-							joueurActuel.payer(((Terrain)currentCase));
-						}
-						etat = 3;
-						return true;
-					}
-					
-				} else if (currentCase instanceof SansAction) {
-					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur SansAction");
-					etat = 3;
-					return true;
-				}  else if (currentCase instanceof EnPrison) {
-					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur EnPrison");
-					etat = 3;
-				} else {
-					stringToSend.receiveMsg("[Erreur critique] Case non identifié");
-					stringToSend.receiveMsg("[Erreur critique] Fin de partie");
-					etat = 0;
-					return false;
-				}
+				return actualiserPosition();
 			}
-			etat = 2;
-			return true;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			stringToSend.receiveMsg(e + "");
 			return false;
 		}
-		
+
 	}
 
 	public boolean acheter() {
-		
+
 		if (etat != 2) {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 			return false;
 		} else {
 			Case currentCase = Configuration.getInstance().getListeCase().get(joueurActuel.getPosition());
-			if(currentCase instanceof Propriete) {
-				joueurActuel.acheter((Propriete)currentCase);
+			if (currentCase instanceof Propriete) {
+				joueurActuel.acheter((Propriete) currentCase);
 			}
 		}
 
 		etat = 3;
 		return true;
+	}
+
+	public boolean actualiserPosition() {
+		Case currentCase = Configuration.getInstance().getListeCase().get(joueurActuel.getPosition());
+		stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " ce retrouve sur la case " + currentCase.getNom());
+		if (currentCase instanceof Prison) {
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est en visite simple sur la prison");
+			etat = 3;
+			return true;
+		} else if (currentCase instanceof CaseCarte) {
+			Random rdm = new Random();
+			carteAction carte =  listeCarteAction.get(rdm.nextInt(listeCarteAction.size()));
+			etat = 3;
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " doit: " + carte.getDescription());
+			carte.doAction();
+			
+
+			return true;
+		} else if (currentCase instanceof Depart) {
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " perçoit un salaire de "
+					+ ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "$");
+			((Depart) currentCase).pactole(joueurActuel);
+			etat = 3;
+			return true;
+		} else if (currentCase instanceof Propriete) {
+			Joueur owner = ((Propriete) currentCase).getJoueur();
+			if (owner == null || owner == joueurActuel) {
+				stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur " + currentCase.getNom());
+				etat = 2;
+				return true;
+			} else {
+				stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur " + currentCase.getNom()
+						+ " qui est possédé par " + owner.getPseudo());
+				if (currentCase instanceof Service) {
+					joueurActuel.payer(((Service) currentCase));
+				} else if (currentCase instanceof Gare) {
+					joueurActuel.payer(((Gare) currentCase));
+				} else if (currentCase instanceof Terrain) {
+					joueurActuel.payer(((Terrain) currentCase));
+				}
+				etat = 3;
+				return true;
+			}
+
+		} else if (currentCase instanceof SansAction) {
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur SansAction");
+			etat = 3;
+			return true;
+		} else if (currentCase instanceof EnPrison) {
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur EnPrison");
+			etat = 3;
+		} else {
+			stringToSend.receiveMsg("[Erreur critique] Case non identifié");
+			stringToSend.receiveMsg("[Erreur critique] Fin de partie");
+			etat = 0;
+			return false;
+		}
+		return false;
 	}
 
 	public boolean skip() {
@@ -196,7 +211,7 @@ public class Partie {
 			return false;
 		}
 		joueurPosInt += 1;
-		if(joueurPosInt >= listeJoueur.size()) {
+		if (joueurPosInt >= listeJoueur.size()) {
 			joueurPosInt = 0;
 		}
 		joueurActuel = listeJoueur.get(joueurPosInt);

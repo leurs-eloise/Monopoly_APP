@@ -5,30 +5,24 @@ import Content.Partie;
 
 public class Action4 implements carteAction{
 
-	public String nom;
-	private String action;
-    public int id;
+	private String description = "Rendez vous à Annecy";
     private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
     
     // Constructeur
-	public Action4(String nom, String description) {
+	public Action4() {
+		Partie.getInstance().addAction(this);
 	}
 	
 	// Getter & Setter
-    public void setNom (String nom){
-    	this.nom = nom;
-    }
-    
-    public int getId() {
-		return id;
+	public String getDescription() {
+		return description;
 	}
-
 
 	@Override
 	public void doAction() {
-		joueur.setPosition(20); //Rendez-vous Annecy
-		
+		Partie.getInstance().getCurrentPlayer().setPosition(19); //Rendez-vous Annecy
+		Partie.getInstance().actualiserPosition();
 	}
     
   

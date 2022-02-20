@@ -5,29 +5,25 @@ import Content.Partie;
 
 public class Action2 implements carteAction{
 
-	public String nom;
-	private String action;
-    public int id;
+	private String description = "Avancer à la case départ";
     private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
     
     // Constructeur
-	public Action2(String nom, String description) {
+	public Action2() {
+		Partie.getInstance().addAction(this);
 	}
 	
 	// Getter & Setter
-    public void setNom (String nom){
-    	this.nom = nom;
-    }
-    
-    public int getId() {
-		return id;
+	public String getDescription() {
+		return description;
 	}
 
 
 	@Override
 	public void doAction() {
-		joueur.setPosition(0); //Avancer case depart
+		Partie.getInstance().getCurrentPlayer().setPosition(0); //Avancer case depart
+		Partie.getInstance().actualiserPosition();
 		
 	}
     

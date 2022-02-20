@@ -5,29 +5,24 @@ import Content.Partie;
 
 public class Action7 implements carteAction{
 
-	public String nom;
-	private String action;
-    public int id;
+	private String description = "Payer 50$";
     private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
     
     // Constructeur
-	public Action7(String nom, String description) {
+	public Action7() {
+		Partie.getInstance().addAction(this);
 	}
 	
 	// Getter & Setter
-    public void setNom (String nom){
-    	this.nom = nom;
-    }
-    
-    public int getId() {
-		return id;
+	public String getDescription() {
+		return description;
 	}
 
 
 	@Override
 	public void doAction() {
-		joueur.setArgent(joueur.getArgent()-50); // Frais, payez 50$ 
+		Partie.getInstance().getCurrentPlayer().setArgent(Partie.getInstance().getCurrentPlayer().getArgent()-50); // Frais, payez 50$ 
 		
 	}
     

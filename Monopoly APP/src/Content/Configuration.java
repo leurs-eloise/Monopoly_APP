@@ -12,6 +12,13 @@ import org.json.JSONObject;
 
 import Content.Case.Case;
 import Content.Case.CaseFactory;
+import Content.Case.Action.Action1;
+import Content.Case.Action.Action2;
+import Content.Case.Action.Action3;
+import Content.Case.Action.Action4;
+import Content.Case.Action.Action5;
+import Content.Case.Action.Action6;
+import Content.Case.Action.Action7;
 import Server.SendString;
 
 public class Configuration {
@@ -58,8 +65,19 @@ public class Configuration {
 		return nbCase;
 	}
 	
+	public void loadAction() { //Voir un autre moyen de le faire
+		new Action1();
+		new Action2();
+		new Action3();
+		new Action4();
+		new Action5();
+		new Action6();
+		new Action7();
+	}
+	
 	public boolean loadDefaultConfig() throws IOException, JSONException {
 		configLoad = false;
+		loadAction();
 		stringToSend.receiveMsg("[Info] Lecture configuration ...");
 		listeCaseJSON.clear();
 		listeCase.clear();

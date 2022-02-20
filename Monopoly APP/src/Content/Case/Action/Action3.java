@@ -5,30 +5,25 @@ import Content.Partie;
 
 public class Action3 implements carteAction{
 
-	public String nom;
-	private String action;
-    public int id;
+	private String description = "Aller en prison";
     private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
     
     // Constructeur
-	public Action3(String nom, String description) {
+	public Action3() {
+		Partie.getInstance().addAction(this);
 	}
 	
 	// Getter & Setter
-    public void setNom (String nom){
-    	this.nom = nom;
-    }
-    
-    public int getId() {
-		return id;
+	public String getDescription() {
+		return description;
 	}
 
 
 	@Override
 	public void doAction() {
-		joueur.setPosition(6); //Aller en prison
-		
+		Partie.getInstance().getCurrentPlayer().setPosition(6); //Aller en prison
+		Partie.getInstance().actualiserPosition();
 	}
     
   
