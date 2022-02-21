@@ -6,7 +6,8 @@ import Content.Partie;
 public class Action7 implements carteAction{
 
 	private String description = "Payer 50$";
-    private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
+    @SuppressWarnings("unused")
+	private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
     
     // Constructeur

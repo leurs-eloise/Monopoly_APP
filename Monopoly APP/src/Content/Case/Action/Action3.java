@@ -6,7 +6,8 @@ import Content.Partie;
 public class Action3 implements carteAction{
 
 	private String description = "Aller en prison";
-    private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
+    @SuppressWarnings("unused")
+	private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
     
     // Constructeur

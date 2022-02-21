@@ -6,7 +6,6 @@ import java.util.Objects;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import Content.Configuration;
 
 public class CaseFactory {
 	private static CaseFactory caseFactory;
@@ -27,7 +26,7 @@ public class CaseFactory {
 			return null;
 		}
 		if(type.equalsIgnoreCase("prison")) {
-			return new Prison(nom, id);
+			return new Prison(nom, id, caseInfo.getInt("amountToEscape"), caseInfo.getInt("diceValue"));
 		} else if(type.equalsIgnoreCase("caseCarte")) {//FAIT
 			return new CaseCarte(nom, id);
 		} else if(type.equalsIgnoreCase("depart")) { //FAIT

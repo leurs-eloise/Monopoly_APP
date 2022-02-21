@@ -76,15 +76,33 @@ public class Partie {
 				stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 				return false;
 			}
-			if (joueurActuel.getTourPrison() != 0) { // Lancer de dés si joueur en prison A FAIRE
-				return false;
+			if (joueurActuel.getTourPrison() != 0) { // Lancer de dés si joueur en prison
+
+				stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " a choisit de lancer les dés pour sortir de prison");
+				joueurActuel.lancerDes();
+				if (joueurActuel.getValDes() == 6) {
+					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sortit de prison en faisant un 6 !");
+					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " peut maintenant jouer");
+					joueurActuel.setTourPrison(0);
+					etat = 1;
+					return true;
+				} else {
+					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " à fait un " + joueurActuel.getValDes() + ". Il reste en prison.");
+					etat = 3;
+					return true;
+				}
 			} else { // Lancer de dés classique
 				joueurActuel.lancerDes();
-				if (((joueurActuel.getPosition() + joueurActuel.getValDes()) > Configuration.getInstance().getNbCase()) && ((joueurActuel.getPosition() + joueurActuel.getValDes())% Configuration.getInstance().getNbCase()) != 0) {
-					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est passé par la case départ et a reçu " + ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "$");
+				if (((joueurActuel.getPosition() + joueurActuel.getValDes()) > Configuration.getInstance().getNbCase())
+						&& ((joueurActuel.getPosition() + joueurActuel.getValDes())
+								% Configuration.getInstance().getNbCase()) != 0) {
+					stringToSend.receiveMsg(
+							"[Info] " + joueurActuel.getPseudo() + " est passé par la case départ et a reçu "
+									+ ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "$");
 					((Depart) Configuration.getInstance().getListeCase().get(0)).pactole(joueurActuel);
 				}
-				joueurActuel.setPosition((joueurActuel.getPosition() + joueurActuel.getValDes()) % Configuration.getInstance().getNbCase());
+				joueurActuel.setPosition((joueurActuel.getPosition() + joueurActuel.getValDes())
+						% Configuration.getInstance().getNbCase());
 				return actualiserPosition();
 			}
 		} catch (Exception e) {
@@ -112,18 +130,18 @@ public class Partie {
 
 	public boolean actualiserPosition() {
 		Case currentCase = Configuration.getInstance().getListeCase().get(joueurActuel.getPosition());
-		stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " ce retrouve sur la case " + currentCase.getNom());
+		stringToSend
+				.receiveMsg("[Info] " + joueurActuel.getPseudo() + " ce retrouve sur la case " + currentCase.getNom());
 		if (currentCase instanceof Prison) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est en visite simple sur la prison");
 			etat = 3;
 			return true;
 		} else if (currentCase instanceof CaseCarte) {
 			Random rdm = new Random();
-			carteAction carte =  listeCarteAction.get(rdm.nextInt(listeCarteAction.size()));
+			carteAction carte = listeCarteAction.get(rdm.nextInt(listeCarteAction.size()));
 			etat = 3;
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " doit: " + carte.getDescription());
 			carte.doAction();
-			
 
 			return true;
 		} else if (currentCase instanceof Depart) {
@@ -153,11 +171,21 @@ public class Partie {
 			}
 
 		} else if (currentCase instanceof SansAction) {
-			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur SansAction");
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est au repos");
 			etat = 3;
 			return true;
 		} else if (currentCase instanceof EnPrison) {
-			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur EnPrison");
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " part en prison !");
+			for(Case cas : Configuration.getInstance().getListeCase()) {
+				if(cas instanceof Prison) {
+					joueurActuel.setPosition(((Prison)cas).getId());
+					currentCase = cas;
+				}
+			}
+
+			stringToSend.receiveMsg(
+					"[Info] Pour sortir de prison, vous devez: \n- faire un " + ((Prison)currentCase).getDes() + " \n-Payer " + ((Prison)currentCase).getEscape() + "$ \n-Utiliser une carte 'sortir de prison'");
+			joueurActuel.setTourPrison(1);
 			etat = 3;
 		} else {
 			stringToSend.receiveMsg("[Erreur critique] Case non identifié");
@@ -177,8 +205,42 @@ public class Partie {
 		return finTour();
 	}
 
+	public boolean payToEscape() {
+		if ((etat != 1) || joueurActuel.getTourPrison() == 0) {
+			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
+			return false;
+		}
+		if(joueurActuel.getArgent()> ((Prison)Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()) {
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " à payer " + ((Prison)Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape() + "$ pour sortir de prison. Il peut jouer normalement");
+			joueurActuel.setArgent(joueurActuel.getArgent() - ((Prison)Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape());
+			etat = 1;
+			joueurActuel.setTourPrison(0);
+		} else {
+			stringToSend.receiveMsg("[Erreur] " + joueurActuel.getPseudo() + " ne dispose pas des sous nécessaire");
+			etat = 1;
+		}
+		return true;
+	}
+	
+	public boolean useCard() {
+		if ((etat != 1) || joueurActuel.getTourPrison() == 0) {
+			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
+			return false;
+		}
+		if(joueurActuel.getPrisonCard()>0) {
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " à utiliser une carte 'sortir de prison'. Il peut jouer normalement");
+			joueurActuel.setPrisonCard(joueurActuel.getPrisonCard() - 1);
+			joueurActuel.setTourPrison(0);
+			etat = 1;
+		} else {
+			stringToSend.receiveMsg("[Erreur] " + joueurActuel.getPseudo() + " ne dispose pas de carte 'sortir de prison'");
+			etat = 1;
+		}
+		return true;
+	}
+	
 	public boolean hypotheque() {
-		if (etat != 2 || etat != 3) {
+		if ((etat != 2 || etat != 3) && Configuration.getInstance().isHypoteque()) {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 			return false;
 		}
@@ -210,12 +272,43 @@ public class Partie {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 			return false;
 		}
+		if (joueurActuel.getArgent() <= 0) {
+			for (Propriete prop : joueurActuel.getProprietes()) {
+				prop.setJoueur(null);
+			}
+			joueurActuel.getProprietes().clear();
+			listeJoueur.remove(joueurActuel);
+			stringToSend.receiveMsg(
+					"[Info] Le joueur " + joueurActuel.getPseudo() + " n'a plus d'argent. Il est donc éliminé");
+		}
+		if (listeJoueur.size() == 1) {
+			stringToSend
+					.receiveMsg("[Info] Fin de la partie. " + listeJoueur.get(0).getPseudo() + " gagne la partie !");
+			etat = 0;
+			return true;
+		}
+		if(joueurActuel.getTourPrison() != 0) {
+			joueurActuel.setTourPrison(joueurActuel.getTourPrison() +1);
+		}
 		joueurPosInt += 1;
 		if (joueurPosInt >= listeJoueur.size()) {
 			joueurPosInt = 0;
 		}
 		joueurActuel = listeJoueur.get(joueurPosInt);
-		stringToSend.receiveMsg("[info] A " + joueurActuel.getPseudo() + " de jouer !");
+		if(joueurActuel.getTourPrison() > 0 && joueurActuel.getTourPrison() < 4) {
+			stringToSend.receiveMsg("[info] " + joueurActuel.getPseudo() + " débute son tour en prison");
+		} else {
+			stringToSend.receiveMsg("[info] A " + joueurActuel.getPseudo() + " de jouer !");
+		}
+		
+		if (joueurActuel.getTourPrison() >= 4) {
+			joueurActuel.setArgent(joueurActuel.getArgent() - 50);
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est resté trop de temps en prison. "
+					+ joueurActuel.getPseudo() + " à payé 50$");
+			etat = 1;
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " peut maintenant lancer le dés pour jouer");
+			return true;
+		}
 		etat = 1;
 		return true;
 	}

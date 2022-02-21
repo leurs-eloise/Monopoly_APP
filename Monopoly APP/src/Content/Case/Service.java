@@ -4,6 +4,7 @@ import Content.Configuration;
 import Content.Joueur;
 
 public class Service extends Propriete {
+	@SuppressWarnings("unused")
 	private String nom;
 	private int id;
 	

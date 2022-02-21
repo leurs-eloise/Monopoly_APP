@@ -1,10 +1,9 @@
 package Content.Case;
 
-import Content.Configuration;
 import Content.Joueur;
 
 public class Depart implements Case {
-	private Joueur joueur; 
+	@SuppressWarnings("unused")
 	private int id;
 	private int pactole;
 	private String nom;
@@ -12,6 +11,7 @@ public class Depart implements Case {
 	public Depart(String nom, int id, int pactole) {
 		this.nom = nom;
 		this.pactole = pactole;
+		this.id = id;
 	}
 	
 	public void pactole(Joueur joueur) {

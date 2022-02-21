@@ -6,9 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import Content.Configuration;
-import Content.Joueur;
 import Content.Partie;
-import Content.Case.Propriete;
 
 class ServerClientThread extends Thread {
 	Socket serverClient;
@@ -47,7 +45,11 @@ class ServerClientThread extends Thread {
 			while (!clientMessage.equals("disconnect")) {
 				clientMessage = inStream.readUTF();
 				String[] clientMessageSplit = clientMessage.split(" ");
-
+				if (!clientName.equals("ClientServer")) {
+					sendMessage.receiveMsg("[Info] " + clientName + ": " + clientMessage);
+				} else {
+					sendMessage.receiveMsg(">> " + clientMessage);
+				}
 				if (clientMessageSplit[0].equals("setname")) {
 					if (clientMessageSplit.length == 1 || clientMessageSplit.length > 2) {
 						serverMessage = "[Erreur] Usage: setname (name)";
@@ -231,7 +233,13 @@ class ServerClientThread extends Thread {
 				else if (clientMessageSplit[0].equals("home5")) {
 					Partie.getInstance().acheterBuilding(5);
 				}
-
+				
+				else if (clientMessageSplit[0].equals("usecard")) {
+					Partie.getInstance().useCard();
+				}
+				else if (clientMessageSplit[0].equals("paytoescape")) {
+					Partie.getInstance().payToEscape();
+				}
 				else if (clientMessageSplit[0].equals("skip")) {
 					Partie.getInstance().skip();
 				} else if (clientMessageSplit[0].equals("start")) {
@@ -249,11 +257,7 @@ class ServerClientThread extends Thread {
 					serverMessage = "[Info] Type 'help' to get commands list";
 				}
 				// System.out.println("[Info] " + clientName + ": "+clientMessage);
-				if (!clientName.equals("ClientServer")) {
-					sendMessage.receiveMsg("[Info] " + clientName + ": " + clientMessage);
-				} else {
-					sendMessage.receiveMsg(">> " + clientMessage);
-				}
+
 				outStream.writeUTF(serverMessage);
 				outStream.flush();
 

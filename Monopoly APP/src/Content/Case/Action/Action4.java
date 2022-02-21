@@ -6,7 +6,8 @@ import Content.Partie;
 public class Action4 implements carteAction{
 
 	private String description = "Rendez vous à Annecy";
-    private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
+    @SuppressWarnings("unused")
+	private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
     
     // Constructeur

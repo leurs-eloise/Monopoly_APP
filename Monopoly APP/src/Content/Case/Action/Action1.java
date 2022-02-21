@@ -6,7 +6,8 @@ import Content.Partie;
 public class Action1 implements carteAction{
 
 	private String description = "Reculer de 3 cases";
-    private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
+    @SuppressWarnings("unused")
+	private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
     
     // Constructeur

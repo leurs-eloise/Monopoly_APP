@@ -3,7 +3,8 @@
 		"case": 20,
 		"player": 2,
 		"niveauTerrain": 6,
-		"defaultMoney": 1500
+		"defaultMoney": 1500,
+		"hypotheque": false
 	},
 	"Case": {
 		"0": {
@@ -67,7 +68,9 @@
 		},
 		"5": {
 			"nom": "Rattrapage",
-			"type": "prison"
+			"type": "prison",
+			"amountToEscape": 50,
+			"diceValue": 6
 		},
 		"6": {
 			"nom": "Montpellier",

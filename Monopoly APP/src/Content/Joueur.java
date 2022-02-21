@@ -1,8 +1,6 @@
 package Content;
 
-import java.io.ObjectInputFilter.Config;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 import Content.Case.Gare;
@@ -24,6 +22,7 @@ public class Joueur {
 	private ArrayList<Propriete> proprietes = new ArrayList<Propriete>();
 	private int score;
 	private SendString stringToSend = SendString.getInstance();
+	private int prisonCard = 0;
 	//private ArrayList<CarteAction> cartes;
 	
 	//constructeur pour la config
@@ -45,6 +44,13 @@ public class Joueur {
 		this.argent = argent;
 	}
 	
+	public int getPrisonCard() {
+		return prisonCard;
+	}
+	
+	public void setPrisonCard(int prisonCard) {
+		this.prisonCard = prisonCard;
+	}
 	public void lancerDes() {
 		this.valDes = des.getValeur();
 		stringToSend.receiveMsg("[Info] " + pseudo + " à fait un " + valDes);
@@ -93,6 +99,7 @@ public class Joueur {
 	}
 	
 	public void onEventCreated(DemandeEchangeEvent ev) {
+		@SuppressWarnings("unused")
 		boolean choix = false;
 		System.out.println("Acceptez-vous cette l'echange ?");
 		String reponse = this.scan.nextLine();

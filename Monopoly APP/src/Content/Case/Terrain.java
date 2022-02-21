@@ -2,7 +2,6 @@ package Content.Case;
 
 import java.util.ArrayList;
 
-import Content.Configuration;
 import Content.Joueur;
 
 public class Terrain extends Propriete {

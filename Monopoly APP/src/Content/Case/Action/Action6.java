@@ -6,7 +6,8 @@ import Content.Partie;
 public class Action6 implements carteAction{
 
 	private String description = "La banque vous verse 50$";
-    private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
+    @SuppressWarnings("unused")
+	private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
     
     // Constructeur

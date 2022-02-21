@@ -31,7 +31,7 @@ public class Configuration {
 	public ArrayList<JSONObject> listeCaseJSON = new ArrayList<JSONObject>();
 	private ArrayList<Case> listeCase = new ArrayList<Case>();
 	private SendString stringToSend = SendString.getInstance();
-
+	private boolean hypothequeEnable = false;
 	private static Configuration configuration;
 
 	public Configuration() {
@@ -63,6 +63,9 @@ public class Configuration {
 	
 	public int getNbCase() {
 		return nbCase;
+	}
+	public boolean isHypoteque() {
+		return hypothequeEnable;
 	}
 	
 	public void loadAction() { //Voir un autre moyen de le faire
@@ -119,6 +122,12 @@ public class Configuration {
 		} catch (Exception e) {
 			stringToSend.receiveMsg(
 					"[Erreur] Paramètre niveauTerrain départ mal renseigné. Tentative prise de valeur par défaut (6)");
+		}
+		try {
+			hypothequeEnable = gameSetting.getBoolean("hypotheque");
+		} catch (Exception e) {
+			stringToSend.receiveMsg(
+					"[Erreur] Paramètre hypotheque départ mal renseigné. Tentative prise de valeur par défaut (false)");
 		}
 		try {
 			defaultMoney = gameSetting.getInt("defaultMoney");
@@ -235,6 +244,8 @@ public class Configuration {
 					try {
 						if (!prison) {
 							caseInfo.getString("nom");
+							caseInfo.getInt("amountToEscape");
+							caseInfo.getInt("diceValue");
 							listeCaseJSON.add(caseInfo);
 							caseInfo.remove("type");
 							listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i));
@@ -243,7 +254,7 @@ public class Configuration {
 							erreur += "[Erreur] Le plateau doit comporter qu'une seul case prison";
 						}
 					} catch (Exception e) {
-						erreur += "\n[Erreur] Propriété case n°" + i + " de type " + type + " non défini (nom)";
+						erreur += "\n[Erreur] Propriété case n°" + i + " de type " + type + " non défini (nom/amountToEscape/diceValue)";
 					}
 
 				} else if (type.equals("service")) {

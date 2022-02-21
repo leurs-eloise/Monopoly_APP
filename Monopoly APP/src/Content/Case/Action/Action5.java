@@ -6,7 +6,8 @@ import Content.Partie;
 public class Action5 implements carteAction{
 
 	private String description = "Payer 15$ pour excès de vitesse";
-    private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
+    @SuppressWarnings("unused")
+	private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
     
     // Constructeur

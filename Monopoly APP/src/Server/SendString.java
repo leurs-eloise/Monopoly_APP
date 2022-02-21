@@ -2,7 +2,6 @@ package Server;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import Content.Configuration;
 
 public class SendString {
 	ArrayList<ReceiveEvent> ecouteur = new ArrayList<ReceiveEvent>();
