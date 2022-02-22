@@ -12,7 +12,7 @@ public class Server {
       stringToSend.addEcouteur(fenetre);
       while(true){
         Socket serverClient=server.accept();  //server accept the client connection request
-        stringToSend.receiveMsg("[Connection] Connexion d'un client en cours");
+        //stringToSend.receiveMsg("[Connection] Connexion d'un client en cours");
         ServerClientThread sct = new ServerClientThread(serverClient, server, robot, stringToSend); //send  the request to a separate thread
         robot.addRobot(sct);
         sct.start();

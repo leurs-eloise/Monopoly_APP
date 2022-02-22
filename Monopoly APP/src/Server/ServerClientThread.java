@@ -46,7 +46,9 @@ class ServerClientThread extends Thread {
 				clientMessage = inStream.readUTF();
 				String[] clientMessageSplit = clientMessage.split(" ");
 				if (!clientName.equals("ClientServer")) {
-					sendMessage.receiveMsg("[Info] " + clientName + ": " + clientMessage);
+					if(!clientMessage.equals("setname ClientServer")) {
+						sendMessage.receiveMsg("[Info] " + clientName + ": " + clientMessage);
+					}
 				} else {
 					sendMessage.receiveMsg(">> " + clientMessage);
 				}
@@ -62,7 +64,10 @@ class ServerClientThread extends Thread {
 							}
 						}
 						this.setClientName(clientMessageSplit[1]);
-						serverMessage = serverMessage + "[Info] Your name is now " + this.getClientName();
+						if (!clientName.equals("ClientServer")) {
+							serverMessage = serverMessage + "[Info] Your name is now " + this.getClientName();
+						}
+						
 					}
 
 				} else if (clientMessageSplit[0].equals("msg")) {
@@ -99,7 +104,26 @@ class ServerClientThread extends Thread {
 					}
 
 				} else if (clientMessageSplit[0].equals("help")) {
-					serverMessage = "[Info] Liste des commandes: msg, setname, disconnect, stop, robot, mc, web, loadconfig";
+					serverMessage = "[Info] Liste des commandes: "
+							+ "buy\r\n"
+							+ "exchange\r\n"
+							+ "fintour\r\n"
+							+ "help\r\n"
+							+ "home\r\n"
+							+ "hypotheque\r\n"
+							+ "loadconfig\r\n"
+							+ "mc\r\n"
+							+ "msg\r\n"
+							+ "msgall\r\n"
+							+ "paytoescape\r\n"
+							+ "plateau\r\n"
+							+ "robot\r\n"
+							+ "rolldice\r\n"
+							+ "setname\r\n"
+							+ "skip\r\n"
+							+ "start\r\n"
+							+ "usecard\r\n"
+							+ "web\r\n";
 
 				} else if (clientMessageSplit[0].equals("stop")) {
 					for (ServerClientThread client : listeRobot.getRobot()) {
@@ -214,25 +238,26 @@ class ServerClientThread extends Thread {
 					Partie.getInstance().echanger(); // mettre la fonction qui fait l'echange
 				}
 
-				else if (clientMessageSplit[0].equals("home1")) {
-					Partie.getInstance().acheterBuilding(1);
-				} 
-				
-				else if (clientMessageSplit[0].equals("home2")) {
-					Partie.getInstance().acheterBuilding(2);
-				} 
-				
-				else if (clientMessageSplit[0].equals("home3")) {
-					Partie.getInstance().acheterBuilding(3);
-				} 
-				
-				else if (clientMessageSplit[0].equals("home4")) {
-					Partie.getInstance().acheterBuilding(4);
-				} 
-				
-				else if (clientMessageSplit[0].equals("home5")) {
-					Partie.getInstance().acheterBuilding(5);
+				else if (clientMessageSplit[0].equals("home")) {
+					if(clientMessageSplit.length == 2) {
+						try {
+							int level = Integer.parseInt(clientMessageSplit[1]);
+							if(level<0 || level>6) {
+								serverMessage = "[Erreur] Le niveau doit être compris entre 0 et 5";
+							} else {
+								Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[1]));
+							}
+							
+						} catch (Exception e) {
+							serverMessage = "[Erreur] Le niveau doit être un nombre";
+						}
+					}
+						
+					 else {
+						serverMessage = "[Erreur] Usage: home (level)";
+					}
 				}
+
 				
 				else if (clientMessageSplit[0].equals("usecard")) {
 					Partie.getInstance().useCard();
@@ -251,6 +276,8 @@ class ServerClientThread extends Thread {
 					}
 				} else if (clientMessageSplit[0].equals("fintour")) {
 					Partie.getInstance().finTour();
+				} else if (clientMessageSplit[0].equals("plateau")) {
+					serverMessage =  Partie.getInstance().plateau();
 				}
 
 				else {

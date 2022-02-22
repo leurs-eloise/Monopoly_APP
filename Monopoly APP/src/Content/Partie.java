@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
+import org.json.JSONObject;
+
 import Content.Case.Case;
 import Content.Case.CaseCarte;
 import Content.Case.Depart;
@@ -78,16 +80,19 @@ public class Partie {
 			}
 			if (joueurActuel.getTourPrison() != 0) { // Lancer de dés si joueur en prison
 
-				stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " a choisit de lancer les dés pour sortir de prison");
+				stringToSend.receiveMsg(
+						"[Info] " + joueurActuel.getPseudo() + " a choisit de lancer les dés pour sortir de prison");
 				joueurActuel.lancerDes();
 				if (joueurActuel.getValDes() == 6) {
-					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sortit de prison en faisant un 6 !");
+					stringToSend.receiveMsg(
+							"[Info] " + joueurActuel.getPseudo() + " est sortit de prison en faisant un 6 !");
 					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " peut maintenant jouer");
 					joueurActuel.setTourPrison(0);
 					etat = 1;
 					return true;
 				} else {
-					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " à fait un " + joueurActuel.getValDes() + ". Il reste en prison.");
+					stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " à fait un "
+							+ joueurActuel.getValDes() + ". Il reste en prison.");
 					etat = 3;
 					return true;
 				}
@@ -176,15 +181,16 @@ public class Partie {
 			return true;
 		} else if (currentCase instanceof EnPrison) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " part en prison !");
-			for(Case cas : Configuration.getInstance().getListeCase()) {
-				if(cas instanceof Prison) {
-					joueurActuel.setPosition(((Prison)cas).getId());
+			for (Case cas : Configuration.getInstance().getListeCase()) {
+				if (cas instanceof Prison) {
+					joueurActuel.setPosition(((Prison) cas).getId());
 					currentCase = cas;
 				}
 			}
 
-			stringToSend.receiveMsg(
-					"[Info] Pour sortir de prison, vous devez: \n- faire un " + ((Prison)currentCase).getDes() + " \n-Payer " + ((Prison)currentCase).getEscape() + "$ \n-Utiliser une carte 'sortir de prison'");
+			stringToSend.receiveMsg("[Info] Pour sortir de prison, vous devez: \n- faire un "
+					+ ((Prison) currentCase).getDes() + " \n-Payer " + ((Prison) currentCase).getEscape()
+					+ "$ \n-Utiliser une carte 'sortir de prison'");
 			joueurActuel.setTourPrison(1);
 			etat = 3;
 		} else {
@@ -210,9 +216,15 @@ public class Partie {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 			return false;
 		}
-		if(joueurActuel.getArgent()> ((Prison)Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()) {
-			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " à payer " + ((Prison)Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape() + "$ pour sortir de prison. Il peut jouer normalement");
-			joueurActuel.setArgent(joueurActuel.getArgent() - ((Prison)Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape());
+		if (joueurActuel
+				.getArgent() > ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition()))
+						.getEscape()) {
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " à payer "
+					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()
+					+ "$ pour sortir de prison. Il peut jouer normalement");
+			joueurActuel.setArgent(joueurActuel.getArgent()
+					- ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition()))
+							.getEscape());
 			etat = 1;
 			joueurActuel.setTourPrison(0);
 		} else {
@@ -221,24 +233,26 @@ public class Partie {
 		}
 		return true;
 	}
-	
+
 	public boolean useCard() {
 		if ((etat != 1) || joueurActuel.getTourPrison() == 0) {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 			return false;
 		}
-		if(joueurActuel.getPrisonCard()>0) {
-			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " à utiliser une carte 'sortir de prison'. Il peut jouer normalement");
+		if (joueurActuel.getPrisonCard() > 0) {
+			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo()
+					+ " à utiliser une carte 'sortir de prison'. Il peut jouer normalement");
 			joueurActuel.setPrisonCard(joueurActuel.getPrisonCard() - 1);
 			joueurActuel.setTourPrison(0);
 			etat = 1;
 		} else {
-			stringToSend.receiveMsg("[Erreur] " + joueurActuel.getPseudo() + " ne dispose pas de carte 'sortir de prison'");
+			stringToSend
+					.receiveMsg("[Erreur] " + joueurActuel.getPseudo() + " ne dispose pas de carte 'sortir de prison'");
 			etat = 1;
 		}
 		return true;
 	}
-	
+
 	public boolean hypotheque() {
 		if ((etat != 2 || etat != 3) && Configuration.getInstance().isHypoteque()) {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
@@ -287,30 +301,131 @@ public class Partie {
 			etat = 0;
 			return true;
 		}
-		if(joueurActuel.getTourPrison() != 0) {
-			joueurActuel.setTourPrison(joueurActuel.getTourPrison() +1);
+		if (joueurActuel.getTourPrison() != 0) {
+			joueurActuel.setTourPrison(joueurActuel.getTourPrison() + 1);
 		}
 		joueurPosInt += 1;
 		if (joueurPosInt >= listeJoueur.size()) {
 			joueurPosInt = 0;
 		}
 		joueurActuel = listeJoueur.get(joueurPosInt);
-		if(joueurActuel.getTourPrison() > 0 && joueurActuel.getTourPrison() < 4) {
+		if (joueurActuel.getTourPrison() > 0 && joueurActuel.getTourPrison() < 4) {
 			stringToSend.receiveMsg("[info] " + joueurActuel.getPseudo() + " débute son tour en prison");
 		} else {
 			stringToSend.receiveMsg("[info] A " + joueurActuel.getPseudo() + " de jouer !");
 		}
-		
+
 		if (joueurActuel.getTourPrison() >= 4) {
-			joueurActuel.setArgent(joueurActuel.getArgent() - ((Prison)Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape());
+			joueurActuel.setArgent(joueurActuel.getArgent()
+					- ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition()))
+							.getEscape());
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est resté trop de temps en prison. "
-					+ joueurActuel.getPseudo() + " à payé " + ((Prison)Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape() + "$");
+					+ joueurActuel.getPseudo() + " à payé "
+					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()
+					+ "$");
 			etat = 1;
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " peut maintenant lancer le dés pour jouer");
 			return true;
 		}
 		etat = 1;
 		return true;
+	}
+
+	public String plateau() {
+		String plateau = "\n";
+		ArrayList<Case> listeCase = Configuration.getInstance().getListeCase();
+		int longueur = (int) Configuration.getInstance().getListeCase().size() / 4;
+		int reste = Configuration.getInstance().getListeCase().size() % 4;
+
+		for (int i = 0; i < 3; i++) {
+			if (reste != 0) {
+				longueur += 1;
+			}
+
+			if (i == 0) {
+				String tempo = "";
+
+				for (int j = 0; j < longueur + 1; j++) {
+					if (j == 0) {
+						tempo = tempo + "" + getType(listeCase.get(j));
+					} else {
+						tempo = tempo + "|" + getType(listeCase.get(j));
+					}
+					
+				}
+				plateau += tempo +"\n";
+			}
+
+			if (i == 1) {
+				if (reste != 0) {
+					for (int j = 0; j < 4 - reste; j++) {
+						String tempo = "";
+						for (int k = 0; k < longueur - 1; k++) {
+							tempo += "----|";
+						tempo += getType(listeCase.get(longueur + j));
+						plateau += tempo +"\n";
+						}
+						
+					}
+					longueur -= 1;
+					for (int j = 0; j < longueur - (4 - reste) - 1; j++) {
+						String tempo = "";
+						tempo = getType(listeCase.get(listeCase.size() - j - 1));
+						for (int k = 0; k < longueur - 1; k++) {
+							tempo += "|----";
+							
+							
+						}
+						tempo += "|" + getType(listeCase.get(longueur + j + 1 + (4 - reste)));
+						plateau += tempo +"\n";
+					}
+
+				} else {
+					for (int j = 0; j < longueur - reste - 1; j++) {
+						String tempo = "";
+						tempo = getType(listeCase.get(listeCase.size() - j - 1));
+						for (int k = 0; k < longueur - 1; k++) {
+							tempo += "|----";
+							
+							
+						}
+						tempo += "|" + getType(listeCase.get(longueur + j + 1 + reste));
+						plateau += tempo +"\n";
+					}
+
+				}
+			}
+
+			if (i == 2) {
+				String tempo = "";
+				if (reste != 0) {
+					longueur -= 1;
+					for (int j = 0; j < longueur + 1; j++) {
+						if (j == 0) {
+							tempo = getType(listeCase.get(listeCase.size() - longueur - j + (4 - reste)));
+						} else {
+							tempo += "|" + getType(listeCase.get(listeCase.size() - longueur - j + (4 - reste)));
+						}
+					}
+				} else {
+					for (int j = 0; j < longueur + 1; j++) {
+						if (j == 0) {
+							tempo = getType(listeCase.get(listeCase.size() - longueur - j));
+						} else {
+							tempo += "|" + getType(listeCase.get(listeCase.size() - longueur - j));
+						}
+					}
+
+				}
+				plateau += tempo +"\n";
+			}
+		}
+
+		return plateau;
+	}
+	
+	public String getType(Case cases) {
+		return cases.getClass().getSimpleName().subSequence(0, 2).toString();
 	}
 
 }

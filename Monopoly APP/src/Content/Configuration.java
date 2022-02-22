@@ -28,7 +28,7 @@ public class Configuration {
 	public boolean configLoad = false;
 	private int defaultMoney = 1500;
 
-	public ArrayList<JSONObject> listeCaseJSON = new ArrayList<JSONObject>();
+	private ArrayList<JSONObject> listeCaseJSON = new ArrayList<JSONObject>();
 	private ArrayList<Case> listeCase = new ArrayList<Case>();
 	private SendString stringToSend = SendString.getInstance();
 	private boolean hypothequeEnable = false;
@@ -37,6 +37,10 @@ public class Configuration {
 	public Configuration() {
 	}
 
+	
+	public ArrayList<JSONObject> getListeCaseJSON() {
+		return listeCaseJSON;
+	}
 	public static Configuration getInstance() {
 		if (Objects.isNull(configuration)) {
 			configuration = new Configuration();
