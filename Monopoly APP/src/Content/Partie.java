@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
-import org.json.JSONObject;
 
 import Content.Case.Case;
 import Content.Case.CaseCarte;
@@ -332,6 +331,9 @@ public class Partie {
 	}
 
 	public String plateau() {
+		if(!Configuration.getInstance().isConfigLoad()) {
+			return "[Erreur] Aucune configuration n'est chargé";
+		}
 		String plateau = "\n";
 		ArrayList<Case> listeCase = Configuration.getInstance().getListeCase();
 		int longueur = (int) Configuration.getInstance().getListeCase().size() / 4;
@@ -361,10 +363,11 @@ public class Partie {
 					for (int j = 0; j < 4 - reste; j++) {
 						String tempo = "";
 						for (int k = 0; k < longueur - 1; k++) {
-							tempo += "----|";
+							tempo += "--|";
+						}
 						tempo += getType(listeCase.get(longueur + j));
 						plateau += tempo +"\n";
-						}
+
 						
 					}
 					longueur -= 1;
@@ -372,9 +375,7 @@ public class Partie {
 						String tempo = "";
 						tempo = getType(listeCase.get(listeCase.size() - j - 1));
 						for (int k = 0; k < longueur - 1; k++) {
-							tempo += "|----";
-							
-							
+							tempo += "|--";
 						}
 						tempo += "|" + getType(listeCase.get(longueur + j + 1 + (4 - reste)));
 						plateau += tempo +"\n";
@@ -385,7 +386,7 @@ public class Partie {
 						String tempo = "";
 						tempo = getType(listeCase.get(listeCase.size() - j - 1));
 						for (int k = 0; k < longueur - 1; k++) {
-							tempo += "|----";
+							tempo += "|--";
 							
 							
 						}

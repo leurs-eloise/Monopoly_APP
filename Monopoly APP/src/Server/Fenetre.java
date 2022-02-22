@@ -1,5 +1,6 @@
 package Server;
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -75,6 +76,8 @@ public class Fenetre extends JFrame implements ActionListener, ReceiveEvent {
 	    buy.setActionCommand("buy");
 	    fintour.addActionListener(this);
 	    fintour.setActionCommand("fin");
+	    
+	    log.setFont(new Font("Consolas", Font.PLAIN, 14));
 	   
 	    this.getRootPane().setDefaultButton(sendButton);
 	    log.append("Log du serveur:\n");
