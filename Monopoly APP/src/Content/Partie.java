@@ -302,9 +302,9 @@ public class Partie {
 		}
 		
 		if (joueurActuel.getTourPrison() >= 4) {
-			joueurActuel.setArgent(joueurActuel.getArgent() - 50);
+			joueurActuel.setArgent(joueurActuel.getArgent() - ((Prison)Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape());
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est resté trop de temps en prison. "
-					+ joueurActuel.getPseudo() + " à payé 50$");
+					+ joueurActuel.getPseudo() + " à payé " + ((Prison)Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape() + "$");
 			etat = 1;
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " peut maintenant lancer le dés pour jouer");
 			return true;
