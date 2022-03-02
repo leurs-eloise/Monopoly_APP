@@ -253,21 +253,26 @@ public class Partie {
 	}
 
 	public boolean hypotheque() {
-		if ((etat != 2 || etat != 3) && Configuration.getInstance().isHypoteque()) {
+		if (etat != 2 && etat != 3) {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 			return false;
+		} else {
+			if(Configuration.getInstance().isHypoteque()) {
+				stringToSend.receiveMsg("[Erreur] Les hypothèques sont désactivées !");
+				return false;
+			} else {
+				return true;
+			}
 		}
-		etat = 2;
-		return true;
+
 	}
 
 	public boolean echanger() {
-		if (etat != 2 || etat != 3) {
+		if (etat != 2 && etat != 3) {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 			return false;
 		}
 
-		etat = 3;
 		return true;
 	}
 
@@ -285,7 +290,7 @@ public class Partie {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 			return false;
 		}
-		if (joueurActuel.getArgent() <= 0) {
+		if (joueurActuel.getArgent() < 0) {
 			for (Propriete prop : joueurActuel.getProprietes()) {
 				prop.setJoueur(null);
 			}
@@ -295,8 +300,7 @@ public class Partie {
 					"[Info] Le joueur " + joueurActuel.getPseudo() + " n'a plus d'argent. Il est donc éliminé");
 		}
 		if (listeJoueur.size() == 1) {
-			stringToSend
-					.receiveMsg("[Info] Fin de la partie. " + listeJoueur.get(0).getPseudo() + " gagne la partie !");
+			stringToSend.receiveMsg("[Info] Fin de la partie. " + listeJoueur.get(0).getPseudo() + " gagne la partie !");
 			etat = 0;
 			return true;
 		}
@@ -322,6 +326,7 @@ public class Partie {
 					+ joueurActuel.getPseudo() + " à payé "
 					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()
 					+ "$");
+			joueurActuel.setTourPrison(0);
 			etat = 1;
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " peut maintenant lancer le dés pour jouer");
 			return true;

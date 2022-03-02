@@ -92,8 +92,9 @@ public class Joueur {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
 			this.lancerDes();
-			proprietaire.setArgent(proprietaire.getArgent() + prop.getNiveau()*valDes);
-			this.setArgent(this.getArgent() - prop.getNiveau()*valDes);
+			proprietaire.setArgent(proprietaire.getArgent() + prop.getNiveau()*this.getValDes());
+			System.out.println(prop.getNiveau() + " - " + this.getValDes());
+			this.setArgent(this.getArgent() - prop.getNiveau()*this.getValDes());
 			stringToSend.receiveMsg("[Info] " + pseudo + " a payé " + prop.getNiveau()*valDes + "$ à " + proprietaire.getPseudo());
 		}
 	}

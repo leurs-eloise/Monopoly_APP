@@ -23,7 +23,7 @@ public class Action3 implements carteAction{
 
 	@Override
 	public void doAction() {
-		Partie.getInstance().getCurrentPlayer().setPosition(6); //Aller en prison
+		Partie.getInstance().getCurrentPlayer().setPosition(5); //Aller en prison
 		Partie.getInstance().actualiserPosition();
 	}
     

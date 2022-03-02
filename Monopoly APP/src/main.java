@@ -20,7 +20,6 @@ public class main extends Thread  {
 		
 		Configuration.getInstance().loadDefaultConfig();
 		Partie.getInstance().init();
-		System.out.println(Configuration.getInstance().getLoyer(12).get(1));
 		//new Server();
 		/*
 		main test = new main();

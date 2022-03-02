@@ -380,21 +380,11 @@ public class Configuration {
 	public ArrayList<Integer> getLoyer(int i) {
 		
 		ArrayList<Integer> listeLoyer = CaseFactory.getInstance().JSONArrayToIntArrayList(listeCaseJSON.get(i).getJSONArray("loyer"));
-		JSONArray listeLoyerJSON = listeCaseJSON.get(i).getJSONArray("loyer");
-		int[] loyer = new int[listeLoyerJSON.length()];
-		for (int j = 0; j < listeLoyerJSON.length(); j++) {
-			loyer[j] = listeLoyerJSON.optInt(i);
-		}
-
 		return listeLoyer;
 	}
 
-	public int[] getMultiplicateur(int i) {
-		JSONArray listeMultiplicateurJSON = listeCaseJSON.get(i).getJSONArray("multiplicateur");
-		int[] multiplicateur = new int[listeMultiplicateurJSON.length()];
-		for (int j = 0; j < listeMultiplicateurJSON.length(); j++) {
-			multiplicateur[j] = listeMultiplicateurJSON.optInt(i);
-		}
+	public ArrayList<Integer> getMultiplicateur(int i) {
+		ArrayList<Integer> multiplicateur = CaseFactory.getInstance().JSONArrayToIntArrayList(listeCaseJSON.get(i).getJSONArray("multiplicateur"));
 		return multiplicateur;
 	}
 

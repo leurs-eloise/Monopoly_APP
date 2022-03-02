@@ -17,7 +17,6 @@ public class Gare extends Propriete {
 				nbGare += 1;
 			}
 		}
-		System.out.println(nbGare);
 		if (nbGare > 0) {
 			return Configuration.getInstance().getLoyer(super.getId()).get(nbGare-1);
 		}
