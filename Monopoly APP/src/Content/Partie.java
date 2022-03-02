@@ -22,7 +22,7 @@ public class Partie {
 	private ArrayList<Joueur> listeJoueur = new ArrayList<Joueur>();
 	private Joueur joueurActuel;
 	private static Partie partie;
-	private int etat = 0; // 0 partie non lancer - 1 début tour - 2-3 achat/ventre/echange du joueur - 3
+	private int etat = 0; // 0 partie non lancer - 1 début tour - 2-3 achat/vente/echange du joueur - 3
 							// fin de tour
 	private SendString stringToSend = SendString.getInstance();
 	private int joueurPosInt = 0;
