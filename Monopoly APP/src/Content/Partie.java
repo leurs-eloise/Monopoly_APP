@@ -23,7 +23,7 @@ public class Partie {
 	private Joueur joueurActuel;
 	private static Partie partie;
 	private int etat = 0; // 0 partie non lancer - 1 début tour - 2-3 achat/vente/echange du joueur - 3
-							// fin de tour
+	// fin de tour
 	private SendString stringToSend = SendString.getInstance();
 	private int joueurPosInt = 0;
 	private ArrayList<carteAction> listeCarteAction = new ArrayList<carteAction>();
@@ -135,7 +135,7 @@ public class Partie {
 	public boolean actualiserPosition() {
 		Case currentCase = Configuration.getInstance().getListeCase().get(joueurActuel.getPosition());
 		stringToSend
-				.receiveMsg("[Info] " + joueurActuel.getPseudo() + " ce retrouve sur la case " + currentCase.getNom());
+		.receiveMsg("[Info] " + joueurActuel.getPseudo() + " ce retrouve sur la case " + currentCase.getNom());
 		if (currentCase instanceof Prison) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est en visite simple sur la prison");
 			etat = 3;
@@ -162,13 +162,15 @@ public class Partie {
 				return true;
 			} else {
 				stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur " + currentCase.getNom()
-						+ " qui est possédé par " + owner.getPseudo());
-				if (currentCase instanceof Service) {
-					joueurActuel.payer(((Service) currentCase));
-				} else if (currentCase instanceof Gare) {
-					joueurActuel.payer(((Gare) currentCase));
-				} else if (currentCase instanceof Terrain) {
-					joueurActuel.payer(((Terrain) currentCase));
+				+ " qui est possédé par " + owner.getPseudo());
+				if (((Propriete) currentCase).isHypotheque() == false) {
+					if (currentCase instanceof Service) {
+						joueurActuel.payer(((Service) currentCase));
+					} else if (currentCase instanceof Gare) {
+						joueurActuel.payer(((Gare) currentCase));
+					} else if (currentCase instanceof Terrain) {
+						joueurActuel.payer(((Terrain) currentCase));
+					}
 				}
 				etat = 3;
 				return true;
@@ -217,13 +219,13 @@ public class Partie {
 		}
 		if (joueurActuel
 				.getArgent() > ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition()))
-						.getEscape()) {
+				.getEscape()) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " à payer "
 					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()
 					+ "$ pour sortir de prison. Il peut jouer normalement");
 			joueurActuel.setArgent(joueurActuel.getArgent()
 					- ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition()))
-							.getEscape());
+					.getEscape());
 			etat = 1;
 			joueurActuel.setTourPrison(0);
 		} else {
@@ -240,13 +242,13 @@ public class Partie {
 		}
 		if (joueurActuel.getPrisonCard() > 0) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo()
-					+ " à utiliser une carte 'sortir de prison'. Il peut jouer normalement");
+			+ " à utiliser une carte 'sortir de prison'. Il peut jouer normalement");
 			joueurActuel.setPrisonCard(joueurActuel.getPrisonCard() - 1);
 			joueurActuel.setTourPrison(0);
 			etat = 1;
 		} else {
 			stringToSend
-					.receiveMsg("[Erreur] " + joueurActuel.getPseudo() + " ne dispose pas de carte 'sortir de prison'");
+			.receiveMsg("[Erreur] " + joueurActuel.getPseudo() + " ne dispose pas de carte 'sortir de prison'");
 			etat = 1;
 		}
 		return true;
@@ -271,11 +273,12 @@ public class Partie {
 		return true;
 	}
 
-	public boolean acheterBuilding(int level) {
+	public boolean acheterBuilding(int level, Terrain ter){
 		if (etat != 3) {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 			return false;
 		}
+		getCurrentPlayer().acheterBuilding(level, ter);
 		etat = 3;
 		return true;
 	}
@@ -296,7 +299,7 @@ public class Partie {
 		}
 		if (listeJoueur.size() == 1) {
 			stringToSend
-					.receiveMsg("[Info] Fin de la partie. " + listeJoueur.get(0).getPseudo() + " gagne la partie !");
+			.receiveMsg("[Info] Fin de la partie. " + listeJoueur.get(0).getPseudo() + " gagne la partie !");
 			etat = 0;
 			return true;
 		}
@@ -317,7 +320,7 @@ public class Partie {
 		if (joueurActuel.getTourPrison() >= 4) {
 			joueurActuel.setArgent(joueurActuel.getArgent()
 					- ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition()))
-							.getEscape());
+					.getEscape());
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est resté trop de temps en prison. "
 					+ joueurActuel.getPseudo() + " à payé "
 					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()
@@ -353,7 +356,7 @@ public class Partie {
 					} else {
 						tempo = tempo + "|" + getType(listeCase.get(j));
 					}
-					
+
 				}
 				plateau += tempo +"\n";
 			}
@@ -368,7 +371,7 @@ public class Partie {
 						tempo += getType(listeCase.get(longueur + j));
 						plateau += tempo +"\n";
 
-						
+
 					}
 					longueur -= 1;
 					for (int j = 0; j < longueur - (4 - reste) - 1; j++) {
@@ -387,8 +390,8 @@ public class Partie {
 						tempo = getType(listeCase.get(listeCase.size() - j - 1));
 						for (int k = 0; k < longueur - 1; k++) {
 							tempo += "|--";
-							
-							
+
+
 						}
 						tempo += "|" + getType(listeCase.get(longueur + j + 1 + reste));
 						plateau += tempo +"\n";
@@ -424,7 +427,7 @@ public class Partie {
 
 		return plateau;
 	}
-	
+
 	public String getType(Case cases) {
 		return cases.getClass().getSimpleName().subSequence(0, 2).toString();
 	}
