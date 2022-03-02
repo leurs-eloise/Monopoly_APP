@@ -23,7 +23,6 @@ public class Joueur {
 	private int score;
 	private SendString stringToSend = SendString.getInstance();
 	private int prisonCard = 0;
-	//private ArrayList<CarteAction> cartes;
 	
 	//constructeur pour la config
 	public Joueur(int id, String pseudo, int argent, int position, int tourPrison, ArrayList<Propriete> proprietes) {
@@ -44,13 +43,6 @@ public class Joueur {
 		this.argent = argent;
 	}
 	
-	public int getPrisonCard() {
-		return prisonCard;
-	}
-	
-	public void setPrisonCard(int prisonCard) {
-		this.prisonCard = prisonCard;
-	}
 	public void lancerDes() {
 		this.valDes = des.getValeur();
 		stringToSend.receiveMsg("[Info] " + pseudo + " à fait un " + valDes);
@@ -164,6 +156,9 @@ public class Joueur {
 	public void setArgent(int argent) {
 		this.argent = argent;
 	}
+	public int getNbProp() {
+		return proprietes.size();
+	}
 	public int getPosition() {
 		return position;
 	}
@@ -188,7 +183,13 @@ public class Joueur {
 	public void setProprietes(ArrayList<Propriete> proprietes) {
 		this.proprietes = proprietes;
 	}
+	public int getPrisonCard() {
+		return prisonCard;
+	}
 	
+	public void setPrisonCard(int prisonCard) {
+		this.prisonCard = prisonCard;
+	}
 	
 	
 	

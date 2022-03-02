@@ -7,6 +7,7 @@ import java.net.Socket;
 
 import Content.Configuration;
 import Content.Partie;
+import Content.Joueur;
 
 class ServerClientThread extends Thread {
 	Socket serverClient;
@@ -209,11 +210,6 @@ class ServerClientThread extends Thread {
 						}
 					}
 					
-					
-					
-					
-					
-					
 				} else if (clientMessageSplit[0].equals("loadconfig")) {
 					Configuration.getInstance().loadDefaultConfig();
 				} 
@@ -228,6 +224,10 @@ class ServerClientThread extends Thread {
 
 				else if (clientMessageSplit[0].equals("hypotheque")) {
 					Partie.getInstance().hypotheque();
+				}
+				
+				else if (clientMessageSplit[0].equals("skip")) {
+					Partie.getInstance().skip();
 				}
 
 				else if (clientMessageSplit[0].equals("buy")) {
@@ -257,7 +257,14 @@ class ServerClientThread extends Thread {
 						serverMessage = "[Erreur] Usage: home (level)";
 					}
 				}
-
+				
+				else if (clientMessageSplit[0].equals("bilan")) {
+					//argent, nb prop 
+					serverMessage = Partie.getInstance().getCurrentPlayer().getPseudo() + " possede " + 
+							Partie.getInstance().getCurrentPlayer().getNbProp() + " proprietes et " 
+							+ Partie.getInstance().getCurrentPlayer().getArgent() + " sous.";
+					
+				}
 				
 				else if (clientMessageSplit[0].equals("usecard")) {
 					Partie.getInstance().useCard();
