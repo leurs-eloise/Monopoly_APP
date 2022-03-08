@@ -18,8 +18,8 @@ public class main extends Thread  {
 		main test = new main();
 		test.start();
 		
-		Configuration.getInstance().loadDefaultConfig();
-		Partie.getInstance().init();
+		//Configuration.getInstance().loadConfig("test.json");
+		//Partie.getInstance().init();
 		//new Server();
 		/*
 		main test = new main();

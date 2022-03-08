@@ -94,6 +94,8 @@ public class Joueur {
 	public void onEventCreated(DemandeEchangeEvent ev) {
 		@SuppressWarnings("unused")
 		boolean choix = false;
+		System.out.println(ev.getProp1().getJoueur().getPseudo() + " veut echanger "+ ev.getProp1().getNom() 
+				+ " avec " + ev.getProp2().getNom() + " et " + ev.getPrix() + " sous.");
 		System.out.println("Acceptez-vous cette l'echange ?");
 		String reponse = this.scan.nextLine();
 		if (reponse.equals("oui")) {
@@ -103,16 +105,17 @@ public class Joueur {
 	
 	public void onEventCreated(EchangeEvent ev) {
 		if(ev.isChoix()) {
-			this.echanger(ev.getProp1(), ev.getProp2());
+			this.echanger(ev.getProp1(), ev.getProp2(), ev.getPrix());
 		}
 	}
 	
-	public void echanger(Propriete prop1, Propriete prop2) {
+	public void echanger(Propriete prop1, Propriete prop2, int sous) {
 		Joueur proprietaire = prop1.getJoueur();
 		Joueur destinataire = prop2.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
 			prop1.setJoueur(destinataire);
 			prop2.setJoueur(proprietaire);
+			destinataire.setArgent(destinataire.getArgent() + sous);
 			}		
 	}
 	
@@ -125,6 +128,10 @@ public class Joueur {
 			}		
 	}
 	
+	public void hypotheque(Propriete prop) {
+		prop.setHypotheque(false);
+		this.setArgent(this.getArgent() + prop.getPrixHypotheque());
+	}
 	
 	//Getter and setter 
 	public void setScore() {

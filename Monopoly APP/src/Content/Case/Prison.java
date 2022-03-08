@@ -23,4 +23,7 @@ public class Prison implements Case {
 	public int getId() {
 		return id;
 	}
+	public String getType() {
+    	return this.getClass().getName();
+    }
 }

@@ -23,6 +23,9 @@ public class CaseCarte implements Case {
     public String getNom() {
     	return nom;
     }
+    public String getType() {
+    	return this.getClass().getName();
+    }
 
     
 }
