@@ -1,12 +1,12 @@
 package Content;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +27,7 @@ public class Configuration {
 	private int lvlMaxProp = 6;
 	public boolean configLoad = false;
 	private int defaultMoney = 1500;
+	private JSONObject playerConfig = null;
 
 	private ArrayList<JSONObject> listeCaseJSON = new ArrayList<JSONObject>();
 	private ArrayList<Case> listeCase = new ArrayList<Case>();
@@ -37,6 +38,9 @@ public class Configuration {
 	public Configuration() {
 	}
 
+	public JSONObject getPlayerConfig() {
+		return playerConfig;
+	}
 	
 	public ArrayList<JSONObject> getListeCaseJSON() {
 		return listeCaseJSON;
@@ -48,19 +52,294 @@ public class Configuration {
 		return configuration;
 	}
 
-	/*
-	 * public boolean loadConfig(String path) { try { File file = new File(path);
-	 * if(!Desktop.isDesktopSupported()) { System.out.println("not supported");
-	 * return false; } Desktop desktop = Desktop.getDesktop(); if(file.exists()) {
-	 * desktop.open(file); System.out.println(file); return true; }
-	 * 
-	 * 
-	 * } catch(Exception e) { e.printStackTrace(); } return false;
-	 * 
-	 * 
-	 * 
-	 * }
-	 */
+	public boolean loadConfig(String file) { //Config perso 
+        try(BufferedReader br = new BufferedReader(new FileReader(file)))  
+        { 
+            String reponse  = ""; 
+            String line =""; 
+            while ((line = br.readLine()) != null) { 
+            	reponse += line; 
+            } 
+            br.close(); 
+    		JSONObject configJSON = new JSONObject(reponse); 
+    		if (Objects.isNull(configJSON)) { 
+    			stringToSend.receiveMsg("[Info] Erreur lors du chargement de la configuration"); 
+    			return false; 
+    		} 
+    		// LECTURE ET TRAITEMENT DU FICHIER 
+    		playerConfig = null;
+    		configLoad = false;
+    		try { 
+    			playerConfig = configJSON.getJSONObject("Player"); 
+    		}catch (Exception e) { 
+    			stringToSend.receiveMsg("[Info] Paramï¿½tre Player non renseignï¿½."); 
+			} 
+ 
+    		 
+    		JSONObject gameSetting = configJSON.getJSONObject("GameSetting"); 
+    		JSONObject caseListInformation = configJSON.getJSONObject("Case"); 
+    		try { 
+    			nbCase = gameSetting.getInt("case"); 
+ 
+    		} catch (Exception e) { 
+    			stringToSend.receiveMsg("[Erreur] Paramï¿½tre case mal renseignï¿½. Tentative prise de valeur par dï¿½faut (20)"); 
+    		} 
+    		try { 
+    			nbJoueur = gameSetting.getInt("player"); 
+    		} catch (Exception e) { 
+    			stringToSend 
+    					.receiveMsg("[Erreur] Paramï¿½tre player mal renseignï¿½. Tentative prise de valeur par dï¿½faut (2)"); 
+    		} 
+    		try { 
+    			lvlMaxProp = gameSetting.getInt("niveauTerrain"); 
+    		} catch (Exception e) { 
+    			stringToSend.receiveMsg( 
+    					"[Erreur] Paramï¿½tre niveauTerrain dï¿½part mal renseignï¿½. Tentative prise de valeur par dï¿½faut (6)"); 
+    		} 
+    		try { 
+    			hypothequeEnable = gameSetting.getBoolean("hypotheque"); 
+    		} catch (Exception e) { 
+    			stringToSend.receiveMsg( 
+    					"[Erreur] Paramï¿½tre hypotheque dï¿½part mal renseignï¿½. Tentative prise de valeur par dï¿½faut (false)"); 
+    		} 
+    		try { 
+    			defaultMoney = gameSetting.getInt("defaultMoney"); 
+    		} catch (Exception e) { 
+    			stringToSend.receiveMsg( 
+    					"[Erreur] Paramï¿½tre defaultMoney mal renseignï¿½. Tentative prise de valeur par dï¿½faut (1500)"); 
+    		} 
+    		try { 
+    			caseListInformation.get(Integer.toString(nbCase - 1)); 
+    		} catch (Exception e) { 
+    			stringToSend.receiveMsg("[Erreur] Nombre de cases insuffisant."); 
+ 
+    			return false; 
+ 
+    		} 
+    		ArrayList<JSONObject> listeGare = new ArrayList<JSONObject>(); 
+    		ArrayList<JSONObject> listeService = new ArrayList<JSONObject>(); 
+    		ArrayList<JSONObject> listeTerrain = new ArrayList<JSONObject>(); 
+    		// CREATION DES CASES 
+    		String erreur = ""; 
+    		boolean depart = false; 
+    		boolean prison = false; 
+    		boolean enPrison = false; 
+    		stringToSend.receiveMsg("[Info] Vï¿½rification des cases ..."); 
+    		for (int i = 0; i < nbCase; i++) { 
+ 
+    			JSONObject caseInfo = null; 
+    			try { 
+    				caseInfo = caseListInformation.getJSONObject(Integer.toString(i)); 
+    			} catch (Exception e) { 
+    				stringToSend.receiveMsg("[Erreur] Case " + i + " introuvable."); 
+ 
+    				return false; 
+ 
+    			} 
+    			try { 
+    				String type = caseInfo.getString("type"); 
+    				if (type.equals("depart")) { 
+    					if (!depart) { 
+    						if (i == 0) { 
+    							try { 
+    								caseInfo.getString("nom"); 
+    								caseInfo.getInt("gain"); 
+    								listeCaseJSON.add(caseInfo); 
+    								caseInfo.remove("type"); 
+    								listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
+    								depart = true; 
+    							} catch (Exception e) { 
+    								erreur += "\n[Erreur] Propriï¿½tï¿½ case dï¿½part non dï¿½fini (nom/gain)"; 
+    							} 
+    						} else { 
+    							erreur += "\n[Erreur] La case dï¿½part doit avoir comme indice 0"; 
+    						} 
+    					} else { 
+    						erreur += "\n[Erreur] Le plateau doit comporter qu'une seul case dï¿½part"; 
+    					} 
+ 
+    				} else if (type.equals("caseCarte")) { 
+    					try { 
+    						caseInfo.getString("nom"); 
+    						listeCaseJSON.add(caseInfo); 
+    						caseInfo.remove("type"); 
+    						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
+    					} catch (Exception e) { 
+    						erreur += "\n[Erreur] Propriï¿½tï¿½ case nï¿½" + i + " de type " + type + " non dï¿½fini (nom)"; 
+    					} 
+ 
+    				} else if (type.equals("gare")) { 
+    					try { 
+    						caseInfo.getString("nom"); 
+    						caseInfo.getInt("prix"); 
+    						caseInfo.getJSONArray("loyer"); 
+    						caseInfo.getInt("hypoteque"); 
+    						listeGare.add(caseInfo); 
+    						listeCaseJSON.add(caseInfo); 
+    						caseInfo.remove("type"); 
+    						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
+    					} catch (Exception e) { 
+    						erreur += "\n[Erreur] Propriï¿½tï¿½ case nï¿½" + i + " de type " + type 
+    								+ " non dï¿½fini (nom/prix/loyer/hypoteque)"; 
+    					} 
+ 
+    				} else if (type.equals("terrain")) { 
+    					try { 
+    						caseInfo.getString("nom"); 
+    						caseInfo.getInt("groupe"); 
+    						caseInfo.getInt("prix"); 
+    						caseInfo.getInt("prixConstruction"); 
+    						caseInfo.getJSONArray("loyer"); 
+    						caseInfo.getInt("hypoteque"); 
+    						if (caseInfo.getJSONArray("loyer").length() < lvlMaxProp) { 
+    							erreur += "\n[Erreur] " + lvlMaxProp + " prix sont exigï¿½s pour le loyer sur la case " + i; 
+    						} 
+    						listeTerrain.add(caseInfo); 
+    						listeCaseJSON.add(caseInfo); 
+    						caseInfo.remove("type"); 
+    						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
+    					} catch (Exception e) { 
+    						erreur += "\n[Erreur] Propriï¿½tï¿½ case nï¿½" + i + " de type " + type 
+    								+ " non dï¿½fini (nom/groupe/prix/prixConstruction/loyer/hypoteque)"; 
+    					} 
+ 
+    				} else if (type.equals("sansAction")) { 
+    					try { 
+    						caseInfo.getString("nom"); 
+    						listeCaseJSON.add(caseInfo); 
+    						caseInfo.remove("type"); 
+    						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
+    					} catch (Exception e) { 
+    						erreur += "\n[Erreur] Propriï¿½tï¿½ case nï¿½" + i + " de type " + type + " non dï¿½fini (nom)"; 
+    					} 
+ 
+    				} else if (type.equals("prison")) { 
+    					try { 
+    						if (!prison) { 
+    							caseInfo.getString("nom"); 
+    							caseInfo.getInt("amountToEscape"); 
+    							caseInfo.getInt("diceValue"); 
+    							listeCaseJSON.add(caseInfo); 
+    							caseInfo.remove("type"); 
+    							listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
+    							prison = true; 
+    						} else { 
+    							erreur += "[Erreur] Le plateau doit comporter qu'une seul case prison"; 
+    						} 
+    					} catch (Exception e) { 
+    						erreur += "\n[Erreur] Propriï¿½tï¿½ case nï¿½" + i + " de type " + type 
+    								+ " non dï¿½fini (nom/amountToEscape/diceValue)"; 
+    					} 
+ 
+    				} else if (type.equals("service")) { 
+    					try { 
+    						caseInfo.getString("nom"); 
+    						caseInfo.getInt("prix"); 
+    						caseInfo.getJSONArray("multiplicateur"); 
+    						caseInfo.getInt("hypoteque"); 
+    						listeCaseJSON.add(caseInfo); 
+    						listeService.add(caseInfo); 
+    						caseInfo.remove("type"); 
+    						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
+    					} catch (Exception e) { 
+    						erreur += "\n[Erreur] Propriï¿½tï¿½ case nï¿½" + i + " de type " + type + " non dï¿½fini (nom)"; 
+    					} 
+    				} else if (type.equals("enPrison")) { 
+    					try { 
+    						caseInfo.getString("nom"); 
+    						listeCaseJSON.add(caseInfo); 
+    						caseInfo.remove("type"); 
+    						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
+    						enPrison = true; 
+    					} catch (Exception e) { 
+    						erreur += "\n[Erreur] Propriï¿½tï¿½ case nï¿½" + i + " de type " + type + " non dï¿½fini (nom)"; 
+    					} 
+ 
+    				} else { 
+    					erreur += "\n[Erreur] Type de la case nï¿½" + i + " non valide"; 
+    				} 
+ 
+    			} catch (Exception e) { 
+    				stringToSend.receiveMsg("[Erreur] Case " + i + ": type non renseignï¿½."); 
+ 
+    				return false; 
+ 
+    			} 
+ 
+    		} 
+    		if (!erreur.equals("")) { 
+    			stringToSend.receiveMsg(erreur); 
+ 
+    			return false; 
+ 
+    		} 
+ 
+    		// DERNIERE VERIF 
+    		stringToSend.receiveMsg("[Info] Vï¿½rification propriï¿½tï¿½s ..."); 
+ 
+    		boolean erreurBoolean = false; 
+    		if (!depart) { 
+    			stringToSend.receiveMsg("[Erreur] Le plateau doit comporter une case dï¿½part"); 
+    			erreurBoolean = true; 
+    		} 
+    		if (prison && !enPrison) { 
+    			stringToSend.receiveMsg("[Erreur] Une prison doit avoir au moins 1 case 'aller en prison'"); 
+    			erreurBoolean = true; 
+    		} 
+    		if (!prison && enPrison) { 
+ 
+    			stringToSend.receiveMsg("[Erreur] Une case 'aller en prison' doit avoir une prison"); 
+ 
+    			stringToSend.receiveMsg("[Erreur] Une case aller en prison doit avoir une prison"); 
+ 
+    			erreurBoolean = true; 
+    		} 
+    		int nbGare = listeGare.size(); 
+    		for (JSONObject caseInfo : listeGare) { // verif loyer gare 
+    			if (caseInfo.getJSONArray("loyer").length() < nbGare) { 
+    				stringToSend.receiveMsg( 
+    						"[Erreur] Gare " + caseInfo.getString("nom") + " doit avoir au moins " + nbGare + " loyer."); 
+    				erreurBoolean = true; 
+    			} 
+    		} 
+    		int nbService = listeService.size(); 
+    		for (JSONObject caseInfo : listeService) { // verif loyer gare 
+    			if (caseInfo.getJSONArray("multiplicateur").length() < nbService) { 
+    				stringToSend.receiveMsg("[Erreur] Service " + caseInfo.getString("nom") + " doit avoir au moins " 
+    						+ nbService + " multiplicateur."); 
+    				erreurBoolean = true; 
+    			} 
+    		} 
+    		int groupe = -1; 
+    		for (JSONObject caseInfo : listeTerrain) { 
+    			if (caseInfo.getInt("groupe") > groupe + 1) { 
+    				stringToSend.receiveMsg("[Erreur] Le groupe de " + caseInfo.getString("nom") + " est invalide. (" 
+    						+ (groupe + 1) + " au max est attendu)"); 
+    				erreurBoolean = true; 
+    			} else { 
+    				if (caseInfo.getInt("groupe") >= groupe) { 
+    					groupe = caseInfo.getInt("groupe"); 
+    				} 
+    			} 
+    		} 
+ 
+    		if (!erreurBoolean) { 
+    			stringToSend.receiveMsg("[Info] Configuration par dï¿½faut chargï¿½ avec succï¿½s !"); 
+    			stringToSend.receiveMsg("[Info] Plateau de " + listeCase.size() + " case(s) crï¿½ï¿½ avec succï¿½s !"); 
+    			configLoad = true; 
+    		} else { 
+    			return false; 
+    		}    		 
+        } 
+        catch (IOException e) { 
+            System.out.println("An error occurred."); 
+            e.printStackTrace(); 
+            return false; 
+        } 
+        return true; 
+ 
+	} 
+	
 	public ArrayList<Case> getListeCase(){
 		return listeCase;
 	}
@@ -84,6 +363,7 @@ public class Configuration {
 	
 	public boolean loadDefaultConfig() throws IOException, JSONException {
 		configLoad = false;
+		playerConfig = null;
 		loadAction();
 		stringToSend.receiveMsg("[Info] Lecture configuration ...");
 		listeCaseJSON.clear();
@@ -110,34 +390,41 @@ public class Configuration {
 		JSONObject gameSetting = configJSON.getJSONObject("GameSetting");
 		JSONObject caseListInformation = configJSON.getJSONObject("Case");
 		try {
+			JSONObject playerListInformation = configJSON.getJSONObject("Player");
+			playerConfig =playerListInformation;
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		try {
 			nbCase = gameSetting.getInt("case");
 
 		} catch (Exception e) {
-			stringToSend.receiveMsg("[Erreur] Paramètre case mal renseigné. Tentative prise de valeur par défaut (20)");
+			stringToSend.receiveMsg("[Erreur] ParamÃ¨tre case mal renseignÃ©. Tentative prise de valeur par dÃ©faut (20)");
 		}
 		try {
 			nbJoueur = gameSetting.getInt("player");
 		} catch (Exception e) {
 			stringToSend
-					.receiveMsg("[Erreur] Paramètre player mal renseigné. Tentative prise de valeur par défaut (2)");
+					.receiveMsg("[Erreur] ParamÃ¨tre player mal renseignÃ©. Tentative prise de valeur par dÃ©faut (2)");
 		}
 		try {
 			lvlMaxProp = gameSetting.getInt("niveauTerrain");
 		} catch (Exception e) {
 			stringToSend.receiveMsg(
-					"[Erreur] Paramètre niveauTerrain départ mal renseigné. Tentative prise de valeur par défaut (6)");
+					"[Erreur] ParamÃ¨tre niveauTerrain dÃ©part mal renseignÃ©. Tentative prise de valeur par dÃ©faut (6)");
 		}
 		try {
 			hypothequeEnable = gameSetting.getBoolean("hypotheque");
 		} catch (Exception e) {
 			stringToSend.receiveMsg(
-					"[Erreur] Paramètre hypotheque départ mal renseigné. Tentative prise de valeur par défaut (false)");
+					"[Erreur] ParamÃ¨tre hypotheque dÃ©part mal renseignÃ©. Tentative prise de valeur par dÃ©faut (false)");
 		}
 		try {
 			defaultMoney = gameSetting.getInt("defaultMoney");
 		} catch (Exception e) {
 			stringToSend.receiveMsg(
-					"[Erreur] Paramètre defaultMoney mal renseigné. Tentative prise de valeur par défaut (1500)");
+					"[Erreur] ParamÃ¨tre defaultMoney mal renseignÃ©. Tentative prise de valeur par dÃ©faut (1500)");
 		}
 		try {
 			caseListInformation.get(Integer.toString(nbCase - 1));
@@ -155,7 +442,7 @@ public class Configuration {
 		boolean depart = false;
 		boolean prison = false;
 		boolean enPrison = false;
-		stringToSend.receiveMsg("[Info] Vérification des cases ...");
+		stringToSend.receiveMsg("[Info] VÃ©rification des cases ...");
 		for (int i = 0; i < nbCase; i++) {
 
 			JSONObject caseInfo = null;
@@ -180,13 +467,13 @@ public class Configuration {
 								listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i));
 								depart = true;
 							} catch (Exception e) {
-								erreur += "\n[Erreur] Propriété case départ non défini (nom/gain)";
+								erreur += "\n[Erreur] PropriÃ©tÃ© case dÃ©part non dÃ©fini (nom/gain)";
 							}
 						} else {
-							erreur += "\n[Erreur] La case départ doit avoir comme indice 0";
+							erreur += "\n[Erreur] La case dÃ©part doit avoir comme indice 0";
 						}
 					} else {
-						erreur += "\n[Erreur] Le plateau doit comporter qu'une seul case départ";
+						erreur += "\n[Erreur] Le plateau doit comporter qu'une seul case dÃ©part";
 					}
 
 				} else if (type.equals("caseCarte")) {
@@ -196,7 +483,7 @@ public class Configuration {
 						caseInfo.remove("type");
 						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i));
 					} catch (Exception e) {
-						erreur += "\n[Erreur] Propriété case n°" + i + " de type " + type + " non défini (nom)";
+						erreur += "\n[Erreur] PropriÃ©tÃ© case nÂ°" + i + " de type " + type + " non dÃ©fini (nom)";
 					}
 
 				} else if (type.equals("gare")) {
@@ -210,8 +497,8 @@ public class Configuration {
 						caseInfo.remove("type");
 						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i));
 					} catch (Exception e) {
-						erreur += "\n[Erreur] Propriété case n°" + i + " de type " + type
-								+ " non défini (nom/prix/loyer/hypoteque)";
+						erreur += "\n[Erreur] PropriÃ©tÃ© case nÂ°" + i + " de type " + type
+								+ " non dÃ©fini (nom/prix/loyer/hypoteque)";
 					}
 
 				} else if (type.equals("terrain")) {
@@ -223,15 +510,15 @@ public class Configuration {
 						caseInfo.getJSONArray("loyer");
 						caseInfo.getInt("hypoteque");
 						if (caseInfo.getJSONArray("loyer").length() < lvlMaxProp) {
-							erreur += "\n[Erreur] " + lvlMaxProp + " prix sont exigés pour le loyer sur la case " + i;
+							erreur += "\n[Erreur] " + lvlMaxProp + " prix sont exigÃ©s pour le loyer sur la case " + i;
 						}
 						listeTerrain.add(caseInfo);
 						listeCaseJSON.add(caseInfo);
 						caseInfo.remove("type");
 						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i));
 					} catch (Exception e) {
-						erreur += "\n[Erreur] Propriété case n°" + i + " de type " + type
-								+ " non défini (nom/groupe/prix/prixConstruction/loyer/hypoteque)";
+						erreur += "\n[Erreur] PropriÃ©tÃ© case nÂ°" + i + " de type " + type
+								+ " non dÃ©fini (nom/groupe/prix/prixConstruction/loyer/hypoteque)";
 					}
 
 				} else if (type.equals("sansAction")) {
@@ -241,7 +528,7 @@ public class Configuration {
 						caseInfo.remove("type");
 						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i));
 					} catch (Exception e) {
-						erreur += "\n[Erreur] Propriété case n°" + i + " de type " + type + " non défini (nom)";
+						erreur += "\n[Erreur] PropriÃ©tÃ© case nÂ°" + i + " de type " + type + " non dÃ©fini (nom)";
 					}
 
 				} else if (type.equals("prison")) {
@@ -258,7 +545,7 @@ public class Configuration {
 							erreur += "[Erreur] Le plateau doit comporter qu'une seul case prison";
 						}
 					} catch (Exception e) {
-						erreur += "\n[Erreur] Propriété case n°" + i + " de type " + type + " non défini (nom/amountToEscape/diceValue)";
+						erreur += "\n[Erreur] PropriÃ©tÃ© case nÂ°" + i + " de type " + type + " non dÃ©fini (nom/amountToEscape/diceValue)";
 					}
 
 				} else if (type.equals("service")) {
@@ -272,7 +559,7 @@ public class Configuration {
 						caseInfo.remove("type");
 						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i));
 					} catch (Exception e) {
-						erreur += "\n[Erreur] Propriété case n°" + i + " de type " + type + " non défini (nom)";
+						erreur += "\n[Erreur] PropriÃ©tÃ© case nÂ°" + i + " de type " + type + " non dÃ©fini (nom)";
 					}
 				} else if (type.equals("enPrison")) {
 					try {
@@ -282,15 +569,15 @@ public class Configuration {
 						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i));
 						enPrison = true;
 					} catch (Exception e) {
-						erreur += "\n[Erreur] Propriété case n°" + i + " de type " + type + " non défini (nom)";
+						erreur += "\n[Erreur] PropriÃ©tÃ© case nÂ°" + i + " de type " + type + " non dÃ©fini (nom)";
 					}
 
 				} else {
-					erreur += "\n[Erreur] Type de la case n°" + i + " non valide";
+					erreur += "\n[Erreur] Type de la case nÂ°" + i + " non valide";
 				}
 
 			} catch (Exception e) {
-				stringToSend.receiveMsg("[Erreur] Case " + i + ": type non renseigné.");
+				stringToSend.receiveMsg("[Erreur] Case " + i + ": type non renseignÃ©.");
 
 				return false;
 
@@ -305,11 +592,11 @@ public class Configuration {
 		}
 
 		// DERNIERE VERIF
-		stringToSend.receiveMsg("[Info] Vérification propriétés ...");
+		stringToSend.receiveMsg("[Info] VÃ©rification propriÃ©tÃ©s ...");
 
 		boolean erreurBoolean = false;
 		if (!depart) {
-			stringToSend.receiveMsg("[Erreur] Le plateau doit comporter une case départ");
+			stringToSend.receiveMsg("[Erreur] Le plateau doit comporter une case dÃ©part");
 			erreurBoolean = true;
 		}
 		if (prison && !enPrison) {
@@ -354,8 +641,8 @@ public class Configuration {
 		}
 
 		if (!erreurBoolean) {
-			stringToSend.receiveMsg("[Info] Configuration par défaut chargé avec succès !");
-			stringToSend.receiveMsg("[Info] Plateau de " + listeCase.size() + " case(s) créé avec succès !");
+			stringToSend.receiveMsg("[Info] Configuration par dÃ©faut chargÃ© avec succÃ¨s !");
+			stringToSend.receiveMsg("[Info] Plateau de " + listeCase.size() + " case(s) crÃ©Ã© avec succÃ¨s !");
 			configLoad = true;
 		} else {
 			return false;

@@ -25,5 +25,7 @@ public class Depart implements Case {
 	public int getPactole() {
 		return pactole;
 	}
-
+	public String getType() {
+    	return this.getClass().getName();
+    }
 }

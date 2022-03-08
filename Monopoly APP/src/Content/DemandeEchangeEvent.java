@@ -17,7 +17,7 @@ public class DemandeEchangeEvent extends EventObject {
 	}
 
 
-
+	
 	public Propriete getProp1() {
 		return prop1;
 	}

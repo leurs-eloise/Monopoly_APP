@@ -7,7 +7,8 @@ import java.net.Socket;
 
 import Content.Configuration;
 import Content.Partie;
-import Content.Joueur;
+import Content.Case.Case;
+import Content.Case.Terrain;
 
 class ServerClientThread extends Thread {
 	Socket serverClient;
@@ -47,7 +48,7 @@ class ServerClientThread extends Thread {
 				clientMessage = inStream.readUTF();
 				String[] clientMessageSplit = clientMessage.split(" ");
 				if (!clientName.equals("ClientServer")) {
-					if(!clientMessage.equals("setname ClientServer")) {
+					if (!clientMessage.equals("setname ClientServer")) {
 						sendMessage.receiveMsg("[Info] " + clientName + ": " + clientMessage);
 					}
 				} else {
@@ -68,7 +69,7 @@ class ServerClientThread extends Thread {
 						if (!clientName.equals("ClientServer")) {
 							serverMessage = serverMessage + "[Info] Your name is now " + this.getClientName();
 						}
-						
+
 					}
 
 				} else if (clientMessageSplit[0].equals("msg")) {
@@ -105,26 +106,10 @@ class ServerClientThread extends Thread {
 					}
 
 				} else if (clientMessageSplit[0].equals("help")) {
-					serverMessage = "[Info] Liste des commandes: "
-							+ "buy\r\n"
-							+ "exchange\r\n"
-							+ "fintour\r\n"
-							+ "help\r\n"
-							+ "home\r\n"
-							+ "hypotheque\r\n"
-							+ "loadconfig\r\n"
-							+ "mc\r\n"
-							+ "msg\r\n"
-							+ "msgall\r\n"
-							+ "paytoescape\r\n"
-							+ "plateau\r\n"
-							+ "robot\r\n"
-							+ "rolldice\r\n"
-							+ "setname\r\n"
-							+ "skip\r\n"
-							+ "start\r\n"
-							+ "usecard\r\n"
-							+ "web\r\n";
+					serverMessage = "[Info] Liste des commandes: " + "buy\r\n" + "exchange\r\n" + "fintour\r\n"
+							+ "help\r\n" + "home\r\n" + "hypotheque\r\n" + "loadconfig\r\n" + "mc\r\n" + "msg\r\n"
+							+ "msgall\r\n" + "paytoescape\r\n" + "plateau\r\n" + "robot\r\n" + "rolldice\r\n"
+							+ "setname\r\n" + "skip\r\n" + "start\r\n" + "usecard\r\n" + "web\r\n";
 
 				} else if (clientMessageSplit[0].equals("stop")) {
 					for (ServerClientThread client : listeRobot.getRobot()) {
@@ -209,13 +194,17 @@ class ServerClientThread extends Thread {
 							outStreamClient.writeUTF(message);
 						}
 					}
-					
+
 				} else if (clientMessageSplit[0].equals("loadconfig")) {
-					Configuration.getInstance().loadDefaultConfig();
-				} 
-				
+					if(clientMessageSplit.length > 1) {
+						Configuration.getInstance().loadConfig(clientMessageSplit[1]);
+					} else {
+						Configuration.getInstance().loadDefaultConfig();
+					}
+				}
+
 				else if (clientMessageSplit[0].equals("rolldice")) {
-					if(Partie.getInstance().lancerDes()) {
+					if (Partie.getInstance().lancerDes()) {
 						serverMessage = "[Info] Dés lancé";
 					} else {
 						serverMessage = "[Erreur] Erreur lors du lancement des dés";
@@ -225,10 +214,7 @@ class ServerClientThread extends Thread {
 				else if (clientMessageSplit[0].equals("hypotheque")) {
 					Partie.getInstance().hypotheque();
 				}
-				
-				else if (clientMessageSplit[0].equals("skip")) {
-					Partie.getInstance().skip();
-				}
+
 
 				else if (clientMessageSplit[0].equals("buy")) {
 					Partie.getInstance().acheter();
@@ -239,52 +225,59 @@ class ServerClientThread extends Thread {
 				}
 
 				else if (clientMessageSplit[0].equals("home")) {
-					if(clientMessageSplit.length == 2) {
+					if (clientMessageSplit.length == 2) {
 						try {
 							int level = Integer.parseInt(clientMessageSplit[1]);
-							if(level<0 || level>6) {
+							if (level < 0 || level > 6) {
 								serverMessage = "[Erreur] Le niveau doit être compris entre 0 et 5";
 							} else {
-								Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[1]));
+								for (Case item : Configuration.getInstance().getListeCase()) {
+									if (item.getNom().equals(clientMessageSplit[1])
+											&& item.getType().equals("Terrain")) {
+										Terrain ter = (Terrain) item;
+										Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[2]),
+												ter);
+									}
+								}
 							}
-							
 						} catch (Exception e) {
 							serverMessage = "[Erreur] Le niveau doit être un nombre";
 						}
 					}
-						
-					 else {
+
+					else {
 						serverMessage = "[Erreur] Usage: home (level)";
 					}
 				}
-				
+
 				else if (clientMessageSplit[0].equals("bilan")) {
-					//argent, nb prop 
-					serverMessage = Partie.getInstance().getCurrentPlayer().getPseudo() + " possede " + 
-							Partie.getInstance().getCurrentPlayer().getNbProp() + " proprietes et " 
+					serverMessage = Partie.getInstance().getCurrentPlayer().getPseudo() + " possede "
+							+ Partie.getInstance().getCurrentPlayer().getNbProp() + " proprietes et "
 							+ Partie.getInstance().getCurrentPlayer().getArgent() + " sous.";
-					
+
 				}
-				
+
+				else if (clientMessageSplit[0].equals("fin")) {
+					Partie.getInstance().finTour();
+				}
+
 				else if (clientMessageSplit[0].equals("usecard")) {
 					Partie.getInstance().useCard();
-				}
-				else if (clientMessageSplit[0].equals("paytoescape")) {
+				} else if (clientMessageSplit[0].equals("paytoescape")) {
 					Partie.getInstance().payToEscape();
-				}
-				else if (clientMessageSplit[0].equals("skip")) {
+				} else if (clientMessageSplit[0].equals("skip")) {
 					Partie.getInstance().skip();
 				} else if (clientMessageSplit[0].equals("start")) {
-					if(Partie.getInstance().init()) {
-						serverMessage = "[Info] Partie démarée"
-								+ "\nA " + Partie.getInstance().getCurrentPlayer().getPseudo() + " de jouer !";
+					if (Partie.getInstance().init()) {
+						serverMessage = "[Info] Partie démarée" + "\nA "
+								+ Partie.getInstance().getCurrentPlayer().getPseudo() + " de jouer !";
 					} else {
 						serverMessage = "[Erreur] Erreur lors du lancement de la partie";
 					}
 				} else if (clientMessageSplit[0].equals("fintour")) {
 					Partie.getInstance().finTour();
 				} else if (clientMessageSplit[0].equals("plateau")) {
-					serverMessage =  Partie.getInstance().plateau();
+					serverMessage = Partie.getInstance().plateau();
 				}
 
 				else {
