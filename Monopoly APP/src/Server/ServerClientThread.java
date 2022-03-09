@@ -234,6 +234,7 @@ class ServerClientThread extends Thread {
 						int sous = Integer.parseInt(clientMessageSplit[3]);
 						Partie.getInstance().demandeEchange(prop1, prop2, sous);
 					}
+					
 				}
 
 				else if (clientMessageSplit[0].equals("answerExchange")) {

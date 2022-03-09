@@ -330,7 +330,7 @@ public class Partie {
 		return true;
 		}
 	
-	
+	public 
 	
 	public boolean accepteEchange(boolean choix) {
 		if (etat != 2 && etat != 3) {

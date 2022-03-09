@@ -7,6 +7,7 @@ import Content.Case.Gare;
 import Content.Case.Propriete;
 import Content.Case.Service;
 import Content.Case.Terrain;
+import Server.ClientParty;
 import Server.SendString;
 
 public class Joueur {
@@ -93,9 +94,9 @@ public class Joueur {
 	}
 	
 	public void demandeConfirmation(Propriete prop1, Propriete prop2, int sous) {
-		@SuppressWarnings("unused")
-		String message = prop1.getJoueur().getPseudo() + " veut echanger "+ prop1.getNom() 
+		String message =  "msg PepperReceive sayEchange " + prop1.getJoueur().getPseudo() + " veut echanger "+ prop1.getNom() 
 				+ " avec " + prop2.getNom() + " et " + sous + " sous. Acceptez-vous cet echange ?";
+		ClientParty.sendMessage(message);
 	}
 	
 	//le joueur veut echanger la prop1 contre la prop2 d'un autre joueur avec x sous
