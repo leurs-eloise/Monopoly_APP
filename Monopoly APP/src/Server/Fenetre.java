@@ -40,7 +40,6 @@ public class Fenetre extends JFrame implements ActionListener, ReceiveEvent {
 	
 	private JTextArea log = new JTextArea(20,60);
 
-	private SendString stringToSend;
 	private ServerSocket server;
 
 	
@@ -48,10 +47,9 @@ public class Fenetre extends JFrame implements ActionListener, ReceiveEvent {
         this.command = command;
     }
 	
-	public Fenetre(ServerSocket server, ListeRobot robot, SendString stringToSend) {
+	public Fenetre(ServerSocket server, ListeRobot robot) {
 
 		this.server = server;
-		this.stringToSend = stringToSend;
 		this.setTitle("Server");
 	    this.setSize(800, 450);
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,8 +96,7 @@ public class Fenetre extends JFrame implements ActionListener, ReceiveEvent {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("send")) {
 			if(!command.getText().equals("")){
-				@SuppressWarnings("unused")
-				ClientServer client = new ClientServer(command.getText(), stringToSend);
+				ClientServer.sendMessage(command.getText());
 				command.selectAll();
 				command.replaceSelection("");	
 			}
@@ -115,20 +112,17 @@ public class Fenetre extends JFrame implements ActionListener, ReceiveEvent {
 		
 		
 		if(e.getActionCommand().equals("fin")) {
-				@SuppressWarnings("unused")
-				ClientServer client = new ClientServer("fintour", stringToSend);
+				ClientServer.sendMessage("fintour");
 	
 			
 		}
 		if(e.getActionCommand().equals("roll")) {
-				@SuppressWarnings("unused")
-				ClientServer client = new ClientServer("rolldice", stringToSend);
+				ClientServer.sendMessage("rolldice");
 
 			 
 		}
 		if(e.getActionCommand().equals("buy")) {
-				@SuppressWarnings("unused")
-				ClientServer client = new ClientServer("buy", stringToSend);
+				ClientServer.sendMessage("buy");
 		}
 		
 	}

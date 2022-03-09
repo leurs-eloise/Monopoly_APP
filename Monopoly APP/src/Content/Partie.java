@@ -19,6 +19,8 @@ import Content.Case.SansAction;
 import Content.Case.Service;
 import Content.Case.Terrain;
 import Content.Case.Action.carteAction;
+import Server.ClientParty;
+import Server.ClientServer;
 import Server.SendString;
 
 public class Partie {
@@ -50,7 +52,7 @@ public class Partie {
 	}
 
 	// init
-	public boolean init() {
+	public boolean init() {		
 		if (!listeJoueur.isEmpty()) {
 			listeJoueur.clear();
 		}

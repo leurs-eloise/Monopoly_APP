@@ -1,9 +1,19 @@
 package Server;
  
 import java.net.*;
+import java.util.Objects;
+
+import Content.Configuration;
+
 import java.io.*;
 public class ClientServer {
-  public ClientServer(String msg, SendString stringToSend) {
+	private static ClientServer clientServer;
+	public static void sendMessage(String message) {
+			clientServer = new ClientServer(message);
+	}
+	
+	
+  public ClientServer(String msg) {
   try{
 	String clientMessage=msg,serverMessage="";
 	Socket socket= new Socket("127.0.0.1",39039);
@@ -16,7 +26,7 @@ public class ClientServer {
     outStream.writeUTF(clientMessage);
     outStream.flush();
     serverMessage=inStream.readUTF();
-    stringToSend.receiveMsg(serverMessage);
+    SendString.getInstance().receiveMsg(serverMessage);
     
     
     outStream.close();

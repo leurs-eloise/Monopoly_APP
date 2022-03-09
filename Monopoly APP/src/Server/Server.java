@@ -8,7 +8,7 @@ public class Server {
       System.out.println("Server Started ...");
       ListeRobot robot = new ListeRobot();
       SendString stringToSend = SendString.getInstance();
-      Fenetre fenetre = new Fenetre(server, robot, stringToSend);
+      Fenetre fenetre = new Fenetre(server, robot);
       stringToSend.addEcouteur(fenetre);
       while(true){
         Socket serverClient=server.accept();  //server accept the client connection request
