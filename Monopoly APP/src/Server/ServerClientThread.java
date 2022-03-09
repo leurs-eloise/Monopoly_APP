@@ -221,6 +221,7 @@ class ServerClientThread extends Thread {
 				}
 
 				else if (clientMessageSplit[0].equals("exchange")) {
+					//je recois prop1 puis prop2 puis sous
 					Partie.getInstance().echanger(); // mettre la fonction qui fait l'echange
 				}
 
@@ -235,8 +236,7 @@ class ServerClientThread extends Thread {
 									if (item.getNom().equals(clientMessageSplit[1])
 											&& item.getType().equals("Terrain")) {
 										Terrain ter = (Terrain) item;
-										Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[2]),
-												ter);
+										Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[2]), ter);
 									}
 								}
 							}
