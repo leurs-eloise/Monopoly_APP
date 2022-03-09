@@ -30,6 +30,7 @@ public class Partie {
 	private SendString stringToSend = SendString.getInstance();
 	private int joueurPosInt = 0;
 	private ArrayList<carteAction> listeCarteAction = new ArrayList<carteAction>();
+	private ArrayList<Object> dmdEch = null;
 
 	public Partie() {
 	}
@@ -288,7 +289,7 @@ public class Partie {
 		}
 		if (joueurActuel.getPrisonCard() > 0) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo()
-			+ " � utiliser une carte 'sortir de prison'. Il peut jouer normalement");
+			+ " a utilise une carte 'sortir de prison'. Il peut jouer normalement");
 			joueurActuel.setPrisonCard(joueurActuel.getPrisonCard() - 1);
 			joueurActuel.setTourPrison(0);
 			etat = 1;
@@ -314,16 +315,29 @@ public class Partie {
 		}
 
 	}
-
-	public boolean echanger() {
+	
+	public boolean demandeEchange(Propriete prop1, Propriete prop2, int sous) {
 		if (etat != 2 && etat != 3) {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
 			return false;
 		}
-
+		dmdEch.add(prop1);
+		dmdEch.add(prop2);
+		dmdEch.add(sous);
+		prop2.getJoueur().demandeConfirmation(prop1,prop2,sous);
 		return true;
+		}
+	
+	public boolean accepteEchange(boolean choix) {
+		if (! dmdEch.isEmpty()) {
+			if (choix) {
+				getCurrentPlayer().echanger((Propriete)(dmdEch.get(0)), (Propriete)(dmdEch.get(1)), (int)(dmdEch.get(2)));
+				return true;
+			}
+		}
+		return false;
 	}
-
+	
 	public boolean acheterBuilding(int level, Terrain ter){
 		if (etat != 3) {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
