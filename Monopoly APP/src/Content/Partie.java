@@ -73,22 +73,22 @@ public class Partie {
 					JSONObject configJoueur = Configuration.getInstance().getPlayerConfig().getJSONObject(Integer.toString(i+1));
 					try {
 						listeJoueur.get(i).setTourPrison(configJoueur.getInt("tourEnPrison"));
-						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": tour en prison défini");
+						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": tour en prison dï¿½fini");
 					}catch (Exception e) {
 					}
 					try {
 						listeJoueur.get(i).setArgent(configJoueur.getInt("argent"));
-						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": argent défini");
+						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": argent dï¿½fini");
 					}catch (Exception e) {
 					}
 					try {
 						listeJoueur.get(i).setPosition(configJoueur.getInt("position"));
-						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": position défini");
+						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": position dï¿½fini");
 					}catch (Exception e) {
 					}
 					try {
 						listeJoueur.get(i).setPrisonCard(configJoueur.getInt("cartePrison"));
-						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": carte en prison défini");
+						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": carte en prison dï¿½fini");
 					}catch (Exception e) {
 					}
 					try {
@@ -97,9 +97,9 @@ public class Partie {
 						for(Integer idProp : propList) {
 							try {
 								((Propriete)Configuration.getInstance().getListeCase().get(idProp)).setJoueur(listeJoueur.get(i));
-								stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": propriétaire de la case " + Configuration.getInstance().getListeCase().get(idProp).getNom());
+								stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": propriï¿½taire de la case " + Configuration.getInstance().getListeCase().get(idProp).getNom());
 							}catch (Exception e) {
-								stringToSend.receiveMsg("[Erreur] La case " + propList.get(idProp) + " n'est pas une propriété");
+								stringToSend.receiveMsg("[Erreur] La case " + propList.get(idProp) + " n'est pas une propriï¿½tï¿½");
 							}
 						}
 					}catch (Exception e) {
