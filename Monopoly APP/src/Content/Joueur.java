@@ -35,6 +35,7 @@ public class Joueur {
 		this.proprietes = proprietes;
 		this.setScore();
 	}
+	
 	//constructeur simplifie pour la creation d'un joueur
 	public Joueur(int id, String pseudo, int argent) {
 		super();
@@ -91,24 +92,13 @@ public class Joueur {
 		}
 	}
 	
-	public void onEventCreated(DemandeEchangeEvent ev) {
+	public void demandeConfirmation(Propriete prop1, Propriete prop2, int sous) {
 		@SuppressWarnings("unused")
-		boolean choix = false;
-		System.out.println(ev.getProp1().getJoueur().getPseudo() + " veut echanger "+ ev.getProp1().getNom() 
-				+ " avec " + ev.getProp2().getNom() + " et " + ev.getPrix() + " sous.");
-		System.out.println("Acceptez-vous cette l'echange ?");
-		String reponse = this.scan.nextLine();
-		if (reponse.equals("oui")) {
-			choix = true;
-		}
+		String message = prop1.getJoueur().getPseudo() + " veut echanger "+ prop1.getNom() 
+				+ " avec " + prop2.getNom() + " et " + sous + " sous. Acceptez-vous cet echange ?";
 	}
 	
-	public void onEventCreated(EchangeEvent ev) {
-		if(ev.isChoix()) {
-			this.echanger(ev.getProp1(), ev.getProp2(), ev.getPrix());
-		}
-	}
-	
+	//le joueur veut echanger la prop1 contre la prop2 d'un autre joueur avec x sous
 	public void echanger(Propriete prop1, Propriete prop2, int sous) {
 		Joueur proprietaire = prop1.getJoueur();
 		Joueur destinataire = prop2.getJoueur();
@@ -116,6 +106,7 @@ public class Joueur {
 			prop1.setJoueur(destinataire);
 			prop2.setJoueur(proprietaire);
 			destinataire.setArgent(destinataire.getArgent() + sous);
+			proprietaire.setArgent(proprietaire.getArgent() - sous);
 			}		
 	}
 	

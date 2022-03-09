@@ -9,6 +9,7 @@ import Content.Configuration;
 import Content.Partie;
 import Content.Case.Case;
 import Content.Case.Terrain;
+import Content.Case.Propriete;
 
 class ServerClientThread extends Thread {
 	Socket serverClient;
@@ -221,9 +222,28 @@ class ServerClientThread extends Thread {
 				}
 
 				else if (clientMessageSplit[0].equals("exchange")) {
-					Partie.getInstance().echanger(); // mettre la fonction qui fait l'echange
+					Propriete prop1 = null; 
+					Propriete prop2 = null;
+					for (Case item : Configuration.getInstance().getListeCase()) {
+						if (item.getNom().equals(clientMessageSplit[1])	&& item.getType().equals("Propriete")) {
+							prop1 = (Propriete) item;
+						}
+						if (item.getNom().equals(clientMessageSplit[2])	&& item.getType().equals("Propriete")) {
+							prop2 = (Propriete) item;
+						}
+						int sous = Integer.parseInt(clientMessageSplit[3]);
+						Partie.getInstance().demandeEchange(prop1, prop2, sous);
+					}
 				}
 
+				else if (clientMessageSplit[0].equals("answerExchange")) {
+					boolean reponse = false;
+					if (clientMessageSplit[1] == "True") {
+						reponse = true;
+					}
+					Partie.getInstance().accepteEchange(reponse);
+				}
+				
 				else if (clientMessageSplit[0].equals("home")) {
 					if (clientMessageSplit.length == 2) {
 						try {
@@ -235,8 +255,7 @@ class ServerClientThread extends Thread {
 									if (item.getNom().equals(clientMessageSplit[1])
 											&& item.getType().equals("Terrain")) {
 										Terrain ter = (Terrain) item;
-										Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[2]),
-												ter);
+										Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[2]), ter);
 									}
 								}
 							}
