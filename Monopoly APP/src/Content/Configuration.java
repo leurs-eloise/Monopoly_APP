@@ -67,12 +67,14 @@ public class Configuration {
     			return false; 
     		} 
     		// LECTURE ET TRAITEMENT DU FICHIER 
+    		listeCase.clear();
+    		listeCaseJSON.clear();
     		playerConfig = null;
     		configLoad = false;
     		try { 
     			playerConfig = configJSON.getJSONObject("Player"); 
     		}catch (Exception e) { 
-    			stringToSend.receiveMsg("[Info] Param�tre Player non renseign�."); 
+    			stringToSend.receiveMsg("[Info] Paramètre Player non renseigné."); 
 			} 
  
     		 
@@ -82,31 +84,31 @@ public class Configuration {
     			nbCase = gameSetting.getInt("case"); 
  
     		} catch (Exception e) { 
-    			stringToSend.receiveMsg("[Erreur] Param�tre case mal renseign�. Tentative prise de valeur par d�faut (20)"); 
+    			stringToSend.receiveMsg("[Erreur] Paramètre case mal renseigné. Tentative prise de valeur par défaut (20)"); 
     		} 
     		try { 
     			nbJoueur = gameSetting.getInt("player"); 
     		} catch (Exception e) { 
     			stringToSend 
-    					.receiveMsg("[Erreur] Param�tre player mal renseign�. Tentative prise de valeur par d�faut (2)"); 
+    					.receiveMsg("[Erreur] Paramètre player mal renseigné. Tentative prise de valeur par défaut (2)"); 
     		} 
     		try { 
     			lvlMaxProp = gameSetting.getInt("niveauTerrain"); 
     		} catch (Exception e) { 
     			stringToSend.receiveMsg( 
-    					"[Erreur] Param�tre niveauTerrain d�part mal renseign�. Tentative prise de valeur par d�faut (6)"); 
+    					"[Erreur] Paramètre niveauTerrain départ mal renseigné. Tentative prise de valeur par défaut (6)"); 
     		} 
     		try { 
     			hypothequeEnable = gameSetting.getBoolean("hypotheque"); 
     		} catch (Exception e) { 
     			stringToSend.receiveMsg( 
-    					"[Erreur] Param�tre hypotheque d�part mal renseign�. Tentative prise de valeur par d�faut (false)"); 
+    					"[Erreur] Paramètre hypotheque départ mal renseigné. Tentative prise de valeur par défaut (false)"); 
     		} 
     		try { 
     			defaultMoney = gameSetting.getInt("defaultMoney"); 
     		} catch (Exception e) { 
     			stringToSend.receiveMsg( 
-    					"[Erreur] Param�tre defaultMoney mal renseign�. Tentative prise de valeur par d�faut (1500)"); 
+    					"[Erreur] Paramètre defaultMoney mal renseigné. Tentative prise de valeur par défaut (1500)"); 
     		} 
     		try { 
     			caseListInformation.get(Integer.toString(nbCase - 1)); 
@@ -124,7 +126,7 @@ public class Configuration {
     		boolean depart = false; 
     		boolean prison = false; 
     		boolean enPrison = false; 
-    		stringToSend.receiveMsg("[Info] V�rification des cases ..."); 
+    		stringToSend.receiveMsg("[Info] Vérification des cases ..."); 
     		for (int i = 0; i < nbCase; i++) { 
  
     			JSONObject caseInfo = null; 
@@ -149,13 +151,13 @@ public class Configuration {
     								listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
     								depart = true; 
     							} catch (Exception e) { 
-    								erreur += "\n[Erreur] Propri�t� case d�part non d�fini (nom/gain)"; 
+    								erreur += "\n[Erreur] Propriété case départ non défini (nom/gain)"; 
     							} 
     						} else { 
-    							erreur += "\n[Erreur] La case d�part doit avoir comme indice 0"; 
+    							erreur += "\n[Erreur] La case départ doit avoir comme indice 0"; 
     						} 
     					} else { 
-    						erreur += "\n[Erreur] Le plateau doit comporter qu'une seul case d�part"; 
+    						erreur += "\n[Erreur] Le plateau doit comporter qu'une seul case départ"; 
     					} 
  
     				} else if (type.equals("caseCarte")) { 
@@ -165,7 +167,7 @@ public class Configuration {
     						caseInfo.remove("type"); 
     						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
     					} catch (Exception e) { 
-    						erreur += "\n[Erreur] Propri�t� case n�" + i + " de type " + type + " non d�fini (nom)"; 
+    						erreur += "\n[Erreur] Propriété case né" + i + " de type " + type + " non défini (nom)"; 
     					} 
  
     				} else if (type.equals("gare")) { 
@@ -179,8 +181,8 @@ public class Configuration {
     						caseInfo.remove("type"); 
     						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
     					} catch (Exception e) { 
-    						erreur += "\n[Erreur] Propri�t� case n�" + i + " de type " + type 
-    								+ " non d�fini (nom/prix/loyer/hypoteque)"; 
+    						erreur += "\n[Erreur] Propriété case né" + i + " de type " + type 
+    								+ " non défini (nom/prix/loyer/hypoteque)"; 
     					} 
  
     				} else if (type.equals("terrain")) { 
@@ -192,15 +194,15 @@ public class Configuration {
     						caseInfo.getJSONArray("loyer"); 
     						caseInfo.getInt("hypoteque"); 
     						if (caseInfo.getJSONArray("loyer").length() < lvlMaxProp) { 
-    							erreur += "\n[Erreur] " + lvlMaxProp + " prix sont exig�s pour le loyer sur la case " + i; 
+    							erreur += "\n[Erreur] " + lvlMaxProp + " prix sont exigés pour le loyer sur la case " + i; 
     						} 
     						listeTerrain.add(caseInfo); 
     						listeCaseJSON.add(caseInfo); 
     						caseInfo.remove("type"); 
     						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
     					} catch (Exception e) { 
-    						erreur += "\n[Erreur] Propri�t� case n�" + i + " de type " + type 
-    								+ " non d�fini (nom/groupe/prix/prixConstruction/loyer/hypoteque)"; 
+    						erreur += "\n[Erreur] Propriété case né" + i + " de type " + type 
+    								+ " non défini (nom/groupe/prix/prixConstruction/loyer/hypoteque)"; 
     					} 
  
     				} else if (type.equals("sansAction")) { 
@@ -210,7 +212,7 @@ public class Configuration {
     						caseInfo.remove("type"); 
     						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
     					} catch (Exception e) { 
-    						erreur += "\n[Erreur] Propri�t� case n�" + i + " de type " + type + " non d�fini (nom)"; 
+    						erreur += "\n[Erreur] Propriété case né" + i + " de type " + type + " non défini (nom)"; 
     					} 
  
     				} else if (type.equals("prison")) { 
@@ -227,8 +229,8 @@ public class Configuration {
     							erreur += "[Erreur] Le plateau doit comporter qu'une seul case prison"; 
     						} 
     					} catch (Exception e) { 
-    						erreur += "\n[Erreur] Propri�t� case n�" + i + " de type " + type 
-    								+ " non d�fini (nom/amountToEscape/diceValue)"; 
+    						erreur += "\n[Erreur] Propriété case né" + i + " de type " + type 
+    								+ " non défini (nom/amountToEscape/diceValue)"; 
     					} 
  
     				} else if (type.equals("service")) { 
@@ -242,7 +244,7 @@ public class Configuration {
     						caseInfo.remove("type"); 
     						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
     					} catch (Exception e) { 
-    						erreur += "\n[Erreur] Propri�t� case n�" + i + " de type " + type + " non d�fini (nom)"; 
+    						erreur += "\n[Erreur] Propriété case né" + i + " de type " + type + " non défini (nom)"; 
     					} 
     				} else if (type.equals("enPrison")) { 
     					try { 
@@ -252,15 +254,15 @@ public class Configuration {
     						listeCase.add(CaseFactory.getInstance().createCase(type, caseInfo, i)); 
     						enPrison = true; 
     					} catch (Exception e) { 
-    						erreur += "\n[Erreur] Propri�t� case n�" + i + " de type " + type + " non d�fini (nom)"; 
+    						erreur += "\n[Erreur] Propriété case né" + i + " de type " + type + " non défini (nom)"; 
     					} 
  
     				} else { 
-    					erreur += "\n[Erreur] Type de la case n�" + i + " non valide"; 
+    					erreur += "\n[Erreur] Type de la case né" + i + " non valide"; 
     				} 
  
     			} catch (Exception e) { 
-    				stringToSend.receiveMsg("[Erreur] Case " + i + ": type non renseign�."); 
+    				stringToSend.receiveMsg("[Erreur] Case " + i + ": type non renseigné."); 
  
     				return false; 
  
@@ -275,11 +277,11 @@ public class Configuration {
     		} 
  
     		// DERNIERE VERIF 
-    		stringToSend.receiveMsg("[Info] V�rification propri�t�s ..."); 
+    		stringToSend.receiveMsg("[Info] Vérification propriétés ..."); 
  
     		boolean erreurBoolean = false; 
     		if (!depart) { 
-    			stringToSend.receiveMsg("[Erreur] Le plateau doit comporter une case d�part"); 
+    			stringToSend.receiveMsg("[Erreur] Le plateau doit comporter une case départ"); 
     			erreurBoolean = true; 
     		} 
     		if (prison && !enPrison) { 
@@ -324,18 +326,16 @@ public class Configuration {
     		} 
  
     		if (!erreurBoolean) { 
-    			stringToSend.receiveMsg("[Info] Configuration par d�faut charg� avec succ�s !"); 
-    			stringToSend.receiveMsg("[Info] Plateau de " + listeCase.size() + " case(s) cr�� avec succ�s !"); 
+    			stringToSend.receiveMsg("[Info] Configuration par défaut chargé avec succés !"); 
+    			stringToSend.receiveMsg("[Info] Plateau de " + listeCase.size() + " case(s) créé avec succés !"); 
     			configLoad = true; 
     		} else { 
     			return false; 
     		}    		 
-        } 
-        catch (IOException e) { 
-            System.out.println("An error occurred."); 
-            e.printStackTrace(); 
-            return false; 
-        } 
+        } catch (Exception e) {
+        	stringToSend.receiveMsg("[Erreur] Fichier introuvable");
+			return false;
+		}
         return true; 
  
 	} 
