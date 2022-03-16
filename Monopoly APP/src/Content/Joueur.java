@@ -69,7 +69,7 @@ public class Joueur {
 			int loyer = prop.getListeLoyer().get(prop.getNbBuilding());
 			proprietaire.setArgent(proprietaire.getArgent() + loyer);
 			this.setArgent(this.getArgent() - loyer);
-			stringToSend.receiveMsg("[Info] " + pseudo + " a payé " + loyer + "$ à " + proprietaire.getPseudo());
+			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + prop.getLoyer() + "$ à " + proprietaire.getPseudo());
 		}
 	}
 	
@@ -78,7 +78,7 @@ public class Joueur {
 		if((proprietaire != null) && (proprietaire != this)){
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
 			this.setArgent(this.getArgent() - prop.getLoyer());
-			stringToSend.receiveMsg("[Info] " + pseudo + " a payé " + prop.getLoyer() + "$ à " + proprietaire.getPseudo());
+			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + prop.getLoyer() + "$ à " + proprietaire.getPseudo());
 		}
 	}
 	
@@ -89,7 +89,7 @@ public class Joueur {
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getNiveau()*this.getValDes());
 			System.out.println(prop.getNiveau() + " - " + this.getValDes());
 			this.setArgent(this.getArgent() - prop.getNiveau()*this.getValDes());
-			stringToSend.receiveMsg("[Info] " + pseudo + " a payé " + prop.getNiveau()*valDes + "$ à " + proprietaire.getPseudo());
+			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + prop.getNiveau()*valDes + "$ à " + proprietaire.getPseudo());
 		}
 	}
 	
