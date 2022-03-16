@@ -110,7 +110,7 @@ class ServerClientThread extends Thread {
 					serverMessage = "[Info] Liste des commandes: " + "buy\r\n" + "exchange\r\n" + "fintour\r\n"
 							+ "help\r\n" + "home\r\n" + "hypotheque\r\n" + "loadconfig\r\n" + "mc\r\n" + "msg\r\n"
 							+ "msgall\r\n" + "paytoescape\r\n" + "plateau\r\n" + "robot\r\n" + "rolldice\r\n"
-							+ "setname\r\n" + "skip\r\n" + "start\r\n" + "usecard\r\n" + "web\r\n";
+							+ "setname\r\n" + "skip\r\n" + "start\r\n" + "usecard\r\n" + "pepper\r\n";
 
 				} else if (clientMessageSplit[0].equals("stop")) {
 					for (ServerClientThread client : listeRobot.getRobot()) {
@@ -168,7 +168,6 @@ class ServerClientThread extends Thread {
 						} else {
 							message = message + " " + clientMessageSplit[i];
 						}
-
 					}
 					serverMessage = "Send to Minecraft: " + message;
 					for (ServerClientThread client : listeRobot.getRobot()) {
@@ -178,7 +177,7 @@ class ServerClientThread extends Thread {
 							outStreamClient.writeUTF(message);
 						}
 					}
-				} else if (clientMessageSplit[0].equals("web")) {
+				} else if (clientMessageSplit[0].equals("pepper")) {
 					String message = "";
 					for (int i = 1; i <= clientMessageSplit.length - 1; i++) {
 						if (message.equals("")) {
@@ -187,9 +186,9 @@ class ServerClientThread extends Thread {
 							message = message + " " + clientMessageSplit[i];
 						}
 					}
-					serverMessage = "Send to WebSite: " + message;
+					serverMessage = "Send to Pepper: " + message;
 					for (ServerClientThread client : listeRobot.getRobot()) {
-						if (client.getClientName().equals("ServerWebReceive")) {
+						if (client.getClientName().equals("PepperReceive")) {
 							DataOutputStream outStreamClient = new DataOutputStream(
 									client.getSocket().getOutputStream());
 							outStreamClient.writeUTF(message);
@@ -206,9 +205,9 @@ class ServerClientThread extends Thread {
 
 				else if (clientMessageSplit[0].equals("rolldice")) {
 					if (Partie.getInstance().lancerDes()) {
-						serverMessage = "[Info] Dï¿½s lancï¿½";
+						serverMessage = "[Info] Dés lancé";
 					} else {
-						serverMessage = "[Erreur] Erreur lors du lancement des dï¿½s";
+						serverMessage = "[Erreur] Erreur lors du lancement des dés";
 					}
 				}
 
@@ -289,7 +288,7 @@ class ServerClientThread extends Thread {
 					Partie.getInstance().skip();
 				} else if (clientMessageSplit[0].equals("start")) {
 					if (Partie.getInstance().init()) {
-						serverMessage = "[Info] Partie dï¿½marï¿½e" + "\nA "
+						serverMessage = "[Info] Partie démarée" + "\nA "
 								+ Partie.getInstance().getCurrentPlayer().getPseudo() + " de jouer !";
 					} else {
 						serverMessage = "[Erreur] Erreur lors du lancement de la partie";
