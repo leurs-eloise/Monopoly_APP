@@ -207,7 +207,7 @@ class ServerClientThread extends Thread {
 					if (Partie.getInstance().lancerDes()) {
 						serverMessage = "[Info] Dés lancé";
 					} else {
-						serverMessage = "[Erreur] Erreur lors du lancement des dés";
+						serverMessage = "[Erreur] Erreur lors du lancement des des";
 					}
 				}
 
@@ -249,7 +249,7 @@ class ServerClientThread extends Thread {
 						try {
 							int level = Integer.parseInt(clientMessageSplit[1]);
 							if (level < 0 || level > 6) {
-								serverMessage = "[Erreur] Le niveau doit ï¿½tre compris entre 0 et 5";
+								serverMessage = "[Erreur] Le niveau doit etre compris entre 0 et 5";
 							} else {
 								for (Case item : Configuration.getInstance().getListeCase()) {
 									if (item.getNom().equals(clientMessageSplit[1])
@@ -260,7 +260,7 @@ class ServerClientThread extends Thread {
 								}
 							}
 						} catch (Exception e) {
-							serverMessage = "[Erreur] Le niveau doit ï¿½tre un nombre";
+							serverMessage = "[Erreur] Le niveau doit etre un nombre";
 						}
 					}
 
