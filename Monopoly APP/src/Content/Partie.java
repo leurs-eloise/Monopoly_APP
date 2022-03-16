@@ -432,9 +432,7 @@ public class Partie {
 			String message = joueurActuel.getPseudo() + " est reste trop de temps en prison. "
 					+ "Il a paye "
 					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()
-					+ "polypoints";
-			stringToSend.receiveMsg("[Info] " + message);
-			ClientParty.sendMessage("pepper say " + message);
+					+ "$");
 			joueurActuel.setTourPrison(0);
 			etat = 1;
 			message = joueurActuel.getPseudo() + " peut maintenant lancer le des pour jouer";
