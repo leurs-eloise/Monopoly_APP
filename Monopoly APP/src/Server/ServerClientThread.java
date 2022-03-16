@@ -206,9 +206,9 @@ class ServerClientThread extends Thread {
 
 				else if (clientMessageSplit[0].equals("rolldice")) {
 					if (Partie.getInstance().lancerDes()) {
-						serverMessage = "[Info] Dés lancé";
+						serverMessage = "[Info] Dï¿½s lancï¿½";
 					} else {
-						serverMessage = "[Erreur] Erreur lors du lancement des dés";
+						serverMessage = "[Erreur] Erreur lors du lancement des dï¿½s";
 					}
 				}
 
@@ -250,7 +250,7 @@ class ServerClientThread extends Thread {
 						try {
 							int level = Integer.parseInt(clientMessageSplit[1]);
 							if (level < 0 || level > 6) {
-								serverMessage = "[Erreur] Le niveau doit être compris entre 0 et 5";
+								serverMessage = "[Erreur] Le niveau doit ï¿½tre compris entre 0 et 5";
 							} else {
 								for (Case item : Configuration.getInstance().getListeCase()) {
 									if (item.getNom().equals(clientMessageSplit[1])
@@ -261,7 +261,7 @@ class ServerClientThread extends Thread {
 								}
 							}
 						} catch (Exception e) {
-							serverMessage = "[Erreur] Le niveau doit être un nombre";
+							serverMessage = "[Erreur] Le niveau doit ï¿½tre un nombre";
 						}
 					}
 
@@ -289,7 +289,7 @@ class ServerClientThread extends Thread {
 					Partie.getInstance().skip();
 				} else if (clientMessageSplit[0].equals("start")) {
 					if (Partie.getInstance().init()) {
-						serverMessage = "[Info] Partie démarée" + "\nA "
+						serverMessage = "[Info] Partie dï¿½marï¿½e" + "\nA "
 								+ Partie.getInstance().getCurrentPlayer().getPseudo() + " de jouer !";
 					} else {
 						serverMessage = "[Erreur] Erreur lors du lancement de la partie";
