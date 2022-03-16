@@ -69,7 +69,7 @@ public class Joueur {
 			int loyer = prop.getListeLoyer().get(prop.getNbBuilding());
 			proprietaire.setArgent(proprietaire.getArgent() + loyer);
 			this.setArgent(this.getArgent() - loyer);
-			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + prop.getLoyer() + "$ à " + proprietaire.getPseudo());
+			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + loyer + "$ à " + proprietaire.getPseudo();
 		}
 	}
 	
