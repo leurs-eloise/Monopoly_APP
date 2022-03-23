@@ -270,9 +270,9 @@ class ServerClientThread extends Thread {
 				}
 
 				else if (clientMessageSplit[0].equals("bilan")) {
-					serverMessage = Partie.getInstance().getCurrentPlayer().getPseudo() + " possede "
+					serverMessage = "pepper say " + Partie.getInstance().getCurrentPlayer().getPseudo() + " possede "
 							+ Partie.getInstance().getCurrentPlayer().getNbProp() + " proprietes et "
-							+ Partie.getInstance().getCurrentPlayer().getArgent() + " sous.";
+							+ Partie.getInstance().getCurrentPlayer().getArgent() + " polypoints.";
 
 				}
 

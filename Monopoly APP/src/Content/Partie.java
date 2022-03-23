@@ -219,12 +219,16 @@ public class Partie {
 		} else if (currentCase instanceof Propriete) {
 			Joueur owner = ((Propriete) currentCase).getJoueur();
 			if (owner == null || owner == joueurActuel) {
-				stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur " + currentCase.getNom());
+				String message =  joueurActuel.getPseudo() + " est sur " + currentCase.getNom();
+				stringToSend.receiveMsg("[Info] " + message);
+				ClientParty.sendMessage("pepper say " + message);
 				etat = 2;
 				return true;
 			} else {
-				stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est sur " + currentCase.getNom()
-				+ " qui est possede par " + owner.getPseudo());
+				String message =  joueurActuel.getPseudo() + " est sur " + currentCase.getNom()
+				+ " qui est possede par " + owner.getPseudo();
+				stringToSend.receiveMsg("[Info] " + message);
+				ClientParty.sendMessage("pepper say " + message);
 				if (((Propriete) currentCase).isHypotheque() == false) {
 					if (currentCase instanceof Service) {
 						joueurActuel.payer(((Service) currentCase));
