@@ -55,7 +55,7 @@ public class Joueur {
 			this.argent -= prop.getPrix();
 			prop.setJoueur(this);
 			proprietes.add(prop);
-			stringToSend.receiveMsg("[Info] " + pseudo + " a acheté " + prop.getNom() + " pour " + prop.getPrix() + "$");
+			stringToSend.receiveMsg("[Info] " + pseudo + " a acheté " + prop.getNom() + " pour " + prop.getPrix() + "polypoints");
 		}
 	}
 	
@@ -69,7 +69,7 @@ public class Joueur {
 			int loyer = prop.getListeLoyer().get(prop.getNbBuilding());
 			proprietaire.setArgent(proprietaire.getArgent() + loyer);
 			this.setArgent(this.getArgent() - loyer);
-			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + loyer + "$ à " + proprietaire.getPseudo();
+			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + loyer + "polypoints à " + proprietaire.getPseudo());
 		}
 	}
 	
@@ -78,7 +78,7 @@ public class Joueur {
 		if((proprietaire != null) && (proprietaire != this)){
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
 			this.setArgent(this.getArgent() - prop.getLoyer());
-			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + prop.getLoyer() + "$ à " + proprietaire.getPseudo());
+			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + prop.getLoyer() + "polypoints à " + proprietaire.getPseudo());
 		}
 	}
 	
@@ -89,13 +89,13 @@ public class Joueur {
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getNiveau()*this.getValDes());
 			System.out.println(prop.getNiveau() + " - " + this.getValDes());
 			this.setArgent(this.getArgent() - prop.getNiveau()*this.getValDes());
-			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + prop.getNiveau()*valDes + "$ à " + proprietaire.getPseudo());
+			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + prop.getNiveau()*valDes + "polypoints à " + proprietaire.getPseudo());
 		}
 	}
 	
 	public void demandeConfirmation(Propriete prop1, Propriete prop2, int sous) {
 		String message =  "msg PepperReceive sayEchange " + prop1.getJoueur().getPseudo() + " veut echanger "+ prop1.getNom() 
-				+ " avec " + prop2.getNom() + " et " + sous + " sous. Acceptez-vous cet echange ?";
+				+ " avec " + prop2.getNom() + " et " + sous + " polypoints. Acceptez-vous cet echange ?";
 		ClientParty.sendMessage(message);
 	}
 	
