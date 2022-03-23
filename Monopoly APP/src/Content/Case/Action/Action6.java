@@ -5,7 +5,7 @@ import Content.Partie;
 
 public class Action6 implements carteAction{
 
-	private String description = "La banque vous verse 50$";
+	private String description = "La banque vous verse 50 polypoints";
     @SuppressWarnings("unused")
 	private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     

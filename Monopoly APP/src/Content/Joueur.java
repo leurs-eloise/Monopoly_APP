@@ -47,7 +47,7 @@ public class Joueur {
 	
 	public void lancerDes() {
 		this.valDes = des.getValeur();
-		stringToSend.receiveMsg("[Info] " + pseudo + " à fait un " + valDes);
+		stringToSend.receiveMsg("[Info] " + pseudo + " a fait un " + valDes);
 	}
 	
 	public void acheter(Propriete prop) {
@@ -55,7 +55,7 @@ public class Joueur {
 			this.argent -= prop.getPrix();
 			prop.setJoueur(this);
 			proprietes.add(prop);
-			stringToSend.receiveMsg("[Info] " + pseudo + " a acheté " + prop.getNom() + " pour " + prop.getPrix() + "polypoints");
+			stringToSend.receiveMsg("[Info] " + pseudo + " a achete " + prop.getNom() + " pour " + prop.getPrix() + "polypoints");
 		}
 	}
 	
@@ -69,7 +69,7 @@ public class Joueur {
 			int loyer = prop.getListeLoyer().get(prop.getNbBuilding());
 			proprietaire.setArgent(proprietaire.getArgent() + loyer);
 			this.setArgent(this.getArgent() - loyer);
-			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + loyer + "polypoints à " + proprietaire.getPseudo());
+			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + loyer + "polypoints a " + proprietaire.getPseudo());
 		}
 	}
 	
@@ -78,7 +78,7 @@ public class Joueur {
 		if((proprietaire != null) && (proprietaire != this)){
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
 			this.setArgent(this.getArgent() - prop.getLoyer());
-			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + prop.getLoyer() + "polypoints à " + proprietaire.getPseudo());
+			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + prop.getLoyer() + "polypoints a " + proprietaire.getPseudo());
 		}
 	}
 	
@@ -89,7 +89,7 @@ public class Joueur {
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getNiveau()*this.getValDes());
 			System.out.println(prop.getNiveau() + " - " + this.getValDes());
 			this.setArgent(this.getArgent() - prop.getNiveau()*this.getValDes());
-			ClientParty.sendMessage("pepper say " + pseudo + " a payé " + prop.getNiveau()*valDes + "polypoints à " + proprietaire.getPseudo());
+			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + prop.getNiveau()*valDes + "polypoints a " + proprietaire.getPseudo());
 		}
 	}
 	

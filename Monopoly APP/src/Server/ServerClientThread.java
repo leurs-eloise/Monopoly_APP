@@ -205,7 +205,7 @@ class ServerClientThread extends Thread {
 
 				else if (clientMessageSplit[0].equals("rolldice")) {
 					if (Partie.getInstance().lancerDes()) {
-						serverMessage = "[Info] Des lancé";
+						serverMessage = "[Info] Des lance";
 					} else {
 						serverMessage = "[Erreur] Erreur lors du lancement des des";
 					}
@@ -288,7 +288,7 @@ class ServerClientThread extends Thread {
 					Partie.getInstance().skip();
 				} else if (clientMessageSplit[0].equals("start")) {
 					if (Partie.getInstance().init()) {
-						serverMessage = "[Info] Partie démarée" + "\nA "
+						serverMessage = "[Info] Partie demaree" + "\nA "
 								+ Partie.getInstance().getCurrentPlayer().getPseudo() + " de jouer !";
 					} else {
 						serverMessage = "[Erreur] Erreur lors du lancement de la partie";

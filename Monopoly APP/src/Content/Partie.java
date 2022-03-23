@@ -27,7 +27,7 @@ public class Partie {
 	private ArrayList<Joueur> listeJoueur = new ArrayList<Joueur>();
 	private Joueur joueurActuel;
 	private static Partie partie;
-	private int etat = 0; // 0 partie non lancer - 1 d�but tour - 2-3 achat/vente/echange du joueur - 3
+	private int etat = 0; // 0 partie non lancer - 1 debut tour - 2-3 achat/vente/echange du joueur - 3
 	// fin de tour
 	private SendString stringToSend = SendString.getInstance();
 	private int joueurPosInt = 0;
@@ -103,7 +103,8 @@ public class Partie {
 						for(Integer idProp : propList) {
 							try {
 								((Propriete)Configuration.getInstance().getListeCase().get(idProp)).setJoueur(listeJoueur.get(i));
-								stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": proprietaire de la case " + Configuration.getInstance().getListeCase().get(idProp).getNom());
+								stringToSend.receiveMsg("[Info] Joueur " + (i+1) + 
+										": proprietaire de la case " + Configuration.getInstance().getListeCase().get(idProp).getNom());
 							}catch (Exception e) {
 								stringToSend.receiveMsg("[Erreur] La case " + propList.get(idProp) + " n'est pas une propriete");
 							}
@@ -137,7 +138,7 @@ public class Partie {
 						"[Info] " + joueurActuel.getPseudo() + " a choisit de lancer les des pour sortir de prison");
 				joueurActuel.lancerDes();
 				if (joueurActuel.getValDes() == 6) {
-					String message = joueurActuel.getPseudo() + " est sortit de prison en faisant un 6 ! Il peut maintenant jouer.";
+					String message = joueurActuel.getPseudo() + " est sortie de prison en faisant un 6 ! Il peut maintenant jouer.";
 					stringToSend.receiveMsg("[Info] " + message);
 					ClientParty.sendMessage("pepper say "+ message);
 					joueurActuel.setTourPrison(0);
@@ -211,7 +212,7 @@ public class Partie {
 			return true;
 		} else if (currentCase instanceof Depart) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " percoit un salaire de "
-					+ ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "$");
+					+ ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "polypoints");
 			((Depart) currentCase).pactole(joueurActuel);
 			etat = 3;
 			return true;
@@ -254,7 +255,7 @@ public class Partie {
 
 			message = "Pour sortir de prison, vous devez: \n- faire un "
 					+ ((Prison) currentCase).getDes() + " \n-Payer " + ((Prison) currentCase).getEscape()
-					+ "$ \n-Utiliser une carte 'sortir de prison'";
+					+ "polypoints \n-Utiliser une carte 'sortir de prison'";
 			stringToSend.receiveMsg("[Info] " + message);
 			ClientParty.sendMessage("pepper say " + message);
 			joueurActuel.setTourPrison(1);
@@ -291,7 +292,7 @@ public class Partie {
 				.getEscape()) {
 			String message  = joueurActuel.getPseudo() + " a payer "
 					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()
-					+ "$ pour sortir de prison. Il peut jouer normalement";
+					+ "polypoints pour sortir de prison. Il peut jouer normalement";
 			stringToSend.receiveMsg("[Info] " + message);
 			ClientParty.sendMessage("pepper say " + message);
 			etat = 1;
@@ -431,7 +432,7 @@ public class Partie {
 					.getEscape());
 			String message = joueurActuel.getPseudo() + " est reste trop de temps en prison. "
 					+ "Il a paye "
-					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()
+					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape() 
 					+ "polypoints";
 					
 			joueurActuel.setTourPrison(0);

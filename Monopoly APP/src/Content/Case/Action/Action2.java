@@ -5,7 +5,7 @@ import Content.Partie;
 
 public class Action2 implements carteAction{
 
-	private String description = "Avancer à la case départ";
+	private String description = "Aller jusqu'a la case départ";
     @SuppressWarnings("unused")
 	private Joueur joueur =  Partie.getInstance().getCurrentPlayer(); 
     
