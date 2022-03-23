@@ -205,7 +205,7 @@ class ServerClientThread extends Thread {
 
 				else if (clientMessageSplit[0].equals("rolldice")) {
 					if (Partie.getInstance().lancerDes()) {
-						serverMessage = "[Info] Dés lancé";
+						serverMessage = "[Info] Des lancé";
 					} else {
 						serverMessage = "[Erreur] Erreur lors du lancement des des";
 					}
