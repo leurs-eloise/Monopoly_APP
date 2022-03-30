@@ -111,12 +111,17 @@ public class Joueur {
 	public void echanger(Propriete prop1, Propriete prop2, int sous) {
 		Joueur proprietaire = prop1.getJoueur();
 		Joueur destinataire = prop2.getJoueur();
-		if((proprietaire != null) && (proprietaire != this)){
+		if((proprietaire != null) && (proprietaire == this) && (destinataire != null) && (destinataire != this)){
 			prop1.setJoueur(destinataire);
 			prop2.setJoueur(proprietaire);
 			destinataire.setArgent(destinataire.getArgent() + sous);
 			proprietaire.setArgent(proprietaire.getArgent() - sous);
-			}		
+			}	
+		else {
+			String message = "Vous ne pouvez pas faire cet echange";
+			ClientParty.sendMessage("pepper say " + message);
+			stringToSend.receiveMsg("[Erreur] " + message);
+		}
 	}
 	
 	public void acheterBuilding(int nombre, Terrain ter) {

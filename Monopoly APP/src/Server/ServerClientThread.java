@@ -237,17 +237,26 @@ class ServerClientThread extends Thread {
 				else if (clientMessageSplit[0].equals("exchange")) {
 					Propriete prop1 = null; 
 					Propriete prop2 = null;
-					for (Case item : Configuration.getInstance().getListeCase()) {
-						if (item.getNom().equals(clientMessageSplit[1])	&& item.getType().equals("Propriete")) {
-							prop1 = (Propriete) item;
-						}
-						if (item.getNom().equals(clientMessageSplit[2])	&& item.getType().equals("Propriete")) {
-							prop2 = (Propriete) item;
-						}
-						int sous = Integer.parseInt(clientMessageSplit[3]);
-						Partie.getInstance().demandeEchange(prop1, prop2, sous);
+					if (clientMessageSplit[1].equals(clientMessageSplit[2])) {
+						serverMessage = "[Erreur] Vous ne pouvez pas echanger une propriete avec elle meme";
 					}
-					
+					else {
+						for (Case item : Configuration.getInstance().getListeCase()) {
+							if (item.getNom().equals(clientMessageSplit[1])	&& item.getType().equals("Propriete")) {
+								prop1 = (Propriete) item;
+							}
+							if (item.getNom().equals(clientMessageSplit[2])	&& item.getType().equals("Propriete")) {
+								prop2 = (Propriete) item;
+							}
+							if (prop1.getJoueur().equals(prop2.getJoueur())) {
+								serverMessage = "[Erreur] Vous possedez deja cette propriete";
+							}
+							else {
+								int sous = Integer.parseInt(clientMessageSplit[3]);
+								Partie.getInstance().demandeEchange(prop1, prop2, sous);
+							}
+						}
+					}
 				}
 
 				else if (clientMessageSplit[0].equals("answerExchange")) {
@@ -257,7 +266,7 @@ class ServerClientThread extends Thread {
 					}
 					Partie.getInstance().accepteEchange(reponse);
 				}
-				
+
 				else if (clientMessageSplit[0].equals("home")) {
 					if (clientMessageSplit.length == 2) {
 						try {
