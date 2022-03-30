@@ -53,6 +53,7 @@ public class Joueur {
 	public void acheter(Propriete prop) {
 		if((prop.getJoueur() == null) && (this.argent >= prop.getPrix())){
 			this.argent -= prop.getPrix();
+			//tablette argentJoueur - prix
 			prop.setJoueur(this);
 			proprietes.add(prop);
 			stringToSend.receiveMsg("[Info] " + pseudo + " a achete " + prop.getNom() + " pour " + prop.getPrix() + "polypoints");
@@ -68,7 +69,9 @@ public class Joueur {
 		if((proprietaire != null) && (proprietaire != this)){
 			int loyer = prop.getListeLoyer().get(prop.getNbBuilding());
 			proprietaire.setArgent(proprietaire.getArgent() + loyer);
+			//tablette argentJoueur1 - prix
 			this.setArgent(this.getArgent() - loyer);
+			//tablette argentJoueur2 + prix
 			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + loyer + "polypoints a " + proprietaire.getPseudo());
 		}
 	}
@@ -78,6 +81,7 @@ public class Joueur {
 		if((proprietaire != null) && (proprietaire != this)){
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
 			this.setArgent(this.getArgent() - prop.getLoyer());
+			//tablette argentJoueur - prix
 			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + prop.getLoyer() + "polypoints a " + proprietaire.getPseudo());
 		}
 	}
@@ -89,6 +93,7 @@ public class Joueur {
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getNiveau()*this.getValDes());
 			System.out.println(prop.getNiveau() + " - " + this.getValDes());
 			this.setArgent(this.getArgent() - prop.getNiveau()*this.getValDes());
+			//tablette argentJoueur - prix
 			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + prop.getNiveau()*valDes + "polypoints a " + proprietaire.getPseudo());
 		}
 	}
@@ -115,6 +120,7 @@ public class Joueur {
 		if (ter.getJoueur() == this) {
 			if (((ter.getNbBuilding() + nombre)<5) && (this.argent >= Configuration.getInstance().getPrixConstruction(ter.getId()))) {
 					this.argent -= Configuration.getInstance().getPrixConstruction(ter.getId());
+					//tablette argentJoueur - prix
 					ter.setNbBuilding(nombre);
 				}			
 			}		

@@ -195,6 +195,24 @@ class ServerClientThread extends Thread {
 						}
 					}
 
+				} else if (clientMessageSplit[0].equals("tablet")) {
+					String message = "";
+					for (int i = 1; i <= clientMessageSplit.length - 1; i++) {
+						if (message.equals("")) {
+							message = message + clientMessageSplit[i];
+						} else {
+							message = message + " " + clientMessageSplit[i];
+						}
+					}
+					serverMessage = "Send to Tablet: " + message;
+					for (ServerClientThread client : listeRobot.getRobot()) {
+						if (client.getClientName().equals("ServerTabletReceive")) {
+							DataOutputStream outStreamClient = new DataOutputStream(
+									client.getSocket().getOutputStream());
+							outStreamClient.writeUTF(message);
+						}
+					}
+
 				} else if (clientMessageSplit[0].equals("loadconfig")) {
 					if(clientMessageSplit.length > 1) {
 						Configuration.getInstance().loadConfig(clientMessageSplit[1]);
@@ -204,11 +222,7 @@ class ServerClientThread extends Thread {
 				}
 
 				else if (clientMessageSplit[0].equals("rolldice")) {
-					if (Partie.getInstance().lancerDes()) {
-						serverMessage = "[Info] Des lance";
-					} else {
-						serverMessage = "[Erreur] Erreur lors du lancement des des";
-					}
+					Partie.getInstance().lancerDes();
 				}
 
 				else if (clientMessageSplit[0].equals("hypotheque")) {
@@ -270,7 +284,7 @@ class ServerClientThread extends Thread {
 				}
 
 				else if (clientMessageSplit[0].equals("bilan")) {
-					serverMessage = "pepper bilan " + Partie.getInstance().getCurrentPlayer().getPseudo() + " possede "
+					serverMessage = "bilan " + Partie.getInstance().getCurrentPlayer().getPseudo() + " possede "
 							+ Partie.getInstance().getCurrentPlayer().getNbProp() + " proprietes et "
 							+ Partie.getInstance().getCurrentPlayer().getArgent() + " polypoints.";
 
