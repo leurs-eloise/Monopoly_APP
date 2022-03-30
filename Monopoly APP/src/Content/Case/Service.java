@@ -6,7 +6,7 @@ import Content.Joueur;
 public class Service extends Propriete {
 	@SuppressWarnings("unused")
 	private String nom;
-	
+
 	public Service(String nom, int id, int prix, Joueur j, int hypotheque) {
 		super(nom, id, prix, j, hypotheque);
 	}
@@ -19,11 +19,9 @@ public class Service extends Propriete {
 			}
 		}
 		if (nbService > 0) {
-			return Configuration.getInstance().getMultiplicateur(super.getId()).get(nbService-1);
+			return Configuration.getInstance().getMultiplicateur(super.getId()).get(nbService - 1);
 		}
 		return 0;
 	}
-	
-	
 
 }

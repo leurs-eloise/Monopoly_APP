@@ -1,4 +1,5 @@
 package Server;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -19,89 +20,83 @@ import javax.swing.JTextField;
 @SuppressWarnings("serial")
 public class Fenetre extends JFrame implements ActionListener, ReceiveEvent {
 
-	
 	private JPanel pan = new JPanel();
-	
+
 	private JPanel sendBlock = new JPanel();
 	private JTextField command = new JTextField("", 20);
 	private JButton sendButton = new JButton("Send");
-	
-	
+
 	private JPanel buttonBlock = new JPanel();
 	private JButton stopButton = new JButton("Stop");
-	
+
 	private JButton rolldice = new JButton("Roll");
 	private JButton buy = new JButton("Buy");
 	private JButton fintour = new JButton("Fin");
-	
-	
+
 	private JPanel container = new JPanel();
-	
-	
-	private JTextArea log = new JTextArea(20,60);
+
+	private JTextArea log = new JTextArea(20, 60);
 
 	private ServerSocket server;
 
-	
-    public void KeyInput(JTextField command){ //or JTextField
-        this.command = command;
-    }
-	
+	public void KeyInput(JTextField command) { // or JTextField
+		this.command = command;
+	}
+
 	public Fenetre(ServerSocket server, ListeRobot robot) {
 
 		this.server = server;
 		this.setTitle("Server");
-	    this.setSize(800, 450);
-	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    this.setLocationRelativeTo(null);
+		this.setSize(800, 450);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
 
-	    sendBlock.add(command);
-	    sendBlock.add(sendButton);
-	    
-	    buttonBlock.add(stopButton);
-	    buttonBlock.add(rolldice);
-	    buttonBlock.add(buy);
-	    buttonBlock.add(fintour);
-	    
-	    
-	    stopButton.addActionListener(this);
-	    stopButton.setActionCommand("stop");
-	    sendButton.addActionListener(this);
-	    sendButton.setActionCommand("send");
-	    rolldice.addActionListener(this);
-	    rolldice.setActionCommand("roll");
-	    buy.addActionListener(this);
-	    buy.setActionCommand("buy");
-	    fintour.addActionListener(this);
-	    fintour.setActionCommand("fin");
-	    
-	    log.setFont(new Font("Consolas", Font.PLAIN, 14));
-	   
-	    this.getRootPane().setDefaultButton(sendButton);
-	    log.append("Log du serveur:\n");
-	    log.setEditable(false);
-	    JScrollPane scroller = new JScrollPane(log, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		sendBlock.add(command);
+		sendBlock.add(sendButton);
 
-	    
-	    pan.add(container);
-	    container.add(scroller, BorderLayout.CENTER);
-	    container.add(sendBlock, BorderLayout.SOUTH);
-	    container.add(buttonBlock, BorderLayout.SOUTH);
-	    this.setContentPane(container);
-	    this.setVisible(true);
-		
+		buttonBlock.add(stopButton);
+		buttonBlock.add(rolldice);
+		buttonBlock.add(buy);
+		buttonBlock.add(fintour);
+
+		stopButton.addActionListener(this);
+		stopButton.setActionCommand("stop");
+		sendButton.addActionListener(this);
+		sendButton.setActionCommand("send");
+		rolldice.addActionListener(this);
+		rolldice.setActionCommand("roll");
+		buy.addActionListener(this);
+		buy.setActionCommand("buy");
+		fintour.addActionListener(this);
+		fintour.setActionCommand("fin");
+
+		log.setFont(new Font("Consolas", Font.PLAIN, 14));
+
+		this.getRootPane().setDefaultButton(sendButton);
+		log.append("Log du serveur:\n");
+		log.setEditable(false);
+		JScrollPane scroller = new JScrollPane(log, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		pan.add(container);
+		container.add(scroller, BorderLayout.CENTER);
+		container.add(sendBlock, BorderLayout.SOUTH);
+		container.add(buttonBlock, BorderLayout.SOUTH);
+		this.setContentPane(container);
+		this.setVisible(true);
+
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("send")) {
-			if(!command.getText().equals("")){
+		if (e.getActionCommand().equals("send")) {
+			if (!command.getText().equals("")) {
 				ClientServer.sendMessage(command.getText());
 				command.selectAll();
-				command.replaceSelection("");	
+				command.replaceSelection("");
 			}
 		}
-		if(e.getActionCommand().equals("stop")) {
+		if (e.getActionCommand().equals("stop")) {
 			try {
 				server.close();
 			} catch (IOException e1) {
@@ -109,22 +104,19 @@ public class Fenetre extends JFrame implements ActionListener, ReceiveEvent {
 			}
 			this.dispose();
 		}
-		
-		
-		if(e.getActionCommand().equals("fin")) {
-				ClientServer.sendMessage("fintour");
-	
-			
-		}
-		if(e.getActionCommand().equals("roll")) {
-				ClientServer.sendMessage("rolldice");
 
-			 
+		if (e.getActionCommand().equals("fin")) {
+			ClientServer.sendMessage("fintour");
+
 		}
-		if(e.getActionCommand().equals("buy")) {
-				ClientServer.sendMessage("buy");
+		if (e.getActionCommand().equals("roll")) {
+			ClientServer.sendMessage("rolldice");
+
 		}
-		
+		if (e.getActionCommand().equals("buy")) {
+			ClientServer.sendMessage("buy");
+		}
+
 	}
 
 	@Override

@@ -23,8 +23,8 @@ public class Joueur {
 	private int score;
 	private SendString stringToSend = SendString.getInstance();
 	private int prisonCard = 0;
-	
-	//constructeur pour la config
+
+	// constructeur pour la config
 	public Joueur(int id, String pseudo, int argent, int position, int tourPrison, ArrayList<Propriete> proprietes) {
 		super();
 		this.id = ID_FACTORY.getAndIncrement();
@@ -35,176 +35,198 @@ public class Joueur {
 		this.proprietes = proprietes;
 		this.setScore();
 	}
-	
-	//constructeur simplifie pour la creation d'un joueur
+
+	// constructeur simplifie pour la creation d'un joueur
 	public Joueur(int id, String pseudo, int argent) {
 		super();
 		this.id = ID_FACTORY.getAndIncrement();
 		this.pseudo = pseudo;
 		this.argent = argent;
 	}
-	
+
 	public void lancerDes() {
 		this.valDes = des.getValeur();
 		stringToSend.receiveMsg("[Info] " + pseudo + " a fait un " + valDes);
 		ClientServer.sendMessage("tablet rolldice " + valDes);
 	}
-	
+
 	public void acheter(Propriete prop) {
-		if((prop.getJoueur() == null) && (this.argent >= prop.getPrix())){
+		if ((prop.getJoueur() == null) && (this.argent >= prop.getPrix())) {
 			this.argent -= prop.getPrix();
 			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
 			prop.setJoueur(this);
 			proprietes.add(prop);
 			ClientParty.sendMessage("tablet addPropriete " + prop.getId() + " " + this.getId() + " " + prop.getNom());
-			stringToSend.receiveMsg("[Info] " + pseudo + " a achete " + prop.getNom() + " pour " + prop.getPrix() + " polypoints");
+			stringToSend.receiveMsg(
+					"[Info] " + pseudo + " a achete " + prop.getNom() + " pour " + prop.getPrix() + " polypoints");
 		}
 	}
-	
+
 	public int getValDes() {
 		return valDes;
 	}
 
 	public void payer(Terrain prop) {
 		Joueur proprietaire = prop.getJoueur();
-		if((proprietaire != null) && (proprietaire != this)){
+		if ((proprietaire != null) && (proprietaire != this)) {
 			int loyer = prop.getListeLoyer().get(prop.getNbBuilding());
-			proprietaire.setArgent(proprietaire.getArgent() + loyer);			
+			proprietaire.setArgent(proprietaire.getArgent() + loyer);
 			this.setArgent(this.getArgent() - loyer);
 			ClientParty.sendMessage("tablet setMoney " + proprietaire.getId() + " " + proprietaire.getArgent());
 			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
-			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + loyer + " polypoints a " + proprietaire.getPseudo());
+			ClientParty.sendMessage(
+					"pepper say " + pseudo + " a paye " + loyer + " polypoints a " + proprietaire.getPseudo());
 		}
 	}
-	
+
 	public void payer(Gare prop) {
 		Joueur proprietaire = prop.getJoueur();
-		if((proprietaire != null) && (proprietaire != this)){
+		if ((proprietaire != null) && (proprietaire != this)) {
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
 			this.setArgent(this.getArgent() - prop.getLoyer());
 			ClientParty.sendMessage("tablet setMoney " + proprietaire.getId() + " " + proprietaire.getArgent());
 			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
-			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + prop.getLoyer() + "polypoints a " + proprietaire.getPseudo());
+			ClientParty.sendMessage(
+					"pepper say " + pseudo + " a paye " + prop.getLoyer() + "polypoints a " + proprietaire.getPseudo());
 		}
 	}
-	
+
 	public void payer(Service prop) {
 		Joueur proprietaire = prop.getJoueur();
-		if((proprietaire != null) && (proprietaire != this)){
+		if ((proprietaire != null) && (proprietaire != this)) {
 			this.lancerDes();
-			proprietaire.setArgent(proprietaire.getArgent() + prop.getNiveau()*this.getValDes());
+			proprietaire.setArgent(proprietaire.getArgent() + prop.getNiveau() * this.getValDes());
 			System.out.println(prop.getNiveau() + " - " + this.getValDes());
-			this.setArgent(this.getArgent() - prop.getNiveau()*this.getValDes());
+			this.setArgent(this.getArgent() - prop.getNiveau() * this.getValDes());
 			ClientParty.sendMessage("tablet setMoney " + proprietaire.getId() + " " + proprietaire.getArgent());
 			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
-			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + prop.getNiveau()*valDes + "polypoints a " + proprietaire.getPseudo());
+			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + prop.getNiveau() * valDes + "polypoints a "
+					+ proprietaire.getPseudo());
 		}
 	}
-	
+
 	public void demandeConfirmation(Propriete prop1, Propriete prop2, int sous) {
-		String message =  "msg PepperReceive sayEchange " + prop1.getJoueur().getPseudo() + " veut echanger "+ prop1.getNom() 
-				+ " avec " + prop2.getNom() + " et " + sous + " polypoints. Acceptez-vous cet echange ?";
+		String message = "msg PepperReceive sayEchange " + prop1.getJoueur().getPseudo() + " veut echanger "
+				+ prop1.getNom() + " avec " + prop2.getNom() + " et " + sous
+				+ " polypoints. Acceptez-vous cet echange ?";
 		ClientParty.sendMessage(message);
 	}
-	
-	//le joueur veut echanger la prop1 contre la prop2 d'un autre joueur avec x sous
+
+	// le joueur veut echanger la prop1 contre la prop2 d'un autre joueur avec x
+	// sous
 	public void echanger(Propriete prop1, Propriete prop2, int sous) {
 		Joueur proprietaire = prop1.getJoueur();
 		Joueur destinataire = prop2.getJoueur();
-		if((proprietaire != null) && (proprietaire == this) && (destinataire != null) && (destinataire != this)){
+		if ((proprietaire != null) && (proprietaire == this) && (destinataire != null) && (destinataire != this)) {
 			prop1.setJoueur(destinataire);
 			prop2.setJoueur(proprietaire);
 			destinataire.setArgent(destinataire.getArgent() + sous);
 			proprietaire.setArgent(proprietaire.getArgent() - sous);
-			}	
-		else {
+		} else {
 			String message = "Vous ne pouvez pas faire cet echange";
 			ClientParty.sendMessage("pepper say " + message);
 			stringToSend.receiveMsg("[Erreur] " + message);
 		}
 	}
-	
+
 	public void acheterBuilding(int nombre, Terrain ter) {
 		if (ter.getJoueur() == this) {
-			if (((ter.getNbBuilding() + nombre)<5) && (this.argent >= Configuration.getInstance().getPrixConstruction(ter.getId()))) {
-					this.argent -= Configuration.getInstance().getPrixConstruction(ter.getId());
-					ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
-					ter.setNbBuilding(nombre);
-				}			
-			}		
+			if (((ter.getNbBuilding() + nombre) < 5)
+					&& (this.argent >= Configuration.getInstance().getPrixConstruction(ter.getId()))) {
+				this.argent -= Configuration.getInstance().getPrixConstruction(ter.getId());
+				ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
+				ter.setNbBuilding(nombre);
+			}
+		}
 	}
-	
+
 	public void hypotheque(Propriete prop) {
 		prop.setHypotheque(false);
 		this.setArgent(this.getArgent() + prop.getPrixHypotheque());
 	}
-	
-	//Getter and setter 
+
+	// Getter and setter
 	public void setScore() {
 		this.score = this.argent;
 		for (Propriete prop : this.getProprietes()) {
 			this.score += prop.getPrix();
 			if (prop instanceof Terrain) {
-				this.score += ((Terrain)prop).getNbBuilding() * Configuration.getInstance().getPrixConstruction(prop.getId());
+				this.score += ((Terrain) prop).getNbBuilding()
+						* Configuration.getInstance().getPrixConstruction(prop.getId());
 			}
 		}
 	}
+
 	public int getScore() {
 		return this.score;
 	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getPseudo() {
 		return pseudo;
 	}
+
 	public void setPseudo(String pseudo) {
 		this.pseudo = pseudo;
 	}
+
 	public int getArgent() {
 		return argent;
 	}
+
 	public void setArgent(int argent) {
 		this.argent = argent;
 	}
+
 	public int getNbProp() {
 		return proprietes.size();
 	}
+
 	public int getPosition() {
 		return position;
 	}
+
 	public void setPosition(int position) {
 		this.position = position;
 	}
+
 	public int getTourPrison() {
 		return tourPrison;
 	}
+
 	public void setTourPrison(int tourPrison) {
 		this.tourPrison = tourPrison;
 	}
+
 	public Des getDes() {
 		return des;
 	}
+
 	public void setDes(Des des) {
 		this.des = des;
 	}
+
 	public ArrayList<Propriete> getProprietes() {
 		return proprietes;
 	}
+
 	public void setProprietes(ArrayList<Propriete> proprietes) {
 		this.proprietes = proprietes;
 	}
+
 	public int getPrisonCard() {
 		return prisonCard;
 	}
-	
+
 	public void setPrisonCard(int prisonCard) {
 		this.prisonCard = prisonCard;
 	}
-	
-	
-	
+
 }

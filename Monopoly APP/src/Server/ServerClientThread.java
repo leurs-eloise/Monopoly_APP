@@ -214,7 +214,7 @@ class ServerClientThread extends Thread {
 					}
 
 				} else if (clientMessageSplit[0].equals("loadconfig")) {
-					if(clientMessageSplit.length > 1) {
+					if (clientMessageSplit.length > 1) {
 						Configuration.getInstance().loadConfig(clientMessageSplit[1]);
 					} else {
 						Configuration.getInstance().loadDefaultConfig();
@@ -229,29 +229,26 @@ class ServerClientThread extends Thread {
 					Partie.getInstance().hypotheque();
 				}
 
-
 				else if (clientMessageSplit[0].equals("buy")) {
 					Partie.getInstance().acheter();
 				}
 
 				else if (clientMessageSplit[0].equals("exchange")) {
-					Propriete prop1 = null; 
+					Propriete prop1 = null;
 					Propriete prop2 = null;
 					if (clientMessageSplit[1].equals(clientMessageSplit[2])) {
 						serverMessage = "[Erreur] Vous ne pouvez pas echanger une propriete avec elle meme";
-					}
-					else {
+					} else {
 						for (Case item : Configuration.getInstance().getListeCase()) {
-							if (item.getNom().equals(clientMessageSplit[1])	&& item.getType().equals("Propriete")) {
+							if (item.getNom().equals(clientMessageSplit[1]) && item.getType().equals("Propriete")) {
 								prop1 = (Propriete) item;
 							}
-							if (item.getNom().equals(clientMessageSplit[2])	&& item.getType().equals("Propriete")) {
+							if (item.getNom().equals(clientMessageSplit[2]) && item.getType().equals("Propriete")) {
 								prop2 = (Propriete) item;
 							}
 							if (prop1.getJoueur().equals(prop2.getJoueur())) {
 								serverMessage = "[Erreur] Vous possedez deja cette propriete";
-							}
-							else {
+							} else {
 								int sous = Integer.parseInt(clientMessageSplit[3]);
 								Partie.getInstance().demandeEchange(prop1, prop2, sous);
 							}
@@ -278,7 +275,8 @@ class ServerClientThread extends Thread {
 									if (item.getNom().equals(clientMessageSplit[1])
 											&& item.getType().equals("Terrain")) {
 										Terrain ter = (Terrain) item;
-										Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[2]), ter);
+										Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[2]),
+												ter);
 									}
 								}
 							}
@@ -318,6 +316,8 @@ class ServerClientThread extends Thread {
 					}
 				} else if (clientMessageSplit[0].equals("fintour")) {
 					Partie.getInstance().finTour();
+				} else if (clientMessageSplit[0].equals("plateau")) {
+					serverMessage = Partie.getInstance().plateau();
 				} else if (clientMessageSplit[0].equals("plateau")) {
 					serverMessage = Partie.getInstance().plateau();
 				}

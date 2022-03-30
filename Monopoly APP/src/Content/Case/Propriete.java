@@ -1,6 +1,5 @@
 package Content.Case;
 
-
 import Content.Joueur;
 
 public class Propriete implements Case {
@@ -10,46 +9,41 @@ public class Propriete implements Case {
 	private Joueur joueur;
 	private String nom;
 	private boolean hypotheque;
-	
+
 	// Constructeur
 	public Propriete(String nom, int id, int prix, Joueur j, int prixHypotheque) {
 		this.nom = nom;
 		this.id = id;
 		this.prix = prix;
-		this.joueur = null;	
+		this.joueur = null;
 		this.hypotheque = false;
 	}
-	
+
 	// Getter & Setter
 	public int getPrixHypotheque() {
 		return prixHypotheque;
 	}
 
-
 	public void setPrixHypotheque(int prixHypotheque) {
 		this.prixHypotheque = prixHypotheque;
 	}
-
 
 	public boolean isHypotheque() {
 		return hypotheque;
 	}
 
-
 	public void setHypotheque(boolean hypotheque) {
 		this.hypotheque = hypotheque;
 	}
-
 
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
-
 	public String getNom() {
 		return nom;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -73,8 +67,9 @@ public class Propriete implements Case {
 	public void setJoueur(Joueur joueur) {
 		this.joueur = joueur;
 	}
+
 	public String getType() {
-    	return this.getClass().getName();
-    }
+		return this.getClass().getName();
+	}
 
 }
