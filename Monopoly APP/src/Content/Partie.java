@@ -20,7 +20,6 @@ import Content.Case.Service;
 import Content.Case.Terrain;
 import Content.Case.Action.carteAction;
 import Server.ClientParty;
-import Server.ClientServer;
 import Server.SendString;
 
 public class Partie {
@@ -53,15 +52,15 @@ public class Partie {
 	}
 
 	// init
-	public boolean init() {	
+	public boolean init() {
 
 		if (!listeJoueur.isEmpty()) {
 			listeJoueur.clear();
 		}
 		if (etat != 0) {
 			String message = "Vous ne pouvez pas faire cela maintenant !";
-			stringToSend.receiveMsg("[Erreur] "+ message);
-			ClientParty.sendMessage("pepper say "+ message);
+			stringToSend.receiveMsg("[Erreur] " + message);
+			ClientParty.sendMessage("pepper say " + message);
 			return false;
 		}
 		if (!Configuration.getInstance().isConfigLoad()) {
@@ -70,52 +69,55 @@ public class Partie {
 		}
 
 		for (int i = 0; i < Configuration.getInstance().getNbJoueur(); i++) {
-			ClientParty.sendMessage("tablet initPlayer " + i + " " +  Configuration.getInstance().getDefaultMoney());
+			ClientParty.sendMessage("tablet initPlayer " + i + " " + Configuration.getInstance().getDefaultMoney());
 			listeJoueur.add(new Joueur(i, "Joueur " + (i + 1), Configuration.getInstance().getDefaultMoney()));
 		}
-		if(!Objects.isNull(Configuration.getInstance().getPlayerConfig())) {
+		if (!Objects.isNull(Configuration.getInstance().getPlayerConfig())) {
 			stringToSend.receiveMsg("[Info] Chargement configuration joueur");
-			for(int i = 0; i < listeJoueur.size(); i++) {
+			for (int i = 0; i < listeJoueur.size(); i++) {
 				try {
-					JSONObject configJoueur = Configuration.getInstance().getPlayerConfig().getJSONObject(Integer.toString(i+1));
+					JSONObject configJoueur = Configuration.getInstance().getPlayerConfig()
+							.getJSONObject(Integer.toString(i + 1));
 					try {
 						listeJoueur.get(i).setTourPrison(configJoueur.getInt("tourEnPrison"));
-						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": tour en prison defini");
-					}catch (Exception e) {
+						stringToSend.receiveMsg("[Info] Joueur " + (i + 1) + ": tour en prison defini");
+					} catch (Exception e) {
 					}
 					try {
 						listeJoueur.get(i).setArgent(configJoueur.getInt("argent"));
-						//tablette set argentJoueur 
-						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": argent defini");
-					}catch (Exception e) {
+						// tablette set argentJoueur
+						stringToSend.receiveMsg("[Info] Joueur " + (i + 1) + ": argent defini");
+					} catch (Exception e) {
 					}
 					try {
 						listeJoueur.get(i).setPosition(configJoueur.getInt("position"));
-						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": position definie");
-					}catch (Exception e) {
+						stringToSend.receiveMsg("[Info] Joueur " + (i + 1) + ": position definie");
+					} catch (Exception e) {
 					}
 					try {
 						listeJoueur.get(i).setPrisonCard(configJoueur.getInt("cartePrison"));
-						stringToSend.receiveMsg("[Info] Joueur " + (i+1) + ": carte en prison definie");
-						//tablette joueur nbCartePrison
-					}catch (Exception e) {
+						stringToSend.receiveMsg("[Info] Joueur " + (i + 1) + ": carte en prison definie");
+						// tablette joueur nbCartePrison
+					} catch (Exception e) {
 					}
 					try {
 						JSONArray prop = configJoueur.getJSONArray("propriete");
 						ArrayList<Integer> propList = CaseFactory.getInstance().JSONArrayToIntArrayList(prop);
-						for(Integer idProp : propList) {
+						for (Integer idProp : propList) {
 							try {
-								((Propriete)Configuration.getInstance().getListeCase().get(idProp)).setJoueur(listeJoueur.get(i));
-								stringToSend.receiveMsg("[Info] Joueur " + (i+1) + 
-										": proprietaire de la case " + Configuration.getInstance().getListeCase().get(idProp).getNom());
-								//tablette joueur ajouter prop
-							}catch (Exception e) {
-								stringToSend.receiveMsg("[Erreur] La case " + propList.get(idProp) + " n'est pas une propriete");
+								((Propriete) Configuration.getInstance().getListeCase().get(idProp))
+										.setJoueur(listeJoueur.get(i));
+								stringToSend.receiveMsg("[Info] Joueur " + (i + 1) + ": proprietaire de la case "
+										+ Configuration.getInstance().getListeCase().get(idProp).getNom());
+								// tablette joueur ajouter prop
+							} catch (Exception e) {
+								stringToSend.receiveMsg(
+										"[Erreur] La case " + propList.get(idProp) + " n'est pas une propriete");
 							}
 						}
-					}catch (Exception e) {
+					} catch (Exception e) {
 					}
-				}catch (Exception e) {
+				} catch (Exception e) {
 				}
 			}
 		}
@@ -132,8 +134,8 @@ public class Partie {
 		try {
 			if (etat != 1) {
 				String message = "Vous ne pouvez pas faire cela maintenant !";
-				stringToSend.receiveMsg("[Erreur] "+ message);
-				ClientParty.sendMessage("pepper say "+ message);
+				stringToSend.receiveMsg("[Erreur] " + message);
+				ClientParty.sendMessage("pepper say " + message);
 				return false;
 			}
 			if (joueurActuel.getTourPrison() != 0) { // Lancer de des si joueur en prison
@@ -142,17 +144,18 @@ public class Partie {
 						"[Info] " + joueurActuel.getPseudo() + " a choisit de lancer les des pour sortir de prison");
 				joueurActuel.lancerDes();
 				if (joueurActuel.getValDes() == 6) {
-					String message = joueurActuel.getPseudo() + " est sortie de prison en faisant un 6 ! Il peut maintenant jouer.";
+					String message = joueurActuel.getPseudo()
+							+ " est sortie de prison en faisant un 6 ! Il peut maintenant jouer.";
 					stringToSend.receiveMsg("[Info] " + message);
-					ClientParty.sendMessage("pepper say "+ message);
+					ClientParty.sendMessage("pepper say " + message);
 					joueurActuel.setTourPrison(0);
 					etat = 1;
 					return true;
 				} else {
-					String message = joueurActuel.getPseudo() + " a fait un "
-							+ joueurActuel.getValDes() + ". Il reste en prison.";
+					String message = joueurActuel.getPseudo() + " a fait un " + joueurActuel.getValDes()
+							+ ". Il reste en prison.";
 					stringToSend.receiveMsg("[Info] " + message);
-					ClientParty.sendMessage("pepper say "+ message);
+					ClientParty.sendMessage("pepper say " + message);
 					etat = 3;
 					return true;
 				}
@@ -164,7 +167,7 @@ public class Partie {
 					String message = joueurActuel.getPseudo() + " est passe par la case depart et a recu "
 							+ ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "polypoints";
 					stringToSend.receiveMsg("[Info] " + message);
-					ClientParty.sendMessage("pepper say "+ message);
+					ClientParty.sendMessage("pepper say " + message);
 					((Depart) Configuration.getInstance().getListeCase().get(0)).pactole(joueurActuel);
 				}
 				joueurActuel.setPosition((joueurActuel.getPosition() + joueurActuel.getValDes())
@@ -182,8 +185,8 @@ public class Partie {
 
 		if (etat != 2) {
 			String message = "Vous ne pouvez pas faire cela maintenant !";
-			stringToSend.receiveMsg("[Erreur] "+ message);
-			ClientParty.sendMessage("pepper say "+ message);
+			stringToSend.receiveMsg("[Erreur] " + message);
+			ClientParty.sendMessage("pepper say " + message);
 			return false;
 		} else {
 			Case currentCase = Configuration.getInstance().getListeCase().get(joueurActuel.getPosition());
@@ -199,11 +202,11 @@ public class Partie {
 	public boolean actualiserPosition() {
 		Case currentCase = Configuration.getInstance().getListeCase().get(joueurActuel.getPosition());
 		stringToSend
-		.receiveMsg("[Info] " + joueurActuel.getPseudo() + " se retrouve sur la case " + currentCase.getNom());
+				.receiveMsg("[Info] " + joueurActuel.getPseudo() + " se retrouve sur la case " + currentCase.getNom());
 		if (currentCase instanceof Prison) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est en visite simple sur la prison");
 			etat = 3;
-			//tablette afficher prison
+			// tablette afficher prison
 			return true;
 		} else if (currentCase instanceof CaseCarte) {
 			Random rdm = new Random();
@@ -211,31 +214,31 @@ public class Partie {
 			etat = 3;
 			String message = joueurActuel.getPseudo() + " doit: " + carte.getDescription();
 			stringToSend.receiveMsg("[Info] " + message);
-			ClientParty.sendMessage("pepper say "+ message);
+			ClientParty.sendMessage("pepper say " + message);
 			carte.doAction();
-			//tablette afficher case carte
+			// tablette afficher case carte
 			return true;
 		} else if (currentCase instanceof Depart) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " percoit un salaire de "
 					+ ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "polypoints");
 			((Depart) currentCase).pactole(joueurActuel);
 			etat = 3;
-			//tablette afficher case départ (et +200)
+			// tablette afficher case départ (et +200)
 			return true;
 		} else if (currentCase instanceof Propriete) {
 			Joueur owner = ((Propriete) currentCase).getJoueur();
 			if (owner == null || owner == joueurActuel) {
-				//tablette afficher propriete 
-				String message =  joueurActuel.getPseudo() + " est sur " + currentCase.getNom();
+				// tablette afficher propriete
+				String message = joueurActuel.getPseudo() + " est sur " + currentCase.getNom();
 				stringToSend.receiveMsg("[Info] " + message);
 				ClientParty.sendMessage("pepper say " + message);
 				etat = 2;
-				
+
 				return true;
 			} else {
-				//tablette afficher propriete avec owner et niveau de propriete actuelle
-				String message =  joueurActuel.getPseudo() + " est sur " + currentCase.getNom()
-				+ " qui est possede par " + owner.getPseudo();
+				// tablette afficher propriete avec owner et niveau de propriete actuelle
+				String message = joueurActuel.getPseudo() + " est sur " + currentCase.getNom() + " qui est possede par "
+						+ owner.getPseudo();
 				stringToSend.receiveMsg("[Info] " + message);
 				ClientParty.sendMessage("pepper say " + message);
 				if (((Propriete) currentCase).isHypotheque() == false) {
@@ -254,11 +257,11 @@ public class Partie {
 		} else if (currentCase instanceof SansAction) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est au repos");
 			etat = 3;
-			//tablette afficher case repos
+			// tablette afficher case repos
 			return true;
 		} else if (currentCase instanceof EnPrison) {
-			//tablette afficher en prison
-			String message =  joueurActuel.getPseudo() + " part en prison !";
+			// tablette afficher en prison
+			String message = joueurActuel.getPseudo() + " part en prison !";
 			stringToSend.receiveMsg("[Info] " + message);
 			ClientParty.sendMessage("pepper say " + message);
 			for (Case cas : Configuration.getInstance().getListeCase()) {
@@ -268,8 +271,8 @@ public class Partie {
 				}
 			}
 
-			message = "Pour sortir de prison, vous devez: \n- faire un "
-					+ ((Prison) currentCase).getDes() + " \n-Payer " + ((Prison) currentCase).getEscape()
+			message = "Pour sortir de prison, vous devez: \n- faire un " + ((Prison) currentCase).getDes()
+					+ " \n-Payer " + ((Prison) currentCase).getEscape()
 					+ "polypoints \n-Utiliser une carte 'sortir de prison'";
 			stringToSend.receiveMsg("[Info] " + message);
 			ClientParty.sendMessage("pepper say " + message);
@@ -304,8 +307,8 @@ public class Partie {
 		}
 		if (joueurActuel
 				.getArgent() > ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition()))
-				.getEscape()) {
-			String message  = joueurActuel.getPseudo() + " a payer "
+						.getEscape()) {
+			String message = joueurActuel.getPseudo() + " a payer "
 					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()
 					+ "polypoints pour sortir de prison. Il peut jouer normalement";
 			stringToSend.receiveMsg("[Info] " + message);
@@ -313,7 +316,7 @@ public class Partie {
 			etat = 1;
 			joueurActuel.setTourPrison(0);
 		} else {
-			String message  = joueurActuel.getPseudo() + " ne dispose pas des sous necessaire";
+			String message = joueurActuel.getPseudo() + " ne dispose pas des sous necessaire";
 			stringToSend.receiveMsg("[Erreur] " + message);
 			ClientParty.sendMessage("pepper say " + message);
 			etat = 1;
@@ -328,14 +331,14 @@ public class Partie {
 		}
 		if (joueurActuel.getPrisonCard() > 0) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo()
-			+ " a utilise une carte 'sortir de prison'. Il peut jouer normalement");
+					+ " a utilise une carte 'sortir de prison'. Il peut jouer normalement");
 			joueurActuel.setPrisonCard(joueurActuel.getPrisonCard() - 1);
 			joueurActuel.setTourPrison(0);
 			etat = 1;
-			//tablette afficher carte prison -1
+			// tablette afficher carte prison -1
 		} else {
 			stringToSend
-			.receiveMsg("[Erreur] " + joueurActuel.getPseudo() + " ne dispose pas de carte 'sortir de prison'");
+					.receiveMsg("[Erreur] " + joueurActuel.getPseudo() + " ne dispose pas de carte 'sortir de prison'");
 			etat = 1;
 		}
 		return true;
@@ -348,7 +351,7 @@ public class Partie {
 			ClientParty.sendMessage("pepper say " + message);
 			return false;
 		} else {
-			if(Configuration.getInstance().isHypoteque()) {
+			if (Configuration.getInstance().isHypoteque()) {
 				stringToSend.receiveMsg("[Erreur] Les hypotheques sont desactivees !");
 				return false;
 			} else {
@@ -368,7 +371,7 @@ public class Partie {
 		dmdEch.add(prop1);
 		dmdEch.add(prop2);
 		dmdEch.add(sous);
-		prop2.getJoueur().demandeConfirmation(prop1,prop2,sous);
+		prop2.getJoueur().demandeConfirmation(prop1, prop2, sous);
 		return true;
 	}
 
@@ -379,16 +382,17 @@ public class Partie {
 			ClientParty.sendMessage("pepper say " + message);
 			return false;
 		}
-		if (! dmdEch.isEmpty()) {
+		if (!dmdEch.isEmpty()) {
 			if (choix) {
-				getCurrentPlayer().echanger((Propriete)(dmdEch.get(0)), (Propriete)(dmdEch.get(1)), (int)(dmdEch.get(2)));
+				getCurrentPlayer().echanger((Propriete) (dmdEch.get(0)), (Propriete) (dmdEch.get(1)),
+						(int) (dmdEch.get(2)));
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public boolean acheterBuilding(int level, Terrain ter){
+	public boolean acheterBuilding(int level, Terrain ter) {
 		if (etat != 3) {
 			String message = " Vous ne pouvez pas faire cela maintenant !";
 			stringToSend.receiveMsg("[Erreur] " + message);
@@ -437,29 +441,28 @@ public class Partie {
 			String message = joueurActuel.getPseudo() + " debute son sejour en prison";
 			stringToSend.receiveMsg("[Info] " + message);
 			ClientParty.sendMessage("pepper say " + message);
-			//tablette afficher menu prison
-			
+			// tablette afficher menu prison
+
 		} else {
 			String message = joueurActuel.getPseudo() + " de jouer !";
 			stringToSend.receiveMsg("[Info] " + message);
 			ClientParty.sendMessage("pepper say " + message);
-			//tablette afficher menu classique
+			// tablette afficher menu classique
 		}
 
 		if (joueurActuel.getTourPrison() >= 4) {
 			joueurActuel.setArgent(joueurActuel.getArgent()
 					- ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition()))
-					.getEscape());
-			String message = joueurActuel.getPseudo() + " est reste trop de temps en prison. "
-					+ "Il a paye "
-					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape() 
+							.getEscape());
+			String message = joueurActuel.getPseudo() + " est reste trop de temps en prison. " + "Il a paye "
+					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()
 					+ "polypoints";
-					
+
 			joueurActuel.setTourPrison(0);
 			etat = 1;
 			message = joueurActuel.getPseudo() + " peut maintenant lancer le des pour jouer";
 			stringToSend.receiveMsg("[Info] " + message);
-			ClientParty.sendMessage("pepper say " + message);
+			ClientParty.sendMessage("pepper play " + message);
 			return true;
 		}
 		etat = 1;
@@ -467,7 +470,7 @@ public class Partie {
 	}
 
 	public String plateau() {
-		if(!Configuration.getInstance().isConfigLoad()) {
+		if (!Configuration.getInstance().isConfigLoad()) {
 			return "[Erreur] Aucune configuration n'est charge";
 		}
 		String plateau = "\n";
@@ -491,7 +494,7 @@ public class Partie {
 					}
 
 				}
-				plateau += tempo +"\n";
+				plateau += tempo + "\n";
 			}
 
 			if (i == 1) {
@@ -502,8 +505,7 @@ public class Partie {
 							tempo += "--|";
 						}
 						tempo += getType(listeCase.get(longueur + j));
-						plateau += tempo +"\n";
-
+						plateau += tempo + "\n";
 
 					}
 					longueur -= 1;
@@ -514,7 +516,7 @@ public class Partie {
 							tempo += "|--";
 						}
 						tempo += "|" + getType(listeCase.get(longueur + j + 1 + (4 - reste)));
-						plateau += tempo +"\n";
+						plateau += tempo + "\n";
 					}
 
 				} else {
@@ -524,10 +526,9 @@ public class Partie {
 						for (int k = 0; k < longueur - 1; k++) {
 							tempo += "|--";
 
-
 						}
 						tempo += "|" + getType(listeCase.get(longueur + j + 1 + reste));
-						plateau += tempo +"\n";
+						plateau += tempo + "\n";
 					}
 
 				}
@@ -554,7 +555,7 @@ public class Partie {
 					}
 
 				}
-				plateau += tempo +"\n";
+				plateau += tempo + "\n";
 			}
 		}
 

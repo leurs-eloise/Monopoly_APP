@@ -4,11 +4,10 @@ import Content.Configuration;
 import Content.Joueur;
 
 public class Gare extends Propriete {
-	
-	public Gare(String nom,int id, int prix, Joueur j, int hypotheque) {
+
+	public Gare(String nom, int id, int prix, Joueur j, int hypotheque) {
 		super(nom, id, prix, j, hypotheque);
 	}
-
 
 	public int getLoyer() {
 		int nbGare = 0;
@@ -18,7 +17,7 @@ public class Gare extends Propriete {
 			}
 		}
 		if (nbGare > 0) {
-			return Configuration.getInstance().getLoyer(super.getId()).get(nbGare-1);
+			return Configuration.getInstance().getLoyer(super.getId()).get(nbGare - 1);
 		}
 		return 0;
 	}

@@ -9,7 +9,8 @@ public class Terrain extends Propriete {
 	private ArrayList<Integer> listeLoyer = new ArrayList<Integer>();
 
 	// Constructeur
-	public Terrain(String nom,int id, int prix, Joueur j, int building, ArrayList<Integer> listeLoyer, int hypotheque, int groupe) {
+	public Terrain(String nom, int id, int prix, Joueur j, int building, ArrayList<Integer> listeLoyer, int hypotheque,
+			int groupe) {
 		super(nom, id, prix, j, hypotheque);
 		this.nbBuildings = building;
 		this.listeLoyer = listeLoyer;
