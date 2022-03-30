@@ -28,7 +28,7 @@ public class ClientParty {
     serverMessage=inStream.readUTF();
     SendString.getInstance().receiveMsg(serverMessage);
     
-    
+    Thread.sleep(200);
     outStream.close();
     socket.close();
   }catch(Exception e){

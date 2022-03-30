@@ -1,18 +1,17 @@
 package Content;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 import Content.Case.Gare;
 import Content.Case.Propriete;
 import Content.Case.Service;
 import Content.Case.Terrain;
 import Server.ClientParty;
+import Server.ClientServer;
 import Server.SendString;
 
 public class Joueur {
 	private static final AtomicInteger ID_FACTORY = new AtomicInteger();
-	private Scanner scan = new Scanner(System.in);
 	private int id;
 	private String pseudo;
 	private int argent;
@@ -48,15 +47,17 @@ public class Joueur {
 	public void lancerDes() {
 		this.valDes = des.getValeur();
 		stringToSend.receiveMsg("[Info] " + pseudo + " a fait un " + valDes);
+		ClientServer.sendMessage("tablet rolldice " + valDes);
 	}
 	
 	public void acheter(Propriete prop) {
 		if((prop.getJoueur() == null) && (this.argent >= prop.getPrix())){
 			this.argent -= prop.getPrix();
-			//tablette argentJoueur - prix
+			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
 			prop.setJoueur(this);
 			proprietes.add(prop);
-			stringToSend.receiveMsg("[Info] " + pseudo + " a achete " + prop.getNom() + " pour " + prop.getPrix() + "polypoints");
+			ClientParty.sendMessage("tablet addPropriete " + prop.getId() + " " + this.getId() + " " + prop.getNom());
+			stringToSend.receiveMsg("[Info] " + pseudo + " a achete " + prop.getNom() + " pour " + prop.getPrix() + " polypoints");
 		}
 	}
 	
@@ -68,11 +69,11 @@ public class Joueur {
 		Joueur proprietaire = prop.getJoueur();
 		if((proprietaire != null) && (proprietaire != this)){
 			int loyer = prop.getListeLoyer().get(prop.getNbBuilding());
-			proprietaire.setArgent(proprietaire.getArgent() + loyer);
-			//tablette argentJoueur1 - prix
+			proprietaire.setArgent(proprietaire.getArgent() + loyer);			
 			this.setArgent(this.getArgent() - loyer);
-			//tablette argentJoueur2 + prix
-			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + loyer + "polypoints a " + proprietaire.getPseudo());
+			ClientParty.sendMessage("tablet setMoney " + proprietaire.getId() + " " + proprietaire.getArgent());
+			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
+			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + loyer + " polypoints a " + proprietaire.getPseudo());
 		}
 	}
 	
@@ -81,7 +82,8 @@ public class Joueur {
 		if((proprietaire != null) && (proprietaire != this)){
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getLoyer());
 			this.setArgent(this.getArgent() - prop.getLoyer());
-			//tablette argentJoueur - prix
+			ClientParty.sendMessage("tablet setMoney " + proprietaire.getId() + " " + proprietaire.getArgent());
+			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
 			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + prop.getLoyer() + "polypoints a " + proprietaire.getPseudo());
 		}
 	}
@@ -93,7 +95,8 @@ public class Joueur {
 			proprietaire.setArgent(proprietaire.getArgent() + prop.getNiveau()*this.getValDes());
 			System.out.println(prop.getNiveau() + " - " + this.getValDes());
 			this.setArgent(this.getArgent() - prop.getNiveau()*this.getValDes());
-			//tablette argentJoueur - prix
+			ClientParty.sendMessage("tablet setMoney " + proprietaire.getId() + " " + proprietaire.getArgent());
+			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
 			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + prop.getNiveau()*valDes + "polypoints a " + proprietaire.getPseudo());
 		}
 	}
@@ -120,7 +123,7 @@ public class Joueur {
 		if (ter.getJoueur() == this) {
 			if (((ter.getNbBuilding() + nombre)<5) && (this.argent >= Configuration.getInstance().getPrixConstruction(ter.getId()))) {
 					this.argent -= Configuration.getInstance().getPrixConstruction(ter.getId());
-					//tablette argentJoueur - prix
+					ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
 					ter.setNbBuilding(nombre);
 				}			
 			}		

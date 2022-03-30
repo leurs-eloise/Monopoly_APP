@@ -70,7 +70,7 @@ public class Partie {
 		}
 
 		for (int i = 0; i < Configuration.getInstance().getNbJoueur(); i++) {
-			//tablette creation des joueurs et definition de leur argent
+			ClientParty.sendMessage("tablet initPlayer " + i + " " +  Configuration.getInstance().getDefaultMoney());
 			listeJoueur.add(new Joueur(i, "Joueur " + (i + 1), Configuration.getInstance().getDefaultMoney()));
 		}
 		if(!Objects.isNull(Configuration.getInstance().getPlayerConfig())) {
@@ -123,7 +123,7 @@ public class Partie {
 		Random rand = new Random();
 		joueurPosInt = rand.nextInt(listeJoueur.size());
 		joueurActuel = listeJoueur.get(joueurPosInt);
-		//tablette afficher info joueur actuelle
+		ClientParty.sendMessage("tablet afficherP " + joueurActuel.getId());
 		etat = 1;
 		return true;
 	}
@@ -141,7 +141,6 @@ public class Partie {
 				stringToSend.receiveMsg(
 						"[Info] " + joueurActuel.getPseudo() + " a choisit de lancer les des pour sortir de prison");
 				joueurActuel.lancerDes();
-				ClientServer.sendMessage("tablet rolldice " + joueurActuel.getValDes());
 				if (joueurActuel.getValDes() == 6) {
 					String message = joueurActuel.getPseudo() + " est sortie de prison en faisant un 6 ! Il peut maintenant jouer.";
 					stringToSend.receiveMsg("[Info] " + message);
@@ -159,7 +158,6 @@ public class Partie {
 				}
 			} else { // Lancer de des classique
 				joueurActuel.lancerDes();
-				ClientServer.sendMessage("tablet rolldice " + joueurActuel.getValDes());
 				if (((joueurActuel.getPosition() + joueurActuel.getValDes()) > Configuration.getInstance().getNbCase())
 						&& ((joueurActuel.getPosition() + joueurActuel.getValDes())
 								% Configuration.getInstance().getNbCase()) != 0) {
@@ -433,8 +431,8 @@ public class Partie {
 		if (joueurPosInt >= listeJoueur.size()) {
 			joueurPosInt = 0;
 		}
-		//tablette afficher joueur actuelle
 		joueurActuel = listeJoueur.get(joueurPosInt);
+		ClientParty.sendMessage("tablet afficherP " + joueurActuel.getId());
 		if (joueurActuel.getTourPrison() > 0 && joueurActuel.getTourPrison() < 4) {
 			String message = joueurActuel.getPseudo() + " debute son sejour en prison";
 			stringToSend.receiveMsg("[Info] " + message);
