@@ -206,7 +206,8 @@ public class Partie {
 		if (currentCase instanceof Prison) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est en visite simple sur la prison");
 			etat = 3;
-			// tablette afficher prison
+			ClientParty.sendMessage("tablet case nom:" + currentCase.getNom().replace(" ", "_"));
+
 			return true;
 		} else if (currentCase instanceof CaseCarte) {
 			Random rdm = new Random();
@@ -222,8 +223,8 @@ public class Partie {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " percoit un salaire de "
 					+ ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "polypoints");
 			((Depart) currentCase).pactole(joueurActuel);
+			ClientParty.sendMessage("tablet case nom:Case_Départ action:+" + ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "_Polypoints");
 			etat = 3;
-			// tablette afficher case départ (et +200)
 			return true;
 		} else if (currentCase instanceof Propriete) {
 			Joueur owner = ((Propriete) currentCase).getJoueur();
@@ -233,14 +234,18 @@ public class Partie {
 				stringToSend.receiveMsg("[Info] " + message);
 				ClientParty.sendMessage("pepper say " + message);
 				etat = 2;
-
+				ClientParty.sendMessage("tablet case nom:" + currentCase.getNom().replace(" ", "_") + " prix:" + ((Propriete)currentCase).getPrix() + " loyer:" + getLoyer((Propriete)currentCase) + " hypothèque:" + ((Propriete)currentCase).getPrixHypotheque());
 				return true;
+				
 			} else {
 				// tablette afficher propriete avec owner et niveau de propriete actuelle
 				String message = joueurActuel.getPseudo() + " est sur " + currentCase.getNom() + " qui est possede par "
 						+ owner.getPseudo();
 				stringToSend.receiveMsg("[Info] " + message);
 				ClientParty.sendMessage("pepper say " + message);
+				String loyer = getLoyer((Propriete)currentCase);
+				ClientParty.sendMessage("tablet case nom:" + currentCase.getNom().replace(" ", "_") + " Proprietaire:"+ owner.getPseudo() +" level:"+ ((Terrain)currentCase).getNbBuilding()  +" prix:" + ((Propriete)currentCase).getPrix() + " loyer:" + loyer + " hypothèque:" + ((Propriete)currentCase).getPrixHypotheque());
+
 				if (((Propriete) currentCase).isHypotheque() == false) {
 					if (currentCase instanceof Service) {
 						joueurActuel.payer(((Service) currentCase));
@@ -250,6 +255,8 @@ public class Partie {
 						joueurActuel.payer(((Terrain) currentCase));
 					}
 				}
+				
+
 				etat = 3;
 				return true;
 			}
@@ -257,10 +264,10 @@ public class Partie {
 		} else if (currentCase instanceof SansAction) {
 			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est au repos");
 			etat = 3;
-			// tablette afficher case repos
+			ClientParty.sendMessage("tablet case nom:" + currentCase.getNom().replace(" ", "_"));
 			return true;
 		} else if (currentCase instanceof EnPrison) {
-			// tablette afficher en prison
+			ClientParty.sendMessage("tablet case nom:" + currentCase.getNom().replace(" ", "_") + " action:Aller_en_prison" );
 			String message = joueurActuel.getPseudo() + " part en prison !";
 			stringToSend.receiveMsg("[Info] " + message);
 			ClientParty.sendMessage("pepper say " + message);
@@ -324,6 +331,27 @@ public class Partie {
 		return true;
 	}
 
+	public String getLoyer(Propriete prop) {
+		String loyer = "";
+		if (prop instanceof Service) {
+			for(int i : Configuration.getInstance().getMultiplicateur(prop.getId())) {
+				loyer += Integer.toString(i) + "x_Valeur_des_dés,";
+			}
+			loyer.subSequence(0, loyer.length()-1);
+		} else if (prop instanceof Gare) {
+			for(int i : Configuration.getInstance().getLoyer(prop.getId())) {
+				loyer += Integer.toString(i) + ",";
+			}
+			loyer.subSequence(0, loyer.length()-1);
+		} else if (prop instanceof Terrain) {
+			for(int i : ((Terrain) prop).getListeLoyer()) {
+				loyer += Integer.toString(i) + ",";
+			}
+		}
+		loyer.subSequence(0, loyer.length()-2);
+		return loyer;
+	}
+	
 	public boolean useCard() {
 		if ((etat != 1) || joueurActuel.getTourPrison() == 0) {
 			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");

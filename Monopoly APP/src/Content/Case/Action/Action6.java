@@ -2,6 +2,7 @@ package Content.Case.Action;
 
 import Content.Joueur;
 import Content.Partie;
+import Server.ClientParty;
 
 public class Action6 implements carteAction {
 
@@ -26,7 +27,7 @@ public class Action6 implements carteAction {
 																														// vous
 																														// verse
 																														// 50$
-
+		ClientParty.sendMessage("tablet case nom:Case_Action action:" + description.replace(" ", "_"));
 	}
 
 }

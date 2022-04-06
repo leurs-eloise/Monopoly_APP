@@ -2,6 +2,7 @@ package Content.Case.Action;
 
 import Content.Joueur;
 import Content.Partie;
+import Server.ClientParty;
 
 public class Action2 implements carteAction {
 
@@ -22,6 +23,7 @@ public class Action2 implements carteAction {
 	@Override
 	public void doAction() {
 		Partie.getInstance().getCurrentPlayer().setPosition(0); // Avancer case depart
+		ClientParty.sendMessage("tablet case nom:Case_Action action:" + description.replace(" ", "_"));
 		Partie.getInstance().actualiserPosition();
 
 	}

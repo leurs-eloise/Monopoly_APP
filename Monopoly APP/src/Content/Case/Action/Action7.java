@@ -2,6 +2,7 @@ package Content.Case.Action;
 
 import Content.Joueur;
 import Content.Partie;
+import Server.ClientParty;
 
 public class Action7 implements carteAction {
 
@@ -24,7 +25,7 @@ public class Action7 implements carteAction {
 		Partie.getInstance().getCurrentPlayer().setArgent(Partie.getInstance().getCurrentPlayer().getArgent() - 50); // Frais,
 																														// payez
 																														// 50$
-
+		ClientParty.sendMessage("tablet case nom:Case_Action action:" + description.replace(" ", "_"));
 	}
 
 }
