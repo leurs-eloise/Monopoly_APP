@@ -140,14 +140,15 @@ public class Partie {
 			}
 			if (joueurActuel.getTourPrison() != 0) { // Lancer de des si joueur en prison
 
-				stringToSend.receiveMsg(
-						"[Info] " + joueurActuel.getPseudo() + " a choisit de lancer les des pour sortir de prison");
+				String txt = joueurActuel.getPseudo() + " a choisit de lancer les des pour sortir de prison";
+				stringToSend.receiveMsg("[Info] " + txt);
+				ClientParty.sendMessage("pepper say " + txt);
+				
 				joueurActuel.lancerDes();
 				if (joueurActuel.getValDes() == 6) {
-					String message = joueurActuel.getPseudo()
-							+ " est sortie de prison en faisant un 6 ! Il peut maintenant jouer.";
+					String message = joueurActuel.getPseudo() + " est sortie de prison en faisant un 6 ! Il peut maintenant jouer.";
 					stringToSend.receiveMsg("[Info] " + message);
-					ClientParty.sendMessage("pepper say " + message);
+					ClientParty.sendMessage("pepper play " + message);
 					joueurActuel.setTourPrison(0);
 					etat = 1;
 					return true;
@@ -155,7 +156,7 @@ public class Partie {
 					String message = joueurActuel.getPseudo() + " a fait un " + joueurActuel.getValDes()
 							+ ". Il reste en prison.";
 					stringToSend.receiveMsg("[Info] " + message);
-					ClientParty.sendMessage("pepper say " + message);
+					ClientParty.sendMessage("pepper play " + message);
 					etat = 3;
 					return true;
 				}
@@ -168,6 +169,7 @@ public class Partie {
 							+ ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "polypoints";
 					stringToSend.receiveMsg("[Info] " + message);
 					ClientParty.sendMessage("pepper say " + message);
+					
 					((Depart) Configuration.getInstance().getListeCase().get(0)).pactole(joueurActuel);
 				}
 				joueurActuel.setPosition((joueurActuel.getPosition() + joueurActuel.getValDes())
@@ -201,10 +203,15 @@ public class Partie {
 
 	public boolean actualiserPosition() {
 		Case currentCase = Configuration.getInstance().getListeCase().get(joueurActuel.getPosition());
-		stringToSend
-				.receiveMsg("[Info] " + joueurActuel.getPseudo() + " se retrouve sur la case " + currentCase.getNom());
+		String txt = joueurActuel.getPseudo() + " se retrouve sur la case " + currentCase.getNom();
+		stringToSend.receiveMsg("[Info] " + txt);
+		ClientParty.sendMessage("pepper say " + txt);
+		
 		if (currentCase instanceof Prison) {
-			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " est en visite simple sur la prison");
+			String message = joueurActuel.getPseudo() + " est en visite simple sur la prison";
+			stringToSend.receiveMsg("[Info] " + message);
+			ClientParty.sendMessage("pepper say " + message);
+			
 			etat = 3;
 			// tablette afficher prison
 			return true;
@@ -219,8 +226,11 @@ public class Partie {
 			// tablette afficher case carte
 			return true;
 		} else if (currentCase instanceof Depart) {
-			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo() + " percoit un salaire de "
+			String message = joueurActuel.getPseudo() + " percoit un salaire de "
 					+ ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "polypoints");
+			stringToSend.receiveMsg("[Info] " + message);
+			ClientParty.sendMessage("pepper say " + message);
+			
 			((Depart) currentCase).pactole(joueurActuel);
 			etat = 3;
 			// tablette afficher case départ (et +200)
@@ -312,7 +322,7 @@ public class Partie {
 					+ ((Prison) Configuration.getInstance().getListeCase().get(joueurActuel.getPosition())).getEscape()
 					+ "polypoints pour sortir de prison. Il peut jouer normalement";
 			stringToSend.receiveMsg("[Info] " + message);
-			ClientParty.sendMessage("pepper say " + message);
+			ClientParty.sendMessage("pepper play " + message);
 			etat = 1;
 			joueurActuel.setTourPrison(0);
 		} else {
@@ -335,7 +345,8 @@ public class Partie {
 			String message = joueurActuel.getPseudo()
 					+ " a utilisai une carte 'sortir de prison'. Il peut jouer normalement";
 			stringToSend.receiveMsg("[Info] " + message);
-			ClientParty.sendMessage("pepper say " + message);
+			ClientParty.sendMessage("pepper play " + message);
+			
 			joueurActuel.setPrisonCard(joueurActuel.getPrisonCard() - 1);
 			joueurActuel.setTourPrison(0);
 			etat = 1;
@@ -465,7 +476,7 @@ public class Partie {
 
 			joueurActuel.setTourPrison(0);
 			etat = 1;
-			message = joueurActuel.getPseudo() + " peut maintenant lancer le des pour jouer";
+			message = message + joueurActuel.getPseudo() + " peut maintenant lancer le des pour jouer";
 			stringToSend.receiveMsg("[Info] " + message);
 			ClientParty.sendMessage("pepper play " + message);
 			return true;
