@@ -57,9 +57,11 @@ public class Joueur {
 			prop.setJoueur(this);
 			proprietes.add(prop);
 			ClientParty.sendMessage("tablet addPropriete " + prop.getId() + " " + this.getId() + " " + prop.getNom());
-			stringToSend.receiveMsg(
-					"[Info] " + pseudo + " a achete " + prop.getNom() + " pour " + prop.getPrix() + " polypoints");
-		}
+			
+			String message = pseudo + " a achetai " + prop.getNom() + " pour " + prop.getPrix() + " polypoints";
+			ClientParty.sendMessage("pepper say " + message);
+			stringToSend.receiveMsg("[Info] " + message);
+			}
 	}
 
 	public int getValDes() {
@@ -74,8 +76,10 @@ public class Joueur {
 			this.setArgent(this.getArgent() - loyer);
 			ClientParty.sendMessage("tablet setMoney " + proprietaire.getId() + " " + proprietaire.getArgent());
 			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
-			ClientParty.sendMessage(
-					"pepper say " + pseudo + " a paye " + loyer + " polypoints a " + proprietaire.getPseudo());
+			
+			String message = pseudo + " a payai " + loyer + " polypoints a " + proprietaire.getPseudo();
+			ClientParty.sendMessage("pepper say " + message);
+			stringToSend.receiveMsg("[Info] " + message);
 		}
 	}
 
@@ -86,8 +90,10 @@ public class Joueur {
 			this.setArgent(this.getArgent() - prop.getLoyer());
 			ClientParty.sendMessage("tablet setMoney " + proprietaire.getId() + " " + proprietaire.getArgent());
 			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
-			ClientParty.sendMessage(
-					"pepper say " + pseudo + " a paye " + prop.getLoyer() + "polypoints a " + proprietaire.getPseudo());
+			
+			String message = pseudo + " a payai " + prop.getLoyer() + " polypoints a " + proprietaire.getPseudo();
+			ClientParty.sendMessage("pepper say " + message);
+			stringToSend.receiveMsg("[Info] " + message);
 		}
 	}
 
@@ -100,19 +106,21 @@ public class Joueur {
 			this.setArgent(this.getArgent() - prop.getNiveau() * this.getValDes());
 			ClientParty.sendMessage("tablet setMoney " + proprietaire.getId() + " " + proprietaire.getArgent());
 			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
-			ClientParty.sendMessage("pepper say " + pseudo + " a paye " + prop.getNiveau() * valDes + "polypoints a "
-					+ proprietaire.getPseudo());
-		}
+			
+			String message = pseudo + " a payai " + prop.getNiveau() * valDes + " polypoints a " + proprietaire.getPseudo();
+			ClientParty.sendMessage("pepper say " + message);
+			stringToSend.receiveMsg("[Info] " + message);
+			}
 	}
 
 	public void demandeConfirmation(Propriete prop1, Propriete prop2, int sous) {
-		String message = "msg PepperReceive sayEchange " + prop1.getJoueur().getPseudo() + " veut echanger "
+		String message = "msg PepperReceive sayaichange " + prop1.getJoueur().getPseudo() + " veut aichanger "
 				+ prop1.getNom() + " avec " + prop2.getNom() + " et " + sous
-				+ " polypoints. Acceptez-vous cet echange ?";
+				+ " polypoints. Acceptez-vous cet aichange ?";
 		ClientParty.sendMessage(message);
 	}
 
-	// le joueur veut echanger la prop1 contre la prop2 d'un autre joueur avec x
+	// le joueur veut aichanger la prop1 contre la prop2 d'un autre joueur avec x
 	// sous
 	public void echanger(Propriete prop1, Propriete prop2, int sous) {
 		Joueur proprietaire = prop1.getJoueur();
@@ -122,8 +130,12 @@ public class Joueur {
 			prop2.setJoueur(proprietaire);
 			destinataire.setArgent(destinataire.getArgent() + sous);
 			proprietaire.setArgent(proprietaire.getArgent() - sous);
+			
+			String message = "aichange effuctai";
+			ClientParty.sendMessage("pepper say " + message);
+			stringToSend.receiveMsg("[Erreur] " + message);
 		} else {
-			String message = "Vous ne pouvez pas faire cet echange";
+			String message = "Vous ne pouvez pas faire cet aichange";
 			ClientParty.sendMessage("pepper say " + message);
 			stringToSend.receiveMsg("[Erreur] " + message);
 		}
@@ -136,6 +148,10 @@ public class Joueur {
 				this.argent -= Configuration.getInstance().getPrixConstruction(ter.getId());
 				ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
 				ter.setNbBuilding(nombre);
+				
+				String message = "Vous venez d'acheter " + nombre + "maisons sur " + ter.getNom();
+				ClientParty.sendMessage("pepper say " + message);
+				stringToSend.receiveMsg("[Info] " + message);
 			}
 		}
 	}
