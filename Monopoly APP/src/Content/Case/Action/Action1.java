@@ -2,6 +2,7 @@ package Content.Case.Action;
 
 import Content.Joueur;
 import Content.Partie;
+import Server.ClientParty;
 
 public class Action1 implements carteAction {
 
@@ -21,7 +22,7 @@ public class Action1 implements carteAction {
 	@Override
 	public void doAction() {
 		Partie.getInstance().getCurrentPlayer().setPosition(Partie.getInstance().getCurrentPlayer().getPosition() - 3); // Reculer
-																														// de
+		ClientParty.sendMessage("tablet case nom:Case_Action action:" + description.replace(" ", "_"));																											// de
 																														// 3
 																														// cases
 		Partie.getInstance().actualiserPosition();

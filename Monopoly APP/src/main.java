@@ -11,6 +11,7 @@ public class main extends Thread  {
 	
 	public void run()
 	{
+			//new OBEXPutServer();
 			new Server();
 	}
 	
