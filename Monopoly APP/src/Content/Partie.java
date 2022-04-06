@@ -272,10 +272,10 @@ public class Partie {
 			}
 
 			message = "Pour sortir de prison, vous devez: \n- faire un " + ((Prison) currentCase).getDes()
-					+ " \n-Payer " + ((Prison) currentCase).getEscape()
-					+ "polypoints \n-Utiliser une carte 'sortir de prison'";
+					+ " \n-ou Payer " + ((Prison) currentCase).getEscape()
+					+ "polypoints \n-ou Utiliser une carte 'sortir de prison'";
 			stringToSend.receiveMsg("[Info] " + message);
-			ClientParty.sendMessage("pepper say " + message);
+			ClientParty.sendMessage("pepper prison " + message);
 			joueurActuel.setTourPrison(1);
 			etat = 3;
 			return true;
@@ -326,19 +326,24 @@ public class Partie {
 
 	public boolean useCard() {
 		if ((etat != 1) || joueurActuel.getTourPrison() == 0) {
-			stringToSend.receiveMsg("[Erreur] Vous ne pouvez pas faire cela maintenant !");
+			String message = "Vous ne pouvez pas faire cela maintenant !";
+			stringToSend.receiveMsg("[Erreur] " + message);
+			ClientParty.sendMessage("pepper say " + message);
 			return false;
 		}
 		if (joueurActuel.getPrisonCard() > 0) {
-			stringToSend.receiveMsg("[Info] " + joueurActuel.getPseudo()
-					+ " a utilise une carte 'sortir de prison'. Il peut jouer normalement");
+			String message = joueurActuel.getPseudo()
+					+ " a utilisai une carte 'sortir de prison'. Il peut jouer normalement";
+			stringToSend.receiveMsg("[Info] " + message);
+			ClientParty.sendMessage("pepper say " + message);
 			joueurActuel.setPrisonCard(joueurActuel.getPrisonCard() - 1);
 			joueurActuel.setTourPrison(0);
 			etat = 1;
 			// tablette afficher carte prison -1
 		} else {
-			stringToSend
-					.receiveMsg("[Erreur] " + joueurActuel.getPseudo() + " ne dispose pas de carte 'sortir de prison'");
+			String message = joueurActuel.getPseudo() + " ne dispose pas de carte 'sortir de prison'";
+			stringToSend.receiveMsg("[Erreur] " + message);
+			ClientParty.sendMessage("pepper say " + message);
 			etat = 1;
 		}
 		return true;
