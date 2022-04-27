@@ -18,9 +18,6 @@ public class ClientParty {
 			Socket socket = new Socket("127.0.0.1", 39039);
 			DataInputStream inStream = new DataInputStream(socket.getInputStream());
 			DataOutputStream outStream = new DataOutputStream(socket.getOutputStream());
-			outStream.writeUTF("setname ClientParty");
-			outStream.flush();
-			serverMessage = inStream.readUTF();
 
 			outStream.writeUTF(clientMessage);
 			outStream.flush();

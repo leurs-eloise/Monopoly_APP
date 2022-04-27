@@ -244,7 +244,7 @@ public class Partie {
 				stringToSend.receiveMsg("[Info] " + message);
 				ClientParty.sendMessage("pepper say " + message);
 				String loyer = getLoyer((Propriete)currentCase);
-				ClientParty.sendMessage("tablet case nom:" + currentCase.getNom().replace(" ", "_") + " Proprietaire:"+ owner.getPseudo() +" level:"+ ((Terrain)currentCase).getNbBuilding()  +" prix:" + ((Propriete)currentCase).getPrix() + " loyer:" + loyer + " hypothèque:" + ((Propriete)currentCase).getPrixHypotheque());
+				ClientParty.sendMessage("tablet case nom:" + currentCase.getNom().replace(" ", "_") + " Proprietaire:"+ owner.getPseudo().replace(" ", "_") +" level:"+ ((Terrain)currentCase).getNbBuilding()  +" prix:" + ((Propriete)currentCase).getPrix() + " loyer:" + loyer + " hypothèque:" + ((Propriete)currentCase).getPrixHypotheque());
 
 				if (((Propriete) currentCase).isHypotheque() == false) {
 					if (currentCase instanceof Service) {
