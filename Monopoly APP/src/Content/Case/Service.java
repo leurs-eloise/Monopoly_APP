@@ -12,16 +12,20 @@ public class Service extends Propriete {
 	}
 
 	public int getNiveau() {
+		int nbService = getLevel();
+		if (nbService > 0) {
+			return Configuration.getInstance().getMultiplicateur(super.getId()).get(nbService - 1);
+		}
+		return 0;
+	}
+	public int getLevel() {
 		int nbService = 0;
 		for (Propriete prop : super.getJoueur().getProprietes()) {
 			if (prop instanceof Service) {
 				nbService += 1;
 			}
 		}
-		if (nbService > 0) {
-			return Configuration.getInstance().getMultiplicateur(super.getId()).get(nbService - 1);
-		}
-		return 0;
+		return nbService;
 	}
 
 }

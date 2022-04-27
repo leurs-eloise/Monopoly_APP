@@ -85,7 +85,7 @@ public class Partie {
 					}
 					try {
 						listeJoueur.get(i).setArgent(configJoueur.getInt("argent"));
-						// tablette set argentJoueur
+						ClientParty.sendMessage("tablet setMoney " + i + " " + configJoueur.getInt("argent"));
 						stringToSend.receiveMsg("[Info] Joueur " + (i + 1) + ": argent defini");
 					} catch (Exception e) {
 					}
@@ -109,7 +109,7 @@ public class Partie {
 										.setJoueur(listeJoueur.get(i));
 								stringToSend.receiveMsg("[Info] Joueur " + (i + 1) + ": proprietaire de la case "
 										+ Configuration.getInstance().getListeCase().get(idProp).getNom());
-								// tablette joueur ajouter prop
+								ClientParty.sendMessage("tablet addPropriete " + Configuration.getInstance().getListeCase().get(idProp).getNom() + " " + (i+1) + " " + Configuration.getInstance().getListeCase().get(idProp).getNom());
 							} catch (Exception e) {
 								stringToSend.receiveMsg(
 										"[Erreur] La case " + propList.get(idProp) + " n'est pas une propriete");
@@ -228,7 +228,7 @@ public class Partie {
 			return true;
 		} else if (currentCase instanceof Depart) {
 			String message = joueurActuel.getPseudo() + " percoit un salaire de "
-					+ ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "polypoints");
+					+ ((Depart) Configuration.getInstance().getListeCase().get(0)).getPactole() + "polypoints";
 			stringToSend.receiveMsg("[Info] " + message);
 			ClientParty.sendMessage("pepper say " + message);
 			
@@ -254,7 +254,15 @@ public class Partie {
 				stringToSend.receiveMsg("[Info] " + message);
 				ClientParty.sendMessage("pepper say " + message);
 				String loyer = getLoyer((Propriete)currentCase);
-				ClientParty.sendMessage("tablet case nom:" + currentCase.getNom().replace(" ", "_") + " Proprietaire:"+ owner.getPseudo().replace(" ", "_") +" level:"+ ((Terrain)currentCase).getNbBuilding()  +" prix:" + ((Propriete)currentCase).getPrix() + " loyer:" + loyer + " hypothèque:" + ((Propriete)currentCase).getPrixHypotheque());
+				int level = 0;
+				if (currentCase instanceof Service) {
+					level = ((Service)currentCase).getLevel();
+				} else if (currentCase instanceof Gare) {
+					level = ((Gare)currentCase).getLevel();
+				} else if (currentCase instanceof Terrain) {
+					level = ((Terrain)currentCase).getNbBuilding();
+				}
+				ClientParty.sendMessage("tablet case nom:" + currentCase.getNom().replace(" ", "_") + " Proprietaire:"+ owner.getPseudo().replace(" ", "_") +" level:"+ level +" prix:" + ((Propriete)currentCase).getPrix() + " loyer:" + loyer + " hypothèque:" + ((Propriete)currentCase).getPrixHypotheque());
 
 				if (((Propriete) currentCase).isHypotheque() == false) {
 					if (currentCase instanceof Service) {
@@ -483,6 +491,7 @@ public class Partie {
 		ClientParty.sendMessage("tablet afficherP " + joueurActuel.getId());
 		if (joueurActuel.getTourPrison() > 0 && joueurActuel.getTourPrison() < 4) {
 			String message = joueurActuel.getPseudo() + " debute son sejour en prison";
+			ClientParty.sendMessage("tablet prison " + joueurActuel.getId() + " " + joueurActuel.getTourPrison());
 			stringToSend.receiveMsg("[Info] " + message);
 			ClientParty.sendMessage("pepper say " + message);
 			// tablette afficher menu prison
@@ -491,6 +500,7 @@ public class Partie {
 			String message = joueurActuel.getPseudo() + " de jouer !";
 			stringToSend.receiveMsg("[Info] " + message);
 			ClientParty.sendMessage("pepper say " + message);
+			ClientParty.sendMessage("tablet prison " + joueurActuel.getId() + " " + joueurActuel.getTourPrison());
 			// tablette afficher menu classique
 		}
 
@@ -503,6 +513,7 @@ public class Partie {
 					+ "polypoints";
 
 			joueurActuel.setTourPrison(0);
+			ClientParty.sendMessage("tablet prison " + joueurActuel.getId() + " " + joueurActuel.getTourPrison());
 			etat = 1;
 			message = message + joueurActuel.getPseudo() + " peut maintenant lancer le des pour jouer";
 			stringToSend.receiveMsg("[Info] " + message);

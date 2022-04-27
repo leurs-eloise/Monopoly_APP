@@ -1,16 +1,16 @@
 {
 	"Player" : {
 		"1": {
-			"tourEnPrison" : 0,
+			"tourEnPrison" : 1,
 			"argent" : 1500,
-			"position" : 0,
+			"position" : 5,
 			"cartePrison" : 0,
 			"propriete" : [12,15]
 		},
 		"2": {
-			"tourEnPrison" : 0,
+			"tourEnPrison" : 1,
 			"argent" : 1500,
-			"position" : 0,
+			"position" : 5,
 			"cartePrison" : 0
 		}
 
