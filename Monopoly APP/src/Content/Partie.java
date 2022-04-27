@@ -333,9 +333,9 @@ public class Partie {
 			etat = 1;
 			joueurActuel.setTourPrison(0);
 		} else {
-			String message = joueurActuel.getPseudo() + " ne dispose pas des sous necessaire";
+			String message = joueurActuel.getPseudo() + " ne dispose pas des polypoints necessaires";
 			stringToSend.receiveMsg("[Erreur] " + message);
-			ClientParty.sendMessage("pepper say " + message);
+			ClientParty.sendMessage("pepper pbPrison " + message);
 			etat = 1;
 		}
 		return true;
@@ -382,7 +382,7 @@ public class Partie {
 		} else {
 			String message = joueurActuel.getPseudo() + " ne dispose pas de carte 'sortir de prison'";
 			stringToSend.receiveMsg("[Erreur] " + message);
-			ClientParty.sendMessage("pepper say " + message);
+			ClientParty.sendMessage("pepper pbPrison " + message);
 			etat = 1;
 		}
 		return true;
