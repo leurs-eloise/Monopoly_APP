@@ -59,7 +59,7 @@ public class Joueur {
 			ClientParty.sendMessage("tablet addPropriete " + prop.getId() + " " + this.getId() + " " + prop.getNom());
 			
 			String message = pseudo + " a achetai " + prop.getNom() + " pour " + prop.getPrix() + " polypoints";
-			ClientParty.sendMessage("pepper say " + message);
+			ClientParty.sendMessage("pepper sayHappy " + message);
 			stringToSend.receiveMsg("[Info] " + message);
 			}
 	}
@@ -78,7 +78,7 @@ public class Joueur {
 			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
 			
 			String message = pseudo + " a payai " + loyer + " polypoints a " + proprietaire.getPseudo();
-			ClientParty.sendMessage("pepper say " + message);
+			ClientParty.sendMessage("pepper sayClignote " + message);
 			stringToSend.receiveMsg("[Info] " + message);
 		}
 	}
@@ -92,7 +92,7 @@ public class Joueur {
 			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
 			
 			String message = pseudo + " a payai " + prop.getLoyer() + " polypoints a " + proprietaire.getPseudo();
-			ClientParty.sendMessage("pepper say " + message);
+			ClientParty.sendMessage("pepper sayClignote " + message);
 			stringToSend.receiveMsg("[Info] " + message);
 		}
 	}
@@ -108,16 +108,17 @@ public class Joueur {
 			ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
 			
 			String message = pseudo + " a payai " + prop.getNiveau() * valDes + " polypoints a " + proprietaire.getPseudo();
-			ClientParty.sendMessage("pepper say " + message);
+			ClientParty.sendMessage("pepper sayClignote " + message);
 			stringToSend.receiveMsg("[Info] " + message);
 			}
 	}
 
 	public void demandeConfirmation(Propriete prop1, Propriete prop2, int sous) {
-		String message = "msg PepperReceive sayaichange " + prop1.getJoueur().getPseudo() + " veut aichanger "
+		String message = prop1.getJoueur().getPseudo() + " veut aichanger "
 				+ prop1.getNom() + " avec " + prop2.getNom() + " et " + sous
 				+ " polypoints. Acceptez-vous cet aichange ?";
-		ClientParty.sendMessage(message);
+		ClientParty.sendMessage("msg PepperReceive" + message);
+		ClientParty.sendMessage("pepper msg " + message);
 	}
 
 	// le joueur veut aichanger la prop1 contre la prop2 d'un autre joueur avec x
@@ -149,8 +150,8 @@ public class Joueur {
 				ClientParty.sendMessage("tablet setMoney " + getId() + " " + argent);
 				ter.setNbBuilding(nombre);
 				
-				String message = "Vous venez d'acheter " + nombre + "maisons sur " + ter.getNom();
-				ClientParty.sendMessage("pepper say " + message);
+				String message = "Vous venez d'acheter " + nombre + " maisons sur " + ter.getNom();
+				ClientParty.sendMessage("pepper sayHappy " + message);
 				stringToSend.receiveMsg("[Info] " + message);
 			}
 		}
