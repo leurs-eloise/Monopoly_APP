@@ -129,6 +129,22 @@ public class Partie {
 		etat = 1;
 		return true;
 	}
+	
+	public boolean bilan() {
+		if(etat != 0) {
+			String message = "bilan " + Partie.getInstance().getCurrentPlayer().getPseudo() + " possede "
+					+ Partie.getInstance().getCurrentPlayer().getNbProp() + " proprietes et "
+					+ Partie.getInstance().getCurrentPlayer().getArgent() + " polypoints.";
+			stringToSend.receiveMsg("[Info] " + message);
+			ClientParty.sendMessage("pepper " + message);
+			return true;
+		} else {
+			String message = "Vous ne pouvez pas faire cela maintenant !";
+			stringToSend.receiveMsg("[Erreur] " + message);
+			ClientParty.sendMessage("pepper say " + message);
+			return false;
+		}
+	}
 
 	public boolean lancerDes() {
 		try {
@@ -240,9 +256,6 @@ public class Partie {
 			Joueur owner = ((Propriete) currentCase).getJoueur();
 			if (owner == null || owner == joueurActuel) {
 				// tablette afficher propriete
-				String message = joueurActuel.getPseudo() + " est sur " + currentCase.getNom();
-				stringToSend.receiveMsg("[Info] " + message);
-				ClientParty.sendMessage("pepper say " + message);
 				etat = 2;
 				ClientParty.sendMessage("tablet case nom:" + currentCase.getNom().replace(" ", "_") + " prix:" + ((Propriete)currentCase).getPrix() + " loyer:" + getLoyer((Propriete)currentCase) + " hypothèque:" + ((Propriete)currentCase).getPrixHypotheque());
 				return true;
