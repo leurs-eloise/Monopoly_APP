@@ -328,7 +328,9 @@ class ServerClientThread extends Thread {
 				// System.out.println("[Info] " + clientName + ": "+clientMessage);
 
 				outStream.writeUTF(serverMessage);
+				outStream.writeUTF("pepper " + serverMessage);
 				outStream.flush();
+				
 
 			}
 			inStream.close();
