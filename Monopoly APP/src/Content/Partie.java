@@ -476,14 +476,18 @@ public class Partie {
 			ClientParty.sendMessage("pepper say " + message);
 			return false;
 		}
-		if (level < 0 || level > 6) {
+		else if (level < 0 || level > 6) {
 			String message = " Le niveau doit etre compris entre 0 et 5";
 			stringToSend.receiveMsg("[Erreur] " + message);
 			ClientParty.sendMessage("pepper say " + message);
-		} else {
+		} 
+		else {
 			getCurrentPlayer().acheterBuilding(level, ter);
-			etat = 3;
+			String message = "maison achetai";
+			stringToSend.receiveMsg("[Info] " + message);
+			ClientParty.sendMessage("pepper say " + message);
 		}
+		etat = 3;
 		return true;
 	}
 
