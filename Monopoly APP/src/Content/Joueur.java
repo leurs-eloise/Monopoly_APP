@@ -132,7 +132,7 @@ public class Joueur {
 			destinataire.setArgent(destinataire.getArgent() + sous);
 			proprietaire.setArgent(proprietaire.getArgent() - sous);
 			
-			String message = "aichange effuctai";
+			String message = "aichange effectuai";
 			ClientParty.sendMessage("pepper say " + message);
 			stringToSend.receiveMsg("[Erreur] " + message);
 		} else {

@@ -236,23 +236,16 @@ class ServerClientThread extends Thread {
 				else if (clientMessageSplit[0].equals("exchange")) {
 					Propriete prop1 = null;
 					Propriete prop2 = null;
-					if (clientMessageSplit[1].equals(clientMessageSplit[2])) {
-						serverMessage = "[Erreur] Vous ne pouvez pas echanger une propriete avec elle meme";
-					} else {
-						for (Case item : Configuration.getInstance().getListeCase()) {
-							if (item.getNom().equals(clientMessageSplit[1]) && item.getType().equals("Propriete")) {
-								prop1 = (Propriete) item;
-							}
-							if (item.getNom().equals(clientMessageSplit[2]) && item.getType().equals("Propriete")) {
-								prop2 = (Propriete) item;
-							}
-							if (prop1.getJoueur().equals(prop2.getJoueur())) {
-								serverMessage = "[Erreur] Vous possedez deja cette propriete";
-							} else {
-								int sous = Integer.parseInt(clientMessageSplit[3]);
-								Partie.getInstance().demandeEchange(prop1, prop2, sous);
-							}
+
+					for (Case item : Configuration.getInstance().getListeCase()) {
+						if (item.getNom().equals(clientMessageSplit[1]) && item.getType().equals("Propriete")) {
+							prop1 = (Propriete) item;
 						}
+						if (item.getNom().equals(clientMessageSplit[2]) && item.getType().equals("Propriete")) {
+							prop2 = (Propriete) item;
+						}
+						int sous = Integer.parseInt(clientMessageSplit[3]);
+						Partie.getInstance().demandeEchange(prop1, prop2, sous);
 					}
 				}
 
@@ -267,20 +260,16 @@ class ServerClientThread extends Thread {
 				else if (clientMessageSplit[0].equals("home")) {
 					if (clientMessageSplit.length == 2) {
 						try {
-							int level = Integer.parseInt(clientMessageSplit[1]);
-							if (level < 0 || level > 6) {
-								serverMessage = "[Erreur] Le niveau doit etre compris entre 0 et 5";
-							} else {
-								for (Case item : Configuration.getInstance().getListeCase()) {
-									if (item.getNom().equals(clientMessageSplit[1])
-											&& item.getType().equals("Terrain")) {
-										Terrain ter = (Terrain) item;
-										Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[2]),
-												ter);
-									}
+							for (Case item : Configuration.getInstance().getListeCase()) {
+								if (item.getNom().equals(clientMessageSplit[1])
+										&& item.getType().equals("Terrain")) {
+									Terrain ter = (Terrain) item;
+									Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[2]),
+											ter);
 								}
 							}
-						} catch (Exception e) {
+						}
+						catch (Exception e) {
 							serverMessage = "[Erreur] Le niveau doit etre un nombre";
 						}
 					}
@@ -327,7 +316,7 @@ class ServerClientThread extends Thread {
 
 				outStream.writeUTF(serverMessage);
 				outStream.flush();
-				
+
 
 			}
 			inStream.close();
