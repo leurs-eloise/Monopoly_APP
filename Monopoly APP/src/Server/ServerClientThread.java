@@ -238,15 +238,17 @@ class ServerClientThread extends Thread {
 					Propriete prop2 = null;
 
 					for (Case item : Configuration.getInstance().getListeCase()) {
-						if (item.getNom().equals(clientMessageSplit[1]) && item.getType().equals("Propriete")) {
+						if (item.getNom().equals(clientMessageSplit[1])){ //&& item.getType().equals("Propriete")) {
 							prop1 = (Propriete) item;
 						}
-						if (item.getNom().equals(clientMessageSplit[2]) && item.getType().equals("Propriete")) {
+						if (item.getNom().equals(clientMessageSplit[2])) {// && item.getType().equals("Propriete")) {
 							prop2 = (Propriete) item;
 						}
-						int sous = Integer.parseInt(clientMessageSplit[3]);
-						Partie.getInstance().demandeEchange(prop1, prop2, sous);
+						
+						
 					}
+					int sous = Integer.parseInt(clientMessageSplit[3]);
+					Partie.getInstance().demandeEchange(prop1, prop2, sous);
 				}
 
 				else if (clientMessageSplit[0].equals("answerExchange")) {
@@ -258,25 +260,22 @@ class ServerClientThread extends Thread {
 				}
 
 				else if (clientMessageSplit[0].equals("home")) {
-					if (clientMessageSplit.length == 2) {
+					Terrain ter = null;
 						try {
 							for (Case item : Configuration.getInstance().getListeCase()) {
 								if (item.getNom().equals(clientMessageSplit[1])
 										&& item.getType().equals("Terrain")) {
-									Terrain ter = (Terrain) item;
-									Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[2]),
-											ter);
+									ter = (Terrain) item;
+									
 								}
 							}
+							Partie.getInstance().acheterBuilding(Integer.parseInt(clientMessageSplit[2]),
+									ter);
 						}
 						catch (Exception e) {
 							serverMessage = "[Erreur] Le niveau doit etre un nombre";
 						}
-					}
 
-					else {
-						serverMessage = "[Erreur] Usage: home (level)";
-					}
 				}
 
 				else if (clientMessageSplit[0].equals("bilan")) {
